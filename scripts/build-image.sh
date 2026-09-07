@@ -8,9 +8,7 @@ base_image=${R9V_BASE_IMAGE:-r9v-vllm-qwen38-base:latest}
 runtime_image=${R9V_IMAGE:-r9v-qwen38-flash-next:latest}
 max_jobs=${R9V_MAX_JOBS:-8}
 runtime_only=${R9V_RUNTIME_ONLY:-0}
-vllm_tag=$(git -C "$repo_root/vendor/vllm" describe --tags --abbrev=0)
-vllm_revision=$(git -C "$repo_root/vendor/vllm" rev-parse --short=12 HEAD)
-vllm_version=${R9V_VLLM_VERSION:-"${vllm_tag#v}+r9v.g${vllm_revision}"}
+
 
 [[ $runtime_only == 0 || $runtime_only == 1 ]] || {
     printf 'R9V_RUNTIME_ONLY must be 0 or 1\n' >&2
@@ -34,6 +32,26 @@ for required in \
         exit 1
     }
 done
+
+# The release graph may be a shallow clone with no reachable tags. Use the
+# package version qualified with this exact source revision, not git describe.
+if [[ -n ${R9V_VLLM_VERSION:-} ]]; then
+    vllm_version=$R9V_VLLM_VERSION
+else
+    vllm_version=$(python3 - "$repo_root" <<'PYVERSION'
+import json
+from pathlib import Path
+import subprocess
+import sys
+root = Path(sys.argv[1])
+source = json.loads((root / 'runtimes/qwen38-flash-next-gfx1201-v1/runtime.json').read_text())['source']
+actual = subprocess.check_output(['git', '-C', str(root / 'vendor/vllm'), 'rev-parse', 'HEAD'], text=True).strip()
+if actual != source['vllm_revision']:
+    raise SystemExit('vLLM checkout differs from runtime pin; restore the pinned submodule or explicitly set R9V_VLLM_VERSION for a development build')
+print(source['vllm_package_version'])
+PYVERSION
+    )
+fi
 
 if [[ $runtime_only == 0 ]]; then
     docker buildx build --load \

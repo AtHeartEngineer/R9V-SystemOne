@@ -28,7 +28,8 @@
   "source": {
     "vllm_revision": "4b20917386dcdfb619ee62ff24c45efeae176fdf",
     "gguf_plugin_revision": "09b1199015c6b45de5c13dc4b36857ce27d9b0cd",
-    "kernel_revision": "7905d9e0a3323411ef5d6dfb2f356061a9a491e3"
+    "kernel_revision": "7905d9e0a3323411ef5d6dfb2f356061a9a491e3",
+    "vllm_package_version": "0.26.1rc0+r9v.g4b20917386dc"
   },
   "safety": {
     "r4d": "hard-disabled",
