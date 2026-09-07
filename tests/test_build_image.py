@@ -6,7 +6,28 @@ import subprocess
 
 
 def test_build_uses_pinned_version_without_tags(tmp_path):
-    root = Path(__file__).resolve().parents[1]
+    import shutil
+
+    source_root = Path(__file__).resolve().parents[1]
+    root = tmp_path / 'repo'
+    (root / 'scripts').mkdir(parents=True)
+    shutil.copy2(source_root / 'scripts/build-image.sh', root / 'scripts/build-image.sh')
+    for relative in ('vendor/vllm/docker/Dockerfile.r9v_rocm714',
+                     'vendor/vllm-gguf-plugin/setup.py', 'kernels/r9v-gfx1201/README.md'):
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('fixture')
+    for repo in (root, root / 'vendor/vllm'):
+        subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+        subprocess.run(['git', '-C', str(repo), '-c', 'user.name=Test',
+                        '-c', 'user.email=test@example.invalid', 'commit',
+                        '--allow-empty', '-qm', 'fixture'], check=True)
+    revision = subprocess.check_output(['git', '-C', str(root / 'vendor/vllm'),
+                                       'rev-parse', 'HEAD'], text=True).strip()
+    runtime = root / 'runtimes/qwen38-flash-next-gfx1201-v1/runtime.json'
+    runtime.parent.mkdir(parents=True)
+    runtime.write_text(json.dumps({'source': {'vllm_revision': revision,
+        'vllm_package_version': '0.26.1rc0+r9v.g' + revision[:12]}}))
     # Run the real shell orchestration; Docker calls are recorded, never built.
     fake = tmp_path / 'docker'
     fake.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$TEST_DOCKER_CALLS"\n')
