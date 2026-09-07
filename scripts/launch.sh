@@ -152,6 +152,15 @@ mtp_rel=${R9V_MTP_REL:-mtp}
 mmproj_rel=${R9V_MMPROJ_REL:-vision/mmproj-Qwen3.8-Flash-Next-Q8_0.gguf}
 manifest_rel=${R9V_MANIFEST_REL:-manifests/hot-manifest-q4-vision-128k-multiprompt-r1-lru16-neutral.json}
 
+manifest_path=${R9V_EXPERT_MANIFEST_PATH:-$model_dir/$manifest_rel}
+manifest_container_path="/models/$manifest_rel"
+manifest_mount_args=()
+if [[ -n ${R9V_EXPERT_MANIFEST_PATH:-} ]]; then
+    [[ $manifest_path == /* ]] || { printf 'R9V_EXPERT_MANIFEST_PATH must be absolute\n' >&2; exit 2; }
+    manifest_container_path=/placement/experts.json
+    manifest_mount_args=(--volume "$manifest_path:$manifest_container_path:ro")
+fi
+
 for required in \
     "$model_dir/$target_rel" \
     "$model_dir/$target_shard2_rel" \
@@ -160,7 +169,7 @@ for required in \
     "$model_dir/$mtp_rel/config.json" \
     "$model_dir/$mtp_rel/model.safetensors" \
     "$model_dir/$mmproj_rel" \
-    "$model_dir/$manifest_rel" \
+    "$manifest_path" \
     "$ple_path"; do
     [[ -f "$required" ]] || { printf 'Required file missing: %s\n' "$required" >&2; exit 1; }
 done
@@ -178,15 +187,24 @@ if docker container inspect "$container" >/dev/null 2>&1; then
 fi
 
 mkdir -p "$cache_dir"
-render_gid=$(getent group render | cut -d: -f3)
-video_gid=$(getent group video | cut -d: -f3)
+device_group_args=()
+# Numeric device ownership also works on distributions without render/video groups.
+for device in /dev/kfd /dev/dri/renderD* /dev/dri/card*; do
+    [[ -e $device ]] || continue
+    device_group_args+=(--group-add "$(stat -c %g "$device")")
+done
 
 docker run --detach \
     --name "$container" \
+    --log-driver json-file \
+    --log-opt max-size=20m \
+    --log-opt max-file=5 \
+    --ulimit memlock=-1:-1 \
+    --env PYTHONUNBUFFERED=1 \
+    --env PYTHONFAULTHANDLER=1 \
     --device /dev/kfd \
     --device /dev/dri \
-    --group-add "$render_gid" \
-    --group-add "$video_gid" \
+    "${device_group_args[@]}" \
     --ipc host \
     --security-opt seccomp=unconfined \
     --security-opt label=disable \
@@ -194,6 +212,7 @@ docker run --detach \
     --volume "$model_dir:/models:ro" \
     --volume "$ple_path:/ple/per_layer_token_embd.iq4_nl.bin:ro" \
     --volume "$cache_dir:/cache" \
+    "${manifest_mount_args[@]}" \
     "${dev_overlay_args[@]}" \
     "${profiler_mount_args[@]}" \
     --env HIP_VISIBLE_DEVICES="$visible_devices" \
@@ -201,7 +220,7 @@ docker run --detach \
     --env VLLM_CACHE_ROOT=/cache/vllm \
     --env RADIANCE_CPU_OFFLOAD_GB_BY_DEVICE="$R9V_CPU_OFFLOAD_GB_BY_DEVICE" \
     --env R9V_CPU_OFFLOAD_GB_BY_DEVICE="$R9V_CPU_OFFLOAD_GB_BY_DEVICE" \
-    --env RADIANCE_TIERED_EXPERT_MANIFEST="/models/$manifest_rel" \
+    --env RADIANCE_TIERED_EXPERT_MANIFEST="$manifest_container_path" \
     --env RADIANCE_UVA_HOST_COHERENCE=default \
     --env RADIANCE_UVA_HOST_NONCOHERENT=0 \
     --env RADIANCE_USE_R4D=0 \
@@ -290,3 +309,5 @@ docker run --detach \
 
 printf 'Started %s; health endpoint: http://127.0.0.1:%s/health\n' \
     "$container" "$R9V_HOST_PORT"
+
+printf 'Logs are retained with the container (rotating 5 x 20 MiB). Before removing it, run: ./r9v support qwen38 --output <new-directory>\n'

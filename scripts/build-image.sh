@@ -54,6 +54,7 @@ fi
 docker buildx build --load \
     --file "$repo_root/docker/Dockerfile.runtime" \
     --build-arg BASE_IMAGE="$base_image" \
+    --build-arg R9V_REVISION="$(git -C "$repo_root" rev-parse HEAD)" \
     --build-arg GFX_ARCH=gfx1201 \
     --tag "$runtime_image" \
     "$repo_root"

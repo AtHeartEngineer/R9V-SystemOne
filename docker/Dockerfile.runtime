@@ -45,3 +45,8 @@ ENV QWEN38_DENSE_MMVQ_HIP_SO=/opt/r9v/kernels/qwen38_dense_mmvq_hip.so \
     QWEN38_FUSED_GDN_MTP_HIP_SO=/opt/r9v/kernels/qwen38_fused_gdn_mtp_hip.so
 
 ENTRYPOINT ["vllm", "serve"]
+
+# Keep release metadata after compilation so changing the root commit reuses kernels.
+ARG R9V_REVISION=unknown
+LABEL org.opencontainers.image.source="https://github.com/Dyluhn/R9V" \
+      org.opencontainers.image.revision="${R9V_REVISION}"

@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -16,6 +17,22 @@ import urllib.request
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
+
+
+try:
+    from tools.host_preflight import (
+        check_resources,
+        check_container_limits,
+        check_runtime_arguments,
+    )
+    from tools.expert_budget import expert_memory, headroom_bytes
+except ModuleNotFoundError:
+    from host_preflight import (
+        check_resources,
+        check_container_limits,
+        check_runtime_arguments,
+    )
+    from expert_budget import expert_memory, headroom_bytes
 
 
 PLE_EXPECTED_BYTES = 28_800_138_240
@@ -43,9 +60,7 @@ class Reporter:
         remediation: str | None = None,
         **details: Any,
     ) -> None:
-        self.checks.append(
-            Check(status, name, message, remediation, details or None)
-        )
+        self.checks.append(Check(status, name, message, remediation, details or None))
 
     def passed(self, name: str, message: str, **details: Any) -> None:
         self.add("PASS", name, message, **details)
@@ -122,7 +137,9 @@ PCIE_GENERATION_SPEED_GTS = {
 }
 
 
-def _run(command: list[str], *, timeout: float = 10.0) -> subprocess.CompletedProcess[str]:
+def _run(
+    command: list[str], *, timeout: float = 10.0
+) -> subprocess.CompletedProcess[str]:
     try:
         return subprocess.run(
             command,
@@ -132,11 +149,19 @@ def _run(command: list[str], *, timeout: float = 10.0) -> subprocess.CompletedPr
             timeout=timeout,
         )
     except subprocess.TimeoutExpired as error:
+        # TimeoutExpired can contain raw bytes even when text=True, including
+        # an incomplete final character. Keep diagnostic callers text-only.
+        stdout = error.stdout
+        stderr = error.stderr
+        if isinstance(stdout, bytes):
+            stdout = stdout.decode("utf-8", errors="replace")
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode("utf-8", errors="replace")
         return subprocess.CompletedProcess(
             command,
             124,
-            error.stdout or "",
-            error.stderr or f"timed out after {timeout:g} seconds",
+            stdout or "",
+            stderr or f"timed out after {timeout:g} seconds",
         )
     except FileNotFoundError as error:
         return subprocess.CompletedProcess(command, 127, "", str(error))
@@ -233,13 +258,16 @@ def _csv(value: str | None) -> list[str]:
 
 
 def _csv_float(value: str | None, count: int, name: str) -> list[float]:
-    items = _csv(value)
-    if not items:
+    if value is None or not value.strip():
         return []
-    if len(items) != count:
+    items = [item.strip() for item in value.split(",")]
+    if len(items) != count or any(not item for item in items):
         raise ValueError(f"{name} needs {count} comma-separated values")
     try:
-        return [float(item) for item in items]
+        values = [float(item) for item in items]
+        if any(not math.isfinite(value) or value < 0 for value in values):
+            raise ValueError("values must be finite and non-negative")
+        return values
     except ValueError as error:
         raise ValueError(f"{name} values must be numeric") from error
 
@@ -254,9 +282,7 @@ def parse_expected_pcie_links(value: str | None, count: int) -> list[PcieLink]:
         )
     links: list[PcieLink] = []
     for item in items:
-        generation = re.fullmatch(
-            r"gen\s*([1-6])\s*x\s*(\d+)", item, re.IGNORECASE
-        )
+        generation = re.fullmatch(r"gen\s*([1-6])\s*x\s*(\d+)", item, re.IGNORECASE)
         numeric = re.fullmatch(
             r"(\d+(?:\.\d+)?)\s*(?:gt/s)?\s*x\s*(\d+)", item, re.IGNORECASE
         )
@@ -268,8 +294,7 @@ def parse_expected_pcie_links(value: str | None, count: int) -> list[PcieLink]:
             width = int(numeric.group(2))
         else:
             raise ValueError(
-                "R9V_EXPECTED_PCIE_LINKS values must look like "
-                "Gen5x16 or 32x16"
+                "R9V_EXPECTED_PCIE_LINKS values must look like Gen5x16 or 32x16"
             )
         if width not in {1, 2, 4, 8, 12, 16, 32}:
             raise ValueError(
@@ -309,11 +334,30 @@ def pcie_payload_gbps(speed_gts: float, width: int) -> float:
     return speed_gts * width * encoding_efficiency / 8.0
 
 
+def _pcie_capacity(node: Path) -> tuple[float, int]:
+    speed = _read_first_float(node / "max_link_speed")
+    if speed is None:
+        speed = _read_first_float(node / "current_link_speed")
+    width = _read_first_int(node / "current_link_width")
+    # Maximum width describes the device, not its slot allocation or training.
+    # An unavailable/zero negotiated width must not certify a wider link.
+    if speed is None or width is None:
+        raise ValueError(
+            f"PCIe hop {node.name} lacks a complete positive speed/width capacity pair; "
+            "negotiated current_link_width is required"
+        )
+    if speed <= 0 or width <= 0:
+        raise ValueError(
+            f"PCIe hop {node.name} reports a non-positive speed/width capacity pair"
+        )
+    return speed, width
+
+
 def pcie_upstream_links(sys_root: Path, bdf: str) -> list[tuple[str, float, int]]:
     """Capacity links of every bridge between the device and the root port.
 
-    Maximum speed avoids idle power-state downshifts. Negotiated width detects
-    lane allocation or degraded training; maximum width is only its fallback.
+    Maximum speed avoids idle power-state downshifts. Negotiated width is
+    required to identify lane allocation or degraded training.
     """
     try:
         device = (sys_root / "bus/pci/devices" / bdf).resolve()
@@ -321,9 +365,7 @@ def pcie_upstream_links(sys_root: Path, bdf: str) -> list[tuple[str, float, int]
         return []
     links: list[tuple[str, float, int]] = []
     for node in device.parents:
-        if not re.fullmatch(
-            r"[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-7]", node.name
-        ):
+        if not re.fullmatch(r"[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-7]", node.name):
             continue
         max_speed = _read_first_float(node / "max_link_speed")
         current_speed = _read_first_float(node / "current_link_speed")
@@ -334,20 +376,7 @@ def pcie_upstream_links(sys_root: Path, bdf: str) -> list[tuple[str, float, int]
             for value in (max_speed, current_speed, current_width, max_width)
         ):
             continue
-        speed = max_speed
-        width = current_width
-        if speed is None:
-            speed = current_speed
-        if width is None:
-            width = max_width
-        if speed is None or width is None:
-            raise ValueError(
-                f"PCIe hop {node.name} lacks a complete positive speed/width capacity pair"
-            )
-        if speed <= 0 or width <= 0:
-            raise ValueError(
-                f"PCIe hop {node.name} reports a non-positive speed/width capacity pair"
-            )
+        speed, width = _pcie_capacity(node)
         links.append((node.name, speed, width))
     return links
 
@@ -426,9 +455,7 @@ def _selected_gpus(
         )
         return []
     by_bdf = {gpu.bdf: gpu for gpu in inventory}
-    by_uuid = {
-        gpu.uuid.lower(): gpu for gpu in inventory if gpu.uuid is not None
-    }
+    by_uuid = {gpu.uuid.lower(): gpu for gpu in inventory if gpu.uuid is not None}
     default_visible = ",".join(str(index) for index in range(expected_count))
     visible = _csv(os.environ.get("R9V_VISIBLE_DEVICES", default_visible))
     if len(visible) != expected_count:
@@ -455,6 +482,11 @@ def _selected_gpus(
             os.environ.get("R9V_MIN_PCIE_BANDWIDTH_GBPS"),
             expected_count,
             "R9V_MIN_PCIE_BANDWIDTH_GBPS",
+        )
+        reference_bandwidth = _csv_float(
+            os.environ.get("R9V_REFERENCE_PCIE_BANDWIDTH_GBPS"),
+            expected_count,
+            "R9V_REFERENCE_PCIE_BANDWIDTH_GBPS",
         )
         expected_links = parse_expected_pcie_links(
             os.environ.get("R9V_EXPECTED_PCIE_LINKS"), expected_count
@@ -515,21 +547,15 @@ def _selected_gpus(
         pci = sys_root / "bus/pci/devices" / gpu.bdf
         current_speed = _read_first_float(pci / "current_link_speed")
         current_width = _read_first_int(pci / "current_link_width")
-        speed = _read_first_float(pci / "max_link_speed") or current_speed
-        width = current_width or _read_first_int(pci / "max_link_width")
+        speed: float | None = None
+        width: int | None = None
         bandwidth: float | None = None
         capping_hop: tuple[str, float, int] | None = None
         path_error: str | None = None
-        if speed is None or width is None:
-            path_error = (
-                f"PCIe endpoint {gpu.bdf} lacks a complete positive "
-                "speed/width capacity pair"
-            )
-        elif speed <= 0 or width <= 0:
-            path_error = (
-                f"PCIe endpoint {gpu.bdf} reports a non-positive "
-                "speed/width capacity pair"
-            )
+        try:
+            speed, width = _pcie_capacity(pci)
+        except ValueError as error:
+            path_error = str(error)
         else:
             bandwidth = pcie_payload_gbps(speed, width)
             try:
@@ -566,6 +592,12 @@ def _selected_gpus(
                 amd_smi_index=gpu.index,
                 bdf=gpu.bdf,
                 uuid=gpu.uuid,
+            )
+        if hip_index is not None and gpu.index != hip_index:
+            reporter.warn(
+                "runtime-inventory-order",
+                f"HIP index {hip_index} and AMD-SMI display index {gpu.index} refer to the same BDF {gpu.bdf}; index order differs",
+                "Verify actual HIP BDFs inside the serving container. The pinned vLLM ROCm platform still uses numeric AMD-SMI handle lookup for some properties.",
             )
         if expected_bdfs and gpu.bdf != expected_bdfs[rank]:
             reporter.fail(
@@ -609,7 +641,8 @@ def _selected_gpus(
                     f"rank {rank} {gpu.bdf}: endpoint {speed:g} GT/s x{width}, "
                     f"path capped by upstream hop {capping_hop[0]} at "
                     f"{capping_hop[1]:g} GT/s x{capping_hop[2]}, "
-                    f"~{bandwidth:.2f} GB/s payload"
+                    f"~{bandwidth:.2f} GB/s payload; current endpoint "
+                    f"{current_endpoint}"
                 )
             if minimum and bandwidth + 1e-9 < minimum:
                 reporter.fail(
@@ -627,6 +660,12 @@ def _selected_gpus(
                     message,
                     minimum_gbps=minimum,
                     capping_hop=capping_hop[0] if capping_hop else None,
+                )
+            if reference_bandwidth and bandwidth < reference_bandwidth[rank]:
+                reporter.warn(
+                    "pcie-performance",
+                    f"rank {rank}: path capacity {bandwidth:.2f} GB/s is below the reference {reference_bandwidth[rank]:g} GB/s",
+                    "This is a performance qualification difference, not evidence of an invalid device. Benchmark cold-expert traffic and adjust request deadlines.",
                 )
             if expected_links:
                 expected = expected_links[rank]
@@ -652,13 +691,16 @@ def _selected_gpus(
                 else:
                     reporter.passed(
                         "pcie-link-expectation",
-                        f"rank {rank} {gpu.bdf} matches "
-                        f"{expected.config_value()}",
+                        f"rank {rank} {gpu.bdf} matches {expected.config_value()}",
                         expected_speed_gts=expected.speed_gts,
                         expected_width=expected.width,
                     )
-        path_speed = capping_hop[1] if capping_hop else speed
-        path_width = capping_hop[2] if capping_hop else width
+        # Do not suggest an exact topology lock when an upstream hop failed.
+        path_speed = None
+        path_width = None
+        if bandwidth is not None:
+            path_speed = capping_hop[1] if capping_hop else speed
+            path_width = capping_hop[2] if capping_hop else width
         selected.append((rank, gpu, path_speed, path_width, bandwidth))
 
     if not expected_bdfs and len(selected) == expected_count:
@@ -667,15 +709,12 @@ def _selected_gpus(
             "gpu-order-lock",
             "device order is detected but not locked; set "
             f"R9V_EXPECTED_GPU_BDFS={value} after confirming the ranks",
-            f"Add `: \"${{R9V_EXPECTED_GPU_BDFS:={value}}}\"` to R9V_CONFIG_FILE.",
+            f'Add `: "${{R9V_EXPECTED_GPU_BDFS:={value}}}"` to R9V_CONFIG_FILE.',
         )
     elif (
         expected_bdfs
         and len(selected) == expected_count
-        and all(
-            gpu.bdf == expected_bdfs[rank]
-            for rank, gpu, _, _, _ in selected
-        )
+        and all(gpu.bdf == expected_bdfs[rank] for rank, gpu, _, _, _ in selected)
     ):
         reporter.passed("gpu-order-lock", "configured BDF order matches selected ranks")
     if not expected_links and len(selected) == expected_count:
@@ -690,14 +729,16 @@ def _selected_gpus(
                 "pcie-link-lock",
                 "PCIe path capacities are detected but not locked; set "
                 f"R9V_EXPECTED_PCIE_LINKS={value} after confirming the topology",
-                f"Add `: \"${{R9V_EXPECTED_PCIE_LINKS:={value}}}\"` to "
+                f'Add `: "${{R9V_EXPECTED_PCIE_LINKS:={value}}}"` to '
                 "R9V_CONFIG_FILE. This records the intended links; it does "
                 "not change PCIe negotiation.",
             )
     return selected
 
 
-def _check_host_memory(reporter: Reporter, proc_root: Path) -> None:
+def _check_host_memory(
+    reporter: Reporter, proc_root: Path, *, runtime: bool = False
+) -> None:
     values = _meminfo(proc_root)
     total = values.get("MemTotal")
     available = values.get("MemAvailable")
@@ -735,7 +776,7 @@ def _check_host_memory(reporter: Reporter, proc_root: Path) -> None:
             "Use a host with more RAM, or lower R9V_MIN_HOST_RAM_BYTES only "
             "after validating startup and PLE behavior.",
         )
-    elif minimum_available and available < minimum_available:
+    elif not runtime and minimum_available and available < minimum_available:
         reporter.fail(
             "host-memory",
             f"{message}; available is below configured minimum",
@@ -831,9 +872,9 @@ def _check_ple_hash(reporter: Reporter, path: Path, requested: bool) -> None:
 def _check_ple_storage(reporter: Reporter, hash_ple: bool = False) -> None:
     raw_path = os.environ.get("R9V_PLE_PATH")
     if not raw_path:
-        reporter.warn(
+        reporter.fail(
             "ple-path",
-            "R9V_PLE_PATH is not set; storage and payload checks were skipped",
+            "R9V_PLE_PATH is not set; required payload cannot be verified",
             "Set R9V_PLE_PATH to the file produced by tools/prepare_ple.py, then rerun the doctor.",
         )
         return
@@ -897,9 +938,7 @@ def _check_ple_storage(reporter: Reporter, hash_ple: bool = False) -> None:
             "qualify this storage manually.",
         )
         return
-    block = _run(
-        ["lsblk", "-s", "-J", "-o", "NAME,PATH,TYPE,ROTA,TRAN", source]
-    )
+    block = _run(["lsblk", "-s", "-J", "-o", "NAME,PATH,TYPE,ROTA,TRAN", source])
     if block.returncode != 0:
         reporter.warn(
             "ple-storage",
@@ -917,15 +956,15 @@ def _check_ple_storage(reporter: Reporter, hash_ple: bool = False) -> None:
         )
         return
     disks_by_path = {
-        str(node.get("path")): node
-        for node in nodes
-        if node.get("type") == "disk"
+        str(node.get("path")): node for node in nodes if node.get("type") == "disk"
     }
     disks = list(disks_by_path.values())
-    media = ", ".join(
-        f"{node.get('path')}:{node.get('tran') or 'unknown'}"
-        for node in disks
-    ) or "unknown"
+    media = (
+        ", ".join(
+            f"{node.get('path')}:{node.get('tran') or 'unknown'}" for node in disks
+        )
+        or "unknown"
+    )
     rotating = _any_rotational(disks)
     try:
         require_nonrotational = _parse_bool(
@@ -1011,10 +1050,61 @@ def _check_profile_policy(
             "cache-policy",
             f"slots={slots} ranks={sorted(cache_ranks)} policy={cache_policy}",
         )
-    reporter.passed(
-        "decode-policy",
-        f"MoE={variant}, MTP depth={mtp_tokens}, PLE={ple_mode}",
-    )
+    invalid = []
+    if os.environ.get("R9V_TENSOR_PARALLEL_SIZE", str(expected_count)) != str(
+        expected_count
+    ):
+        invalid.append(
+            f"tensor parallel size must match the {expected_count} selected profile ranks"
+        )
+    if variant.lower() not in {
+        "generic",
+        "auto",
+        "u2",
+        "u5",
+        "u10",
+        "reuse3",
+        "reuse3v2",
+    }:
+        invalid.append(f"unknown MoE variant {variant!r}")
+    if ple_mode not in {"ssd", "bounded", "pinned"}:
+        invalid.append(f"unknown PLE residency {ple_mode!r}")
+    if os.environ.get("R9V_TIERED_PREFILL_GROUP_SIZE", "16") not in {
+        "0",
+        "4",
+        "8",
+        "16",
+    }:
+        invalid.append("prefill group size must be 0,4,8,16")
+    async_cache = os.environ.get("R9V_TIERED_EXPERT_CACHE_ASYNC", "0")
+    if async_cache not in {"0", "1"}:
+        invalid.append("async cache must be 0 or 1")
+    if cache_policy is not None and cache_policy not in {"lru", "second_touch_rr"}:
+        invalid.append("unknown expert cache policy")
+    if slots and async_cache == "1" and cache_policy == "lru":
+        invalid.append("LRU cache does not support asynchronous fills")
+    for key in ("R9V_R4D", "R9V_R4D_AR", "R9V_R4D_GDN", "R9V_R4D_AR_QUANT"):
+        if os.environ.get(key, "0") != "0":
+            invalid.append(f"{key} must remain disabled")
+    if invalid:
+        reporter.fail(
+            "decode-policy",
+            "; ".join(invalid),
+            "Correct unsupported runtime settings before launch.",
+        )
+    else:
+        reporter.passed(
+            "decode-policy",
+            f"MoE={variant}, MTP depth={mtp_tokens}, PLE={ple_mode}; enum checks only",
+        )
+    if os.environ.get("R9V_MAX_NUM_SEQS", "1") != "1" or (
+        mtp_tokens is not None and mtp_tokens != "2"
+    ):
+        reporter.warn(
+            "workload-envelope",
+            "concurrency or MTP depth differs from the one-sequence/MTP2 reference",
+            "Requalify graph shapes, temporary memory and correctness; changing hot counts does not make this workload fit automatically.",
+        )
     bandwidths = [item[4] for item in selected]
     if (
         slots
@@ -1032,7 +1122,15 @@ def _check_profile_policy(
             )
 
 
-def _check_manifest_budget(reporter: Reporter, expected_count: int) -> None:
+def _check_manifest_budget(
+    reporter: Reporter,
+    expected_count: int,
+    *,
+    selected=(),
+    sys_root: Path = Path("/sys"),
+    proc_root: Path = Path("/proc"),
+    runtime: bool = False,
+) -> None:
     model_dir = os.environ.get("R9V_MODEL_DIR")
     if not model_dir or expected_count < 2:
         return
@@ -1040,7 +1138,14 @@ def _check_manifest_budget(reporter: Reporter, expected_count: int) -> None:
         "R9V_MANIFEST_REL",
         "manifests/hot-manifest-q4-vision-128k-multiprompt-r1-lru16-neutral.json",
     )
-    path = Path(model_dir).expanduser().resolve() / relative
+    path = (
+        Path(
+            os.environ.get("R9V_EXPERT_MANIFEST_PATH")
+            or str(Path(model_dir).expanduser().resolve() / relative)
+        )
+        .expanduser()
+        .resolve()
+    )
     if not path.is_file():
         reporter.fail(
             "expert-manifest",
@@ -1051,19 +1156,24 @@ def _check_manifest_budget(reporter: Reporter, expected_count: int) -> None:
         return
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-        ranks = data["ranks"]
-        hot = [int(ranks[str(rank)]["hot_count"]) for rank in range(expected_count)]
         slots = int(os.environ.get("R9V_TIERED_EXPERT_CACHE_SLOTS", "0"))
         cache_ranks = {
             int(value)
             for value in _csv(os.environ.get("R9V_TIERED_EXPERT_CACHE_RANKS"))
         }
+        async_value = os.environ.get("R9V_TIERED_EXPERT_CACHE_ASYNC", "0")
+        if async_value not in {"0", "1"}:
+            raise ValueError("R9V_TIERED_EXPERT_CACHE_ASYNC must be 0 or 1")
+        budgets = expert_memory(data, slots, cache_ranks, async_value == "1")
+        hot = [max(budget["hot_counts_by_layer"]) for budget in budgets]
         maximum = _csv_float(
             os.environ.get("R9V_MAX_EFFECTIVE_EXPERTS_PER_RANK"),
             expected_count,
             "R9V_MAX_EFFECTIVE_EXPERTS_PER_RANK",
         )
-    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+        if any(not value.is_integer() for value in maximum):
+            raise ValueError("expert-count ceilings must be integers")
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
         reporter.fail(
             "expert-manifest",
             f"cannot validate {path}: {error}",
@@ -1071,8 +1181,7 @@ def _check_manifest_budget(reporter: Reporter, expected_count: int) -> None:
         )
         return
     effective = [
-        count + (slots if rank in cache_ranks else 0)
-        for rank, count in enumerate(hot)
+        count + budgets[rank]["cache_physical_slots"] for rank, count in enumerate(hot)
     ]
     if maximum and any(
         effective[rank] > maximum[rank] for rank in range(expected_count)
@@ -1090,18 +1199,86 @@ def _check_manifest_budget(reporter: Reporter, expected_count: int) -> None:
     else:
         reporter.passed(
             "expert-budget",
-            f"static experts={hot}; static+cache={effective}",
+            f"maximum per-layer static experts={hot}; static+physical cache={effective}; count ceilings only, total VRAM fit is unproven",
             manifest=str(path),
             maximum=maximum or None,
         )
+
+    reporter.note(
+        "expert-memory",
+        "Packed expert bytes for the pinned IQ4_XS/TP2 target; excludes other weights, workspaces, graph pools and allocator overhead",
+        ranks=budgets,
+    )
+    try:
+        margins = headroom_bytes(
+            os.environ.get("R9V_MIN_FREE_VRAM_GIB_BY_RANK", "3,3"), expected_count
+        )
+        kv = _parse_bytes(
+            os.environ.get("R9V_KV_CACHE_MEMORY_BYTES"), "R9V_KV_CACHE_MEMORY_BYTES"
+        )
+    except ValueError as error:
+        reporter.fail(
+            "vram-budget-policy",
+            str(error),
+            "Correct the byte count or per-rank GiB values.",
+        )
+        return
+    if kv:
+        reporter.warn(
+            "manual-kv-budget",
+            f"fixed KV allocation is {kv / 1024**3:.3f} GiB per rank; this bypasses vLLM's normal available-memory sizing",
+            "Qualify peak memory with the exact context, prefill batch, MTP, image size and graph settings. Changing gpu_memory_utilization alone does not cap this configuration.",
+        )
+    for rank, gpu, *_ in selected:
+        total = _read_first_int(
+            sys_root / "bus/pci/devices" / gpu.bdf / "mem_info_vram_total"
+        )
+        used = _read_first_int(
+            sys_root / "bus/pci/devices" / gpu.bdf / "mem_info_vram_used"
+        )
+        if total is None or used is None or runtime:
+            continue
+        budget = budgets[rank]
+        floor = (
+            budget["static_packed_bytes"]
+            + budget["cache_packed_bytes"]
+            + kv
+            + margins[rank]
+        )
+        if floor > total - used:
+            reporter.fail(
+                "vram-budget-floor",
+                f"rank {rank}: experts + KV + requested free margin already need {floor / 1024**3:.2f} GiB, but only {(total - used) / 1024**3:.2f} GiB is free before launch",
+                "Reduce hot residency/cache use or free other GPU allocations; dense/MTP/vision weights and temporary allocations still need additional space.",
+            )
+        else:
+            reporter.note(
+                "vram-budget-unallocated",
+                f"rank {rank}: {(total - used - floor) / 1024**3:.2f} GiB remains for dense/MTP/vision weights, graphs, workspaces and allocator overhead after experts, KV and requested margin; fit is not certified",
+            )
+    pinned = sum(b["cold_pinned_packed_bytes"] for b in budgets)
+    if os.environ.get("R9V_PLE_RESIDENCY_MODE", "ssd") == "pinned":
+        pinned += PLE_EXPECTED_BYTES
+    available = _meminfo(proc_root).get("MemAvailable")
+    if not runtime and available is not None and available < pinned:
+        reporter.fail(
+            "pinned-host-floor",
+            f"cold experts and pinned PLE alone need {pinned / 1024**3:.2f} GiB; only {available / 1024**3:.2f} GiB host RAM is available",
+            "Free RAM or change residency. Moving more hot experts to host memory increases this requirement; swap cannot replace pinned RAM.",
+        )
+    reporter.note(
+        "expert-host-memory",
+        f"cold experts plus pinned PLE: {pinned / 1024**3:.2f} GiB; full pageable expert masters during load: {sum(b['full_pageable_master_bytes'] for b in budgets) / 1024**3:.2f} GiB",
+        note="These are components at different loading phases, not a measured peak or complete host budget. PLE is not counted twice from GGUF file size.",
+    )
 
 
 def _check_model_package(reporter: Reporter, repo_root: Path, profile_id: str) -> None:
     model_dir = os.environ.get("R9V_MODEL_DIR")
     if not model_dir:
-        reporter.warn(
+        reporter.fail(
             "model-package",
-            "R9V_MODEL_DIR is not set; package verification skipped",
+            "R9V_MODEL_DIR is not set; required package cannot be verified",
             "Pass --model-dir or export R9V_MODEL_DIR after fetching the package.",
         )
         return
@@ -1126,19 +1303,31 @@ def _check_model_package(reporter: Reporter, repo_root: Path, profile_id: str) -
         )
 
 
-def _docker_environment(container: str) -> tuple[str | None, dict[str, str], str | None]:
+def _docker_environment(
+    container: str,
+) -> tuple[str | None, dict[str, str], str | None, dict[str, Any]]:
     result = _run(["docker", "inspect", container])
     if result.returncode != 0:
-        return None, {}, None
+        return None, {}, None, {}
     try:
         info = json.loads(result.stdout)[0]
         values = info.get("Config", {}).get("Env", [])
         env = dict(value.split("=", maxsplit=1) for value in values if "=" in value)
-        state = info.get("State", {}).get("Status")
+        state = info.get("State", {})
         image = info.get("Image")
-        return state, env, image
+        # Preserve only lifecycle evidence, not the full inspect payload or
+        # container environment, in the support report.
+        lifecycle = {
+            "exit_code": state.get("ExitCode"),
+            "oom_killed": state.get("OOMKilled"),
+            "error": state.get("Error"),
+            "started_at": state.get("StartedAt"),
+            "finished_at": state.get("FinishedAt"),
+            "restart_count": info.get("RestartCount"),
+        }
+        return state.get("Status"), env, image, lifecycle
     except (IndexError, KeyError, ValueError, json.JSONDecodeError):
-        return None, {}, None
+        return None, {}, None, {}
 
 
 def _fetch_metrics(port: str) -> str | None:
@@ -1151,9 +1340,67 @@ def _fetch_metrics(port: str) -> str | None:
         return None
 
 
+def _check_runtime_identity(reporter: Reporter, selected) -> None:
+    if not selected:
+        reporter.warn(
+            "runtime-hip-identity",
+            "no validated host rank mapping is available",
+            "Resolve host GPU selection first.",
+        )
+        return
+    container = os.environ.get("R9V_CONTAINER_NAME", "r9v-qwen38-flash-next")
+    probe = """import ctypes, json
+hip = ctypes.CDLL('libamdhip64.so')
+hip.hipGetDeviceCount.argtypes = [ctypes.POINTER(ctypes.c_int)]
+hip.hipGetDeviceCount.restype = ctypes.c_int
+hip.hipDeviceGetPCIBusId.argtypes = [ctypes.c_char_p, ctypes.c_int, ctypes.c_int]
+hip.hipDeviceGetPCIBusId.restype = ctypes.c_int
+count = ctypes.c_int()
+def check(code):
+    if code: raise RuntimeError('HIP error ' + str(code))
+check(hip.hipGetDeviceCount(ctypes.byref(count)))
+addresses = []
+for rank in range(count.value):
+    buffer = ctypes.create_string_buffer(32)
+    check(hip.hipDeviceGetPCIBusId(buffer, len(buffer), rank))
+    addresses.append(buffer.value.decode())
+print(json.dumps(addresses))
+"""
+    result = _run(["docker", "exec", container, "python3", "-c", probe], timeout=20)
+    try:
+        actual = json.loads(result.stdout) if result.returncode == 0 else None
+        if not isinstance(actual, list) or not all(
+            isinstance(value, str) for value in actual
+        ):
+            raise ValueError("HIP BDF list unavailable")
+        actual = [_normalize_bdf(value) for value in actual]
+    except (ValueError, TypeError):
+        reporter.warn(
+            "runtime-hip-identity",
+            "cannot query HIP-visible PCI addresses inside the container",
+            "Check the running container and HIP library; host-side KFD inference is not runtime proof.",
+        )
+        return
+    expected = [gpu.bdf for _, gpu, *_ in selected]
+    if actual != expected:
+        reporter.fail(
+            "runtime-hip-identity",
+            f"HIP-visible BDF order {actual} differs from selected host order {expected}",
+            "Correct visibility masks and rank order before serving; do not use numeric AMD-SMI indices as HIP indices.",
+            actual=actual,
+            expected=expected,
+        )
+    else:
+        reporter.passed(
+            "runtime-hip-identity",
+            f"container HIP visibility resolves to {actual}",
+            note="This checks a fresh process in the container, not the identity of already-running worker processes; workers still need startup identity records.",
+        )
+
+
 def _check_runtime(reporter: Reporter, expected_count: int) -> None:
     container = os.environ.get("R9V_CONTAINER_NAME", "r9v-qwen38-flash-next")
-    state, actual, image = _docker_environment(container)
+    state, actual, image, lifecycle = _docker_environment(container)
     if state is None:
         reporter.fail(
             "runtime-container",
@@ -1164,23 +1411,53 @@ def _check_runtime(reporter: Reporter, expected_count: int) -> None:
     if state != "running":
         reporter.fail(
             "runtime-container",
-            f"container {container!r} is {state}",
-            f"Inspect `docker logs {container}`, fix startup, then recreate the container.",
+            f"container {container!r} is {state}; "
+            f"exit code={lifecycle.get('exit_code')}, "
+            f"OOMKilled={lifecycle.get('oom_killed')}",
+            f"Save `docker inspect {container}` and `docker logs --timestamps "
+            f"{container}` before removing or recreating it. Correlate its "
+            "exit time with host kernel logs; exit code 137 alone does not prove OOM.",
+            image=image,
+            **lifecycle,
         )
         return
-    reporter.passed("runtime-container", f"{container} is running", image=image)
+    reporter.passed(
+        "runtime-container", f"{container} is running", image=image, **lifecycle
+    )
+    check_container_limits(reporter, _run, container)
+    check_runtime_arguments(reporter, _run, container)
     expected = {
         "HIP_VISIBLE_DEVICES": os.environ.get("R9V_VISIBLE_DEVICES", "0,1"),
         "QWEN38_TIERED_IQ_MOE_VARIANT": os.environ.get("R9V_TIERED_IQ_MOE_VARIANT"),
-        "QWEN38_TIERED_PREFILL_GROUP_SIZE": os.environ.get("R9V_TIERED_PREFILL_GROUP_SIZE"),
-        "QWEN38_TIERED_EXPERT_CACHE_SLOTS": os.environ.get("R9V_TIERED_EXPERT_CACHE_SLOTS"),
-        "QWEN38_TIERED_EXPERT_CACHE_RANKS": os.environ.get("R9V_TIERED_EXPERT_CACHE_RANKS"),
-        "QWEN38_TIERED_EXPERT_CACHE_POLICY": os.environ.get("R9V_TIERED_EXPERT_CACHE_POLICY"),
+        "QWEN38_TIERED_PREFILL_GROUP_SIZE": os.environ.get(
+            "R9V_TIERED_PREFILL_GROUP_SIZE"
+        ),
+        "QWEN38_TIERED_EXPERT_CACHE_SLOTS": os.environ.get(
+            "R9V_TIERED_EXPERT_CACHE_SLOTS"
+        ),
+        "QWEN38_TIERED_EXPERT_CACHE_RANKS": os.environ.get(
+            "R9V_TIERED_EXPERT_CACHE_RANKS"
+        ),
+        "QWEN38_TIERED_EXPERT_CACHE_POLICY": os.environ.get(
+            "R9V_TIERED_EXPERT_CACHE_POLICY"
+        ),
         "VLLM_PLE_RESIDENCY_MODE": os.environ.get("R9V_PLE_RESIDENCY_MODE"),
         "VLLM_PLE_WORKER_TIMING": os.environ.get("R9V_PLE_WORKER_TIMING"),
         "RADIANCE_USE_R4D": "0",
         "RADIANCE_USE_R4D_AR": "0",
     }
+    if os.environ.get("R9V_EXPERT_MANIFEST_PATH"):
+        expected["RADIANCE_TIERED_EXPERT_MANIFEST"] = "/placement/experts.json"
+    if os.environ.get("R9V_TIERED_EXPERT_CACHE_ASYNC") is not None:
+        expected["QWEN38_TIERED_EXPERT_CACHE_ASYNC"] = os.environ[
+            "R9V_TIERED_EXPERT_CACHE_ASYNC"
+        ]
+    if os.environ.get("R9V_CPU_OFFLOAD_GB_BY_DEVICE") is not None:
+        expected["RADIANCE_CPU_OFFLOAD_GB_BY_DEVICE"] = os.environ[
+            "R9V_CPU_OFFLOAD_GB_BY_DEVICE"
+        ]
+    if actual.get("ROCR_VISIBLE_DEVICES") is not None:
+        expected["ROCR_VISIBLE_DEVICES"] = expected["HIP_VISIBLE_DEVICES"]
     mismatches = {
         key: {"expected": value, "actual": actual.get(key)}
         for key, value in expected.items()
@@ -1200,7 +1477,9 @@ def _check_runtime(reporter: Reporter, expected_count: int) -> None:
             mismatches=mismatches,
         )
     else:
-        reporter.passed("runtime-environment", "critical container settings match the profile")
+        reporter.passed(
+            "runtime-environment", "critical container settings match the profile"
+        )
 
     logs_result = _run(["docker", "logs", "--tail", "4000", container], timeout=20.0)
     logs = logs_result.stdout + logs_result.stderr
@@ -1210,12 +1489,14 @@ def _check_runtime(reporter: Reporter, expected_count: int) -> None:
     }
     expected_ranks = set(range(expected_count))
     if ready_ranks == expected_ranks:
-        reporter.passed("tiered-experts", f"materialized on TP ranks {sorted(ready_ranks)}")
+        reporter.passed(
+            "tiered-experts", f"materialized on TP ranks {sorted(ready_ranks)}"
+        )
     else:
-        reporter.fail(
+        reporter.warn(
             "tiered-experts",
-            f"startup logs show ranks {sorted(ready_ranks)}, expected {sorted(expected_ranks)}",
-            "Inspect startup logs for manifest/materialization errors; verify "
+            f"recent logs show startup ranks {sorted(ready_ranks)}, expected {sorted(expected_ranks)}; older markers may have rotated out",
+            "Inspect saved startup logs for manifest/materialization evidence; verify "
             "the package, rank order, cache settings, and rebuilt image "
             "before relaunching.",
         )
@@ -1223,9 +1504,9 @@ def _check_runtime(reporter: Reporter, expected_count: int) -> None:
     if f"Using tiered IQ MoE exact-shape variant {variant}" in logs:
         reporter.passed("decode-kernel", f"startup selected exact variant {variant}")
     else:
-        reporter.fail(
+        reporter.warn(
             "decode-kernel",
-            f"no startup proof that variant {variant} was selected",
+            f"no retained startup proof that variant {variant} was selected; recent logs alone cannot establish a mismatch",
             "Verify the container uses the current R9V image and kernel SO, "
             "then rebuild/relaunch with "
             "R9V_TIERED_IQ_MOE_VARIANT=reuse3v2.",
@@ -1304,6 +1585,8 @@ def _check_runtime(reporter: Reporter, expected_count: int) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--host-only", action="store_true",
+                        help="check hardware before downloading assets")
     parser.add_argument(
         "--runtime",
         action="store_true",
@@ -1317,7 +1600,9 @@ def build_parser() -> argparse.ArgumentParser:
             "reads the whole ~26.8 GiB file and takes minutes"
         ),
     )
-    parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    parser.add_argument(
+        "--json", action="store_true", help="emit machine-readable JSON"
+    )
     parser.add_argument(
         "--strict",
         action="store_true",
@@ -1328,6 +1613,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.host_only and (args.runtime or args.hash_ple):
+        raise SystemExit("--host-only cannot be combined with --runtime or --hash-ple")
     reporter = Reporter()
     repo_root = Path(
         os.environ.get("R9V_REPO_ROOT", Path(__file__).resolve().parents[1])
@@ -1367,7 +1654,7 @@ def main(argv: list[str] | None = None) -> int:
                 "Load/install the ROCm amdgpu/KFD driver and verify device permissions.",
             )
 
-    if profile_id.startswith("qwen38-flash-next/"):
+    if not args.host_only and profile_id.startswith("qwen38-flash-next/") and os.environ.get("R9V_RUNTIME_PREBUILT") != "1":
         for relative in (
             "vendor/vllm/docker/Dockerfile.r9v_rocm714",
             "vendor/vllm-gguf-plugin/setup.py",
@@ -1384,13 +1671,28 @@ def main(argv: list[str] | None = None) -> int:
                 )
 
     selected = _selected_gpus(reporter, expected_count, sys_root)
-    _check_host_memory(reporter, proc_root)
+    if profile_id.startswith("qwen38-flash-next/"):
+        check_resources(
+            reporter, selected, repo_root, sys_root, proc_root, args.runtime
+        )
+    _check_host_memory(reporter, proc_root, runtime=args.runtime)
     _check_profile_policy(reporter, expected_count, selected)
-    _check_manifest_budget(reporter, expected_count)
-    _check_ple_storage(reporter, args.hash_ple)
-    _check_model_package(reporter, repo_root, profile_id)
+    if not args.host_only:
+        _check_manifest_budget(
+            reporter,
+            expected_count,
+            selected=selected,
+            sys_root=sys_root,
+            proc_root=proc_root,
+            runtime=args.runtime,
+        )
+        _check_ple_storage(reporter, args.hash_ple)
+        _check_model_package(reporter, repo_root, profile_id)
+    else:
+        reporter.note("setup-assets", "Model, placement and PLE checks pending installation")
     if args.runtime:
         _check_runtime(reporter, expected_count)
+        _check_runtime_identity(reporter, selected)
 
     counts = reporter.counts()
     strict = args.strict
@@ -1423,7 +1725,9 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"     FIX: {check.remediation}")
         print(
             "SUMMARY "
-            + " ".join(f"{name}={counts[name]}" for name in ("PASS", "WARN", "FAIL", "NOTE"))
+            + " ".join(
+                f"{name}={counts[name]}" for name in ("PASS", "WARN", "FAIL", "NOTE")
+            )
         )
     if counts["FAIL"]:
         return 1

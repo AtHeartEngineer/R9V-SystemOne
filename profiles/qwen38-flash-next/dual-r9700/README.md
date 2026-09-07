@@ -161,6 +161,13 @@ use each hop's maximum speed and negotiated width for stable capacity because
 an idle PCIe link may temporarily downshift speed while lane allocation and
 degraded training remain significant. The report includes current state
 as a diagnostic but never mistakes the endpoint alone for the full topology.
+The negotiated width must be readable and positive at every link-bearing hop;
+the device's maximum width cannot substitute for unknown slot allocation.
+An incomplete path fails validation and produces no suggested PCIe lock.
+The capacity estimate is an upper bound, not proof of the negotiated speed
+under load: firmware speed caps or persistent downtraining can keep the
+current speed below the advertised maximum. Compare current and maximum
+values during the affected workload before interpreting a generation mismatch.
 
 ### `R9V_MIN_PCIE_BANDWIDTH_GBPS`
 
@@ -176,13 +183,13 @@ upstream switch or bifurcated link caps the real path.
 The published defaults are:
 
 ```bash
-: "${R9V_MIN_PCIE_BANDWIDTH_GBPS:=15,7}"
+: "${R9V_MIN_PCIE_BANDWIDTH_GBPS:=0,0}"
 ```
 
-They allow topology shapes different from the reference host when their
-payload capability is equivalent or better. This bandwidth floor is
-independent of the exact link lock: use the floor to express "fast enough"
-and the lock to express "the intended slot paths have the expected capacity." Inspect
+Hard performance floors are disabled by default. The separate 15,7 GB/s
+reference targets still warn on slower paths. Set nonzero hard floors only
+when you want to reject a slower topology. The exact link lock independently
+checks that the intended slot paths have the expected capacity. Inspect
 a card manually with:
 
 ```bash
@@ -364,15 +371,16 @@ Published value: `lru`. Other policies are not part of the release arm.
 
 ### `R9V_MAX_EFFECTIVE_EXPERTS_PER_RANK`
 
-VRAM safety ceiling for `manifest static count + configured cache slots` on
-each rank:
+Reference count ceiling for `maximum per-layer static count + physical cache
+slots` on each rank. This is not a complete VRAM budget:
 
 ```bash
 : "${R9V_MAX_EFFECTIVE_EXPERTS_PER_RANK:=329,385}"
 ```
 
-The doctor reads the actual selected manifest and rejects overcommit. Do not
-raise this value to silence a failure. Reduce cache slots or use a compatible
+The doctor validates the actual per-layer lists and rejects count-ceiling
+violations, then reports expert byte costs separately. Passing this check does
+not prove total VRAM fit. Do not raise the ceiling to silence a failure. Reduce cache slots or use a compatible
 manifest whose static count leaves enough VRAM. Changing static expert counts
 requires generating and qualifying a different manifest; it cannot be safely
 expressed by changing only an environment variable.
@@ -440,6 +448,8 @@ Static doctor verifies:
 Runtime doctor additionally verifies:
 
 - The selected container is running from a concrete image ID.
+- The JSON report retains its exit code, Docker `OOMKilled` flag, start/finish
+  timestamps, restart count, and runtime error, including for stopped containers.
 - Critical container environment values match the current profile/config.
 - Tiered experts materialized on both TP ranks.
 - The `reuse3v2` decode variant was selected.
@@ -456,6 +466,127 @@ The runtime report distinguishes two commonly confused cases:
   traffic or PLE random-I/O latency.
 
 ## Common corrections
+
+### Requests hang or the container fails after prolonged serving
+
+Run this on the affected host while using the server normally. It observes the
+existing container; it does not generate requests or restart anything:
+
+```bash
+r9v_support_dir="${XDG_STATE_HOME:-$HOME/.local/state}/r9v/support"
+mkdir -p "$r9v_support_dir"
+python3 tools/capture_runtime.py \
+  --container "${R9V_CONTAINER_NAME:-r9v-qwen38-flash-next}" \
+  --port "${R9V_HOST_PORT:-8004}" --duration 7200 --interval 30 \
+  --output "$r9v_support_dir/runtime-$(date -u +%Y%m%dT%H%M%SZ).jsonl"
+```
+
+The default two-hour capture is capped at 32 MiB and refuses to overwrite
+existing evidence. Keep the terminal open until it finishes, or interrupt
+with Ctrl-C to retain the samples collected so far. Each sample is flushed
+to disk and contains UTC time, container lifecycle/restart state, Docker
+memory/CPU/process counts, cgroup v2 memory and OOM counters when readable,
+host memory/swap pressure, selected aggregate request/token metrics, and
+current/maximum PCIe speed and width plus AER counters for each AMD GPU path.
+All GPU paths are identified by BDF; compare them with doctor's selected ranks.
+Docker and HTTP probes have time/output limits and record unavailable data.
+
+`possible_request_stall` means pending work showed no change in available
+token/completion counters for three minutes; a long prefill can also trigger
+it. An idle server is not classified as stalled. A Docker OOM flag is recorded
+separately from exit code 137. If the whole host freezes, the last flushed
+samples remain useful, but a truncated timeline alone cannot prove a host
+crash. The collector includes bounded timestamped server/kernel log windows and GPU
+VRAM, temperature, fan, and power readings where sysfs exposes them. It flags
+increases in host/cgroup OOM and uncorrectable PCIe counters against the first
+sample. It does not record API response bodies or full environments, but raw
+logs may contain private data: review them before sharing. Busy log windows
+can be truncated; truncation and inaccessible probes are explicit.
+
+### Container exited or a user reports a crash
+
+Collect evidence before removing or recreating the container:
+
+```bash
+./r9v support qwen38 --output /path/to/evidence/crash-20260907
+```
+
+Use a new directory each time. The bundle includes bounded server logs,
+current and previous boot kernel logs (when journal permissions and retention
+allow), container image/lifecycle, GPU/PCIe state, host/cgroup memory, metrics,
+and runtime versions. Probe errors are saved even if Docker or the server is
+unavailable. Collection is local and never uploads anything. Files are private
+by default; review raw logs before sharing. Each command has a 10-second,
+256-KiB bound. A truncated command keeps partial text and an explicit error.
+
+The launcher retains the stopped container and explicitly rotates Docker JSON
+logs across five 20-MiB files. It enables Python unbuffered output and fatal
+fault tracebacks. Removing the container deletes its Docker logs; collect the
+bundle first. A host reboot requires persistent journald storage to recover
+previous-boot kernel events. This is checked, not configured, by doctor.
+
+Include the failure's UTC timestamp, whether anyone stopped the container,
+the request shape/token counts, and host kernel logs covering that time.
+An exit code of 137 alone does not establish an OOM kill. A SIGTERM followed
+by forced worker cleanup records a shutdown sequence; it does not identify
+who initiated the stop or prove an inference crash. Correlate the container
+state with engine and kernel evidence before changing memory or kernel settings.
+
+### Repeatable soak testing
+
+Start with a ready server and run:
+
+```bash
+./r9v doctor qwen38 --runtime --json > /path/to/evidence/doctor-before.json
+./r9v soak qwen38 --duration 7200 --request-timeout 300 \
+  --output /path/to/evidence/soak-two-hours
+```
+
+The default sequential workload cycles short, medium, and long synthetic text
+prompts, then idles for five seconds. Every request changes its prefix to avoid
+reusing only cached prompts. `--prompt-repeats 8,128,2048` changes corpus sizes;
+these are repeat counts, not exact token lengths. Token usage is recorded from
+the server. `--idle-seconds 600` exercises longer idle/wake cycles. Use
+`--duration 28800` for eight hours and `86400` for 24 hours. The last in-flight
+request can extend the duration by at most `--request-timeout`, followed by
+bounded support collection. For long prefills, increase the timeout explicitly.
+
+`requests.jsonl` saves a durable record before and after each request;
+`timeline.jsonl` independently samples telemetry every ten seconds;
+`summary.json` records pass/fail/interruption; `support/` captures final crash
+evidence. A request timeout, HTTP failure, malformed/empty completion,
+container restart/exit, unavailable progress metrics, possible stall, new OOM,
+or new uncorrectable PCIe counter prevents a pass. Historical counters are
+retained without being called a new failure. At least one complete corpus-size
+cycle is required. Ctrl-C preserves evidence and returns failure/interrupted.
+
+A successful soak establishes liveness for this workload only. It does not
+verify semantic correctness, streaming/tool/vision paths, or exact 128K context.
+Run those qualification cases separately. A power loss may prevent a summary;
+the fsynced request and timeline records still identify the unfinished trial.
+Keep the terminal open, or use your service manager to run the command across
+terminal disconnects. The harness never restarts or removes the server.
+
+### Resource checks before declaring a host ready
+
+Doctor now fails when model or PLE paths are unset. It checks physical-card
+VRAM, warns about occupied VRAM before launch, cache storage, recorded PCIe
+errors, and absent measured RAM gates. Its byte accounting reports packed hot/cold/cache storage and the pageable
+loading-master component separately. It does not infer a host peak from target
+file sizes: the shards include file-backed PLE, and loading copies, MTP and
+page-cache behavior must be measured. Runtime
+checks also identify container memory/PID limits, memlock, automatic removal,
+and log retention. Missing startup markers in recent/rotated logs are warnings
+about missing evidence, not proof of a bad kernel selection.
+
+Use `--strict` for qualification once warnings are resolved or accounted for.
+A default doctor exit of zero means no hard failure; review WARN checks as well.
+Two cards and installed RAM alone do not prove sufficient free startup memory
+or a healthy PCIe path. Publish measured RAM minima only after clean startup
+and sustained trials on the smallest supported host.
+
+See [the ROCm 10.0 qualification plan](../../../docs/qualification/qwen38-rocm10-stability.md)
+for the upgrade and release gates.
 
 ### Similar machine, defaults work
 
@@ -519,3 +650,42 @@ cache slots, KV reservation, and display headroom all consume the same VRAM.
 `R9V_PREFLIGHT=0` bypasses automatic launch preflight and prints a warning.
 This exists for development recovery, not normal use. It does not make an
 incompatible configuration safe and forfeits support/qualification evidence.
+
+## Per-rank headroom and experimental smaller placements
+
+Set a desired physical free-memory margin in GiB, in TP-rank order:
+
+```bash
+export R9V_MIN_FREE_VRAM_GIB_BY_RANK=5,5
+```
+
+Doctor checks both cards and rejects an already-impossible expert + KV + margin
+budget. This setting is a check, **not automatic expert resizing** or a promise
+about future peak allocations. Default margins are 3 GiB on both ranks. Do not
+interpret passing count ceilings or an idle snapshot as total-memory admission.
+
+To derive a smaller manifest without editing the verified model package:
+
+```bash
+./r9v placement qwen38 --model-dir "$R9V_MODEL_DIR" \
+  --hot-counts 329,329 --output /path/to/new-experts.json
+export R9V_EXPERT_MANIFEST_PATH=/path/to/new-experts.json
+./r9v doctor qwen38 --model-dir "$R9V_MODEL_DIR"
+```
+
+The launcher mounts that external file read-only. With the existing rank-1
+LRU16 configuration, the example frees 2.165 GiB of packed GPU weights on rank 1
+and adds 2.165 GiB to pinned host RAM; rank 0 is unchanged. Cache settings remain
+separate. The tool only trims supplied priority prefixes, never overwrites a
+file, removes stale route statistics, and marks the result unqualified. It
+cannot grow the truncated source map or guarantee five free GiB on either card.
+Qualify correctness, memory peaks and throughput before choosing a new default.
+
+`R9V_MIN_PCIE_BANDWIDTH_GBPS` now defaults to `0,0`: a complete slower topology
+is not automatically an invalid setup. `R9V_REFERENCE_PCIE_BANDWIDTH_GBPS=15,7`
+still warns below reference performance. Set explicit hard floors if you want
+to reject slower links; exact BDF/link locks and invalid path detection remain.
+
+See [the hardware and headroom review](../../../docs/qualification/qwen38-headroom-design.md)
+for the full ranked-catalog/planner design, non-memory crash candidates and the
+remaining worker-level checks.

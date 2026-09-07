@@ -301,7 +301,12 @@ def build_parser() -> argparse.ArgumentParser:
     verify_parser.add_argument("profile", nargs="?")
 
     for action, help_text in (
+        ("setup", "prepare a resumable installation"),
+        ("start", "launch and wait for readiness"),
         ("doctor", "check profile prerequisites"),
+        ("support", "save local crash evidence"),
+        ("placement", "derive a smaller experimental expert placement"),
+        ("soak", "exercise a running profile with bounded requests"),
         ("fetch", "download and verify profile artifacts"),
         ("build", "build the selected runtime"),
         ("run", "launch the selected profile"),

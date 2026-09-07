@@ -325,3 +325,5 @@ The full rubric and scan record live in [`.sota/`](.sota/); the scan was
 produced with the [sota-scan](https://github.com/MerlijnW70/sota-scan)
 methodology plus a [DeepGit](https://github.com/zamalali/DeepGit)-style
 discovery pass.
+
+For the Qwen Flash Next profile, see the [resumable setup and bounded start flow](docs/installation.md#resumable-setup-qwen-flash-next). Prebuilt image selection is explicit until a qualified public digest is published.

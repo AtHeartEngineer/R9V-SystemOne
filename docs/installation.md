@@ -4,6 +4,68 @@ This page covers the dual-R9700 Qwen release candidate. The immutable model
 package is public and remotely hash-verified. The runtime is locally qualified;
 a clean-host package installation is the remaining release gate.
 
+## Resumable setup (Qwen Flash Next)
+
+The new setup flow automates artifact verification, PLE extraction, GPU PCI-address
+selection, machine configuration, and the final doctor check. **A qualified public
+runtime image has not been published yet.** Until its digest is in the runtime
+descriptor, select an existing local image explicitly:
+
+```bash
+./r9v setup qwen38 --model-dir /path/to/qwen38-r9v -- \
+  --image r9v-qwen38-flash-next:latest --local-image --accept-model-license
+./r9v start qwen38
+```
+
+For a supplied prebuilt release, replace the image options with
+`--image REGISTRY/IMAGE@sha256:DIGEST`. Remote images require a complete digest.
+Prebuilt installs need a normal clone, Python, Docker, the working GPU driver and
+`amd-smi`; vendor submodules and Buildx are needed only for source builds.
+Use `--build` instead of the image options to explicitly opt into the existing
+expensive source build. Setup never silently falls back to compilation.
+
+Setup defaults derived PLE and runtime caches to `MODEL_DIR/r9v-data`; override
+with `--data-dir /fast-ssd/r9v`. Use `--ple-path /existing/ple.bin` to reuse an
+existing payload without copying it. It reports required model/PLE space before writing
+large assets. Docker image/build storage is additional. Model license acceptance
+is explicit. The `hf` CLI is needed only when required files are missing or have
+an incorrect size. Existing model files are reused in place.
+
+Run `./r9v doctor qwen38 -- --host-only` to check hardware before installation.
+Model and PLE checks are deferred in this stage. Setup selects exactly two 32 GiB
+gfx1201 devices in KFD order; use `--gpu-bdfs BDF0,BDF1` to specify rank order or
+choose among more than two eligible cards. The full doctor still checks PCIe paths
+and memory before launch. This does not generate a new expert placement or certify
+peak VRAM headroom.
+
+Repeat the same setup command after an interruption. Each successfully hashed
+artifact has a private receipt containing its expected hash and local file identity.
+Unchanged files skip another full scan; changed files are rehashed. These receipts
+are a speed optimization, not protection against silent bit rot or malicious local
+modification. Use setup's `--hash`, or `verify --hash`, for a fresh full integrity
+scan. Existing PLE extraction uses the extractor's size and sample checks.
+
+Configuration and receipts live under `$XDG_STATE_HOME/r9v/qwen38` (normally
+`~/.local/state/r9v/qwen38`). Both commands accept `--state-dir` for a separate
+installation. Setup saves the resolved local image ID, model/data paths, GPU
+identity, and effective profile settings (including explicit R9V overrides). Start uses those saved values; an existing `R9V_CONFIG_FILE` is not loaded.
+For advanced custom configuration, retain the manual launch flow below.
+
+Start runs preflight, launches, and waits up to 900 seconds for health and the
+runtime doctor. Override with `--timeout SECONDS`. It preserves the container and
+collects a local support bundle on failure. Follow detailed startup output with
+`docker logs -f r9v-qwen38-flash-next`. A successful health check does not replace
+long-duration qualification. Start refuses to replace an existing container.
+
+Maintainers can run `scripts/publish-runtime.sh REGISTRY/IMAGE:VERSION` from a
+clean, reviewed checkout to build and push a candidate. This is an explicit
+publication command and needs registry authentication. It prints the published
+digest; it does not promote it. After clean-host text/vision/tool, context, and
+stability qualification, record the selected digest as `distribution.image` in
+`runtimes/qwen38-flash-next-gfx1201-v1/runtime.json` to enable default pulls.
+
+The manual source-build workflow follows.
+
 ## 1. Clone the pinned source graph
 
 ```bash
@@ -26,8 +88,7 @@ The host prerequisites are:
   keep `R9V_PLE_RESIDENCY_MODE=ssd`;
 - Git, Python 3.10 or newer, `curl`, Docker with daemon access, and the official
   Docker Buildx CLI plugin;
-- host `render` and `video` group records for the device GIDs passed into the
-  container;
+- permission to access the GPU device nodes; the launcher uses their numeric GIDs;
 - the Hugging Face `hf` CLI for the public package download; and
 - storage for 90.36 GiB of model files, a 26.82 GiB derived PLE file, the image
   build, and runtime caches.
@@ -54,8 +115,11 @@ export MODEL_DIR=/path/to/qwen38-r9v
 ./r9v fetch qwen38 \
   --model-dir "$MODEL_DIR" \
   --accept-model-license
-./r9v verify qwen38 --model-dir "$MODEL_DIR" -- --hash
 ```
+
+`fetch` already verifies SHA-256 for every downloaded artifact; a second full
+verification immediately afterward is unnecessary. For an existing bundle use
+`./r9v verify qwen38 --model-dir "$MODEL_DIR" -- --hash`.
 
 The package descriptor pins Hugging Face revision
 `bf836f0c20b6c92fcad4226ad3115eb8a19f7582`; `fetch` does not follow a moving
@@ -173,7 +237,7 @@ The host contract is configurable rather than tied to one motherboard:
 | `R9V_VISIBLE_DEVICES` | HIP devices in TP-rank order | `0,1` |
 | `R9V_EXPECTED_GPU_BDFS` | Optional PCI-address lock in rank order | unset; doctor warns |
 | `R9V_EXPECTED_PCIE_LINKS` | Optional exact device-to-root capacity bottlenecks in rank order | unset; doctor warns |
-| `R9V_MIN_PCIE_BANDWIDTH_GBPS` | Minimum theoretical payload per rank | `15,7` |
+| `R9V_MIN_PCIE_BANDWIDTH_GBPS` | Optional hard minimum theoretical payload per rank | `0,0` |
 | `R9V_MIN_HOST_RAM_BYTES` | Hard total-RAM floor; `0` only reports | `0` |
 | `R9V_MIN_HOST_AVAILABLE_BYTES` | Hard pre-launch available-RAM floor | `0` |
 | `R9V_TIERED_EXPERT_CACHE_RANKS` | Ranks receiving the dynamic expert cache | `1` |
