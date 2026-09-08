@@ -121,6 +121,22 @@ def profile_settings():
             if key.startswith('R9V_') and key not in excluded}
 
 
+def container_user_args():
+    """Root in rootless Docker maps to the daemon owner, not host root."""
+    options = json.loads(run(['docker', 'info', '--format', '{{json .SecurityOptions}}'],
+                             capture=True, timeout=30).stdout)
+    if not isinstance(options, list) or not all(isinstance(item, str) for item in options):
+        raise ValueError('Docker did not report valid security options')
+    if 'name=rootless' in options:
+        return ['--user', '0:0']
+    result = ['--user', f'{os.getuid()}:{os.getgid()}']
+    if 'name=userns' in options:
+        # Rootful daemon remapping would otherwise turn the host UID into a
+        # subordinate UID with no write access to the bind-mounted data directory.
+        result += ['--userns', 'host']
+    return result
+
+
 def setup(args, state, state_path):
     profile = json.loads(PROFILE.read_text())
     descriptor = ROOT / profile['descriptors']['model_package']
@@ -172,6 +188,7 @@ def setup(args, state, state_path):
         image = os.environ.get('R9V_IMAGE', 'r9v-qwen38-flash-next:latest')
     elif not args.local_image:
         run(['docker', 'pull', image])
+    user_args = container_user_args()
     image_id = run(['docker', 'image', 'inspect', image, '--format', '{{.Id}}'],
                    capture=True, timeout=30).stdout.strip()
     # Save the immutable local image ID, including when the input was a mutable local tag.
@@ -190,7 +207,7 @@ def setup(args, state, state_path):
     shards = ['/models/' + a['path'] for a in artifacts
               if a['path'].startswith('target/') and a['path'].endswith('.gguf')]
     run(['docker', 'run', '--rm', '--network', 'none', '--entrypoint', 'python3',
-         '--user', f'{os.getuid()}:{os.getgid()}', '--security-opt', 'label=disable',
+         *user_args, '--security-opt', 'label=disable',
          '--volume', f'{ROOT}:/r9v:ro', '--volume', f'{model}:/models:ro',
          '--volume', f'{ple.parent}:/r9v-data', image_id, '/r9v/tools/prepare_ple.py',
          *shards, '--output', '/r9v-data/' + ple.name])

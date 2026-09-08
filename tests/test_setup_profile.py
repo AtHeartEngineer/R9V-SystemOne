@@ -131,6 +131,7 @@ def test_setup_reuses_assets_pins_image_and_requires_final_doctor(tmp_path, monk
     monkeypatch.setattr(setup.os, 'access', lambda *a: True)
     monkeypatch.delenv('R9V_CONFIG_FILE', raising=False)
     monkeypatch.setattr(setup, 'profile_settings', lambda: {})
+    monkeypatch.setattr(setup, 'container_user_args', lambda: ['--user', '0:0'])
     monkeypatch.setattr(setup, 'select_devices', lambda b: {
         'R9V_VISIBLE_DEVICES': '1,2', 'R9V_EXPECTED_GPU_BDFS': 'a,b'})
     calls = []
@@ -203,7 +204,8 @@ def test_cli_interrupted_download_resumes_with_persistent_receipts(tmp_path):
     docker.write_text('#!' + sys.executable + '\n' + textwrap.dedent('''
         import sys
         from pathlib import Path
-        if sys.argv[1] == 'info': print('/fixture/docker')
+        if sys.argv[1] == 'info':
+            print('[]' if 'SecurityOptions' in sys.argv[-1] else '/fixture/docker')
         elif sys.argv[1:3] == ['image', 'inspect']: print('sha256:fixture')
         elif sys.argv[1] == 'run':
             volume = next(x for x in sys.argv if x.endswith(':/r9v-data'))
@@ -251,3 +253,18 @@ def test_cli_interrupted_download_resumes_with_persistent_receipts(tmp_path):
                              env=env, capture_output=True, text=True)
     assert invalid.returncode == 1
     assert json.loads((state / 'setup.json').read_text())['ready']
+
+
+@pytest.mark.parametrize('options, expected', [
+    (['name=rootless', 'name=seccomp,profile=builtin'], ['--user', '0:0']),
+    ([], None),
+    (['name=userns'], 'remapped'),
+])
+def test_extractor_user_matches_docker_namespace(monkeypatch, options, expected):
+    import os
+    monkeypatch.setattr(setup, 'run', lambda *a, **k: SimpleNamespace(stdout=json.dumps(options)))
+    if expected is None:
+        expected = ['--user', f'{os.getuid()}:{os.getgid()}']
+    elif expected == 'remapped':
+        expected = ['--user', f'{os.getuid()}:{os.getgid()}', '--userns', 'host']
+    assert setup.container_user_args() == expected
