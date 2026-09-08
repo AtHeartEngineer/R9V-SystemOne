@@ -209,7 +209,8 @@ def test_resource_checks_use_bdf_vram_and_do_not_certify_zero_ram_policy(
 
 
 @pytest.mark.parametrize("external", [False, True])
-def test_launcher_retains_logs_and_uses_device_groups(tmp_path, external):
+@pytest.mark.parametrize("rootless", [False, True])
+def test_launcher_retains_logs_and_uses_device_groups(tmp_path, external, rootless):
     # Execute the launcher against fake Docker/device-free config, not a source-text assertion.
     root = Path(__file__).resolve().parents[1]
     model = tmp_path / "models"
@@ -230,7 +231,7 @@ def test_launcher_retains_logs_and_uses_device_groups(tmp_path, external):
         path.touch()
     docker = tmp_path / "docker"
     docker.write_text(
-        '#!/usr/bin/env python3\nimport sys, json, os\nif sys.argv[1] == "container": sys.exit(1)\nopen(os.environ["TEST_ARGS"], "w").write(json.dumps(sys.argv[1:]))\n'
+        '#!/usr/bin/env python3\nimport sys, json, os\nif sys.argv[1] == "container": sys.exit(1)\nif sys.argv[1] == "info": print(os.environ.get("TEST_ROOTLESS", "")); sys.exit(0)\nopen(os.environ["TEST_ARGS"], "w").write(json.dumps(sys.argv[1:]))\n'
     )
     docker.chmod(0o755)
     target = tmp_path / "args.json"
@@ -238,6 +239,7 @@ def test_launcher_retains_logs_and_uses_device_groups(tmp_path, external):
         os.environ,
         PATH=str(tmp_path) + os.pathsep + os.environ["PATH"],
         TEST_ARGS=str(target),
+        TEST_ROOTLESS="name=rootless" if rootless else "",
         R9V_MODEL_DIR=str(model),
         R9V_PLE_PATH=str(model / "ple"),
         R9V_CACHE_DIR=str(tmp_path / "cache"),
@@ -266,7 +268,7 @@ def test_launcher_retains_logs_and_uses_device_groups(tmp_path, external):
     args = json.loads(target.read_text())
     assert args[args.index("--log-driver") + 1] == "json-file"
     assert "max-size=20m" in args and "max-file=5" in args
-    assert "memlock=-1:-1" in args
+    assert ("memlock=-1:-1" in args) is (not rootless)
     assert "--rm" not in args
     assert "PYTHONFAULTHANDLER=1" in args
     if external:

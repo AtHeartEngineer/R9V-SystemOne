@@ -194,12 +194,20 @@ for device in /dev/kfd /dev/dri/renderD* /dev/dri/card*; do
     device_group_args+=(--group-add "$(stat -c %g "$device")")
 done
 
+# Rootless daemons cannot raise RLIMIT_MEMLOCK above their inherited hard
+# limit. An unlimited request fails in runc before the server even starts.
+memlock_args=(--ulimit memlock=-1:-1)
+if [[ $(docker info --format '{{json .SecurityOptions}}') == *name=rootless* ]]; then
+    memlock_args=()
+    printf 'Rootless Docker: inheriting daemon memlock limits; runtime doctor reports the effective policy.\n'
+fi
+
 docker run --detach \
     --name "$container" \
     --log-driver json-file \
     --log-opt max-size=20m \
     --log-opt max-file=5 \
-    --ulimit memlock=-1:-1 \
+    "${memlock_args[@]}" \
     --env PYTHONUNBUFFERED=1 \
     --env PYTHONFAULTHANDLER=1 \
     --device /dev/kfd \
