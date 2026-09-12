@@ -46,6 +46,13 @@ def localize(seed, contract, external):
     if len(external) != 2 or len(contract["devices"]) != 2:
         raise ValueError("release memory seed requires two GPUs")
     result = copy.deepcopy(reference)
+    if seed['schema'] == 'r9v.public-memory-seed.v2':
+        # verify_bundle() validates these public payloads before admission.
+        # Keep their references when adapting the envelope for the planner.
+        records = seed.get('public_evidence', {})
+        if not isinstance(records, dict) or not records:
+            raise ValueError('public memory seed needs evidence references')
+        result['evidence'] = copy.deepcopy(list(records.values()))
     result["contract"] = contract
     result["workload_passed"] = False
     result["reference_workload_passed"] = True
