@@ -1,0 +1,161 @@
+{
+  "schema": "r9v.public-memory-seed.v2",
+  "calibration": {
+    "schema": "r9v.memory-calibration.v1",
+    "contract": {
+      "settings": {
+        "R9V_MAX_MODEL_LEN": "131072",
+        "R9V_PROFILER_ACTIVE_ITERATIONS": "12",
+        "R9V_DRAFT_W2_RANK_ROWS": "8192",
+        "R9V_CACHE192": "1",
+        "R9V_PROFILER_WAIT_ITERATIONS": "0",
+        "R9V_ENABLE_PREFIX_CACHING": "0",
+        "R9V_PLE_RESIDENCY_MODE": "ssd",
+        "R9V_Q6K_HEAD_ROWS5": "1",
+        "R9V_CACHE80": "1",
+        "R9V_PROFILER_MAX_ITERATIONS": "12",
+        "R9V_MAX_NUM_SEQS": "1",
+        "R9V_DENSE_ROWS2": "0",
+        "R9V_CACHE_FILL_BATCH": "1",
+        "R9V_R4D_GDN": "0",
+        "R9V_R4D_AR_QUANT": "0",
+        "R9V_HC_ROWS45": "0",
+        "R9V_TIERED_EXPERT_CACHE_POLICY": "lru",
+        "R9V_PLE_MMAP_TRIM_ROWS": "131072",
+        "R9V_CPU_OFFLOAD_GB": "112.5",
+        "R9V_R4D_AR": "0",
+        "R9V_ENABLE_RDNA4_QSA_STRIDED": "1",
+        "R9V_ENABLE_AUTO_TOOL_CHOICE": "1",
+        "R9V_ENABLE_DENSE_Q8_ATTN_M3": "1",
+        "R9V_MTP_SPEC_TOKENS": "4",
+        "R9V_TENSOR_PARALLEL_SIZE": "2",
+        "R9V_DENSE_Q8_ATTN_M3_VARIANT": "exact4-w8",
+        "R9V_MODEL_PACKAGE": "qwen38-flash-next-ud-iq4-xs-mtp-blockfp8-mmproj-q8",
+        "R9V_REQUIRE_PLE_NONROTATIONAL": "1",
+        "R9V_RUNTIME_DESCRIPTOR": "acd09d5230b4c27451d98790dd1c64b47b00ed6ec071d5444ccdad3540de96bd",
+        "R9V_SHARED_SAFE_PADDING": "1",
+        "R9V_PLE_PINNED_RESERVE_BYTES": "17179869184",
+        "R9V_DENSE_ROWS45": "1",
+        "R9V_HC_SAFE_PADDING": "1",
+        "R9V_CPU_OFFLOAD_GB_BY_DEVICE": "146.25,78.75",
+        "R9V_HC_MIX_MMQ45": "1",
+        "R9V_ENABLE_FUSED_HC_UP_MIX": "1",
+        "R9V_MTP_QUANTIZATION": "fp8",
+        "R9V_NATIVE_CUSTOM_AR": "1",
+        "R9V_EXPERT_TP_SPLIT": "416,224",
+        "R9V_IMAGE": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+        "R9V_ENABLE_DENSE_HC_DOWN_BF16_M3": "1",
+        "R9V_R4D": "0",
+        "R9V_ATTENTION_OUTPUT4": "1",
+        "R9V_TIERED_EXPERT_CACHE_ASYNC": "0",
+        "R9V_KV_CACHE_MEMORY_BYTES": "2562215936",
+        "R9V_TIERED_PREFILL_GROUP_SIZE": "16",
+        "R9V_HC_MIX_MMQ4": "1",
+        "R9V_PLE_RSS_LOG_ROWS": "131072",
+        "R9V_MAX_NUM_BATCHED_TOKENS": "1024",
+        "R9V_HC_MMQ4": "1",
+        "R9V_TIERED_EXPERT_CACHE_SLOTS": "160",
+        "R9V_STAGE_DIAGNOSTICS": "1",
+        "R9V_PLE_WORKER_TIMING": "0",
+        "R9V_TIERED_IQ_MOE_VARIANT": "reuse3v2",
+        "R9V_PLE_EXPECTED_BYTES": "28800138240",
+        "R9V_Q8_MMVQ5_SHAPES": "[\"2560,3072\",\"640,2560\",\"2560,320\"]",
+        "R9V_TOOL_CALL_PARSER": "qwen3_coder",
+        "R9V_ENABLE_FUSED_GDN_MTP": "1",
+        "R9V_MTP_DRAFT_TP_SIZE": "2",
+        "R9V_REASONING_PARSER": "qwen3",
+        "R9V_PLE_MMAP_READAHEAD": "1",
+        "R9V_RETAINED_MTP4": "1",
+        "R9V_PROFILER_WARMUP_ITERATIONS": "1",
+        "R9V_NATIVE_ALIGN_IPC": "1",
+        "R9V_MTP_LOCAL_ARGMAX": "1",
+        "R9V_TIERED_EXPERT_CACHE_RANKS": "0",
+        "R9V_ENABLE_FUSED_MOE_SHARED_EPILOGUE": "1",
+        "R9V_PLE_EXPECTED_SHA256": "dd55c28902f38cd88134b2a569c51282c5ffce30080487e1a645740115c56cc3",
+        "R9V_MODEL_PACKAGE_SHA256": "c026675f64d7f059f3470991ccf0ab1517f6f7c4d5133fe2b29be02437650e66",
+        "R9V_STREAM_EXPERT_COMPACTION": "1"
+      },
+      "source_sha256": "0723a562073fe61bf5c5169dcee760fad6d232f66402ed5ebc8d607b5b614285",
+      "devices": [
+        {
+          "bdf": "0000:03:00.0",
+          "total_bytes": 34208743424
+        },
+        {
+          "bdf": "0000:13:00.0",
+          "total_bytes": 34208743424
+        }
+      ],
+      "driver": {
+        "kernel": "7.1.5-ogc5.1.fc44.x86_64",
+        "version": null,
+        "srcversion": null
+      }
+    },
+    "ranks": [
+      {
+        "non_expert_peak_bytes": 11735274752,
+        "external_allowance_bytes": 1214894080,
+        "transient_margin_bytes": 536870912
+      },
+      {
+        "non_expert_peak_bytes": 11779322368,
+        "external_allowance_bytes": 341577728,
+        "transient_margin_bytes": 536870912
+      }
+    ],
+    "reference_cold_bytes": 35845564160,
+    "startup_required_available_bytes": 56195223552,
+    "host_reserve_bytes": 4294967296,
+    "workload_passed": true,
+    "limitations": "Local bounded workload envelope; polling plus 512 MiB transient margin. External allowance includes 256 MiB variability. Revalidate every derived placement."
+  },
+  "placement_qualification": {
+    "passed": true
+  },
+  "provenance": {
+    "private_seed_sha256": "e94fe3522276cdc0f96cc210d6298a22b0966021625d8af0d95c2fd72301dd0c",
+    "private_payload_index_sha256": "5590d9acd842be6a0bc8fd68653bb458c6d0833df4acff2a8b4445bfcc191764",
+    "original_calibration_sha256": "d6d73f2412afe79044a4e6a9ac4369e8dfab29c3da7f32a8307fd005def84b13",
+    "scope": "Publisher-attested reference workload; public numeric samples independently reproduce memory arithmetic. Raw private qualification remains archived.",
+    "catalog_projection": {
+      "schema": "r9v.public-catalog-projection.v1",
+      "original_catalog_sha256": "2900546c467f5c0dc1daf4013b1054b1f937cc01686040f86794812836166bb5",
+      "original_manifest_file_sha256": "74df985f4446fd673cd592f85805112de7ca1177f3377df37f79bcfa329d597b",
+      "executed_manifest_sha256": "ffc9519d119ecd6cfab3ffad6278389210be8dc6b14762adce49b2bf0cc1a0c5",
+      "public_catalog_sha256": "0723a562073fe61bf5c5169dcee760fad6d232f66402ed5ebc8d607b5b614285",
+      "public_manifest_sha256": "8fc40ee831c12f31ca3b4515bd58c88ad367aed5d2b22742b43d0e92337d48b2",
+      "catalog_content_sha256": "398062d6d79f7c4797b90c522e9b0ff11e9e478c5da631ce9c403a2ad6a74836",
+      "manifest_content_sha256": "7e05d80341fb259c3f92391dc54da1ad8c91ad7bfa55ff70c879703615c6c163",
+      "scope": "Only ranking input locations and the derived catalog link were relocated. Original execution evidence remains privately archived; local qualification is still required."
+    }
+  },
+  "limitations": "Reference estimate only. Exact image/model/runtime identity must match. Every local placement requires full workload qualification.",
+  "public_evidence": {
+    "catalog": {
+      "path": "catalog.json",
+      "bytes": 1669816,
+      "sha256": "0723a562073fe61bf5c5169dcee760fad6d232f66402ed5ebc8d607b5b614285"
+    },
+    "manifest": {
+      "path": "manifest.json",
+      "bytes": 375138,
+      "sha256": "bc49cb30598484de8f21c54401001ac559714b14fd742f47f85dd9cbf1c77fdc"
+    },
+    "runtime": {
+      "path": "runtime.json",
+      "bytes": 1377,
+      "sha256": "acd09d5230b4c27451d98790dd1c64b47b00ed6ec071d5444ccdad3540de96bd"
+    },
+    "measurements": {
+      "path": "measurements.json",
+      "bytes": 85918,
+      "sha256": "adbf2fbedb1819e7d5c7d0492660c42e8dcfe0ab826be7d2089ef681c8e24f92"
+    },
+    "workload": {
+      "path": "workload.json",
+      "bytes": 1007,
+      "sha256": "0ea737807e0d97aa81b79f97bb6d4c34235d2007b88c405aad50551d6fe4bf3c"
+    }
+  }
+}

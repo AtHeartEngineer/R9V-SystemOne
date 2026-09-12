@@ -1,0 +1,63 @@
+{
+  "schema": "r9v.public-reference-result.v1",
+  "date": "2026-09-12",
+  "profile": "qwen38-mtp4",
+  "status": "reference-workload-passed; user setup/restart pending",
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+  "streaming_expert_compaction": true,
+  "context_limit": 131072,
+  "kv_bytes_per_rank": 2562215936,
+  "mtp_tokens": 4,
+  "static_experts": [
+    71,
+    450
+  ],
+  "cache_slots_by_rank": [
+    160,
+    0
+  ],
+  "generation_tokens_per_second": {
+    "samples": [
+      93.01811802477941,
+      93.29259573193167,
+      93.0267743553895
+    ],
+    "median": 93.0267743553895,
+    "scope": "short fixed-prompt reference measurement; not BetterBench or full-context decode"
+  },
+  "workload": {
+    "passed": true,
+    "context_limit": 131072,
+    "checks": [
+      "text",
+      "tool",
+      "vision",
+      "vision-wide",
+      "vision-tall",
+      "context",
+      "idle_resume"
+    ],
+    "semantic_observations": [],
+    "runtime_failures": [],
+    "minimum_physical_free_bytes": [
+      4072144896,
+      4075905024
+    ],
+    "headroom_passed": true
+  },
+  "prompt_tokens": 130941,
+  "aftermath_seconds": 90.00017404556274,
+  "clean_stop": true,
+  "exact_gpu_reclaimed": true,
+  "kernel_failure_matches": [],
+  "minimum_host_available_bytes": 62646972416,
+  "minimum_normal_zone_free_bytes": 69726208,
+  "normal_zone_minimum_guard_bytes": 68050944,
+  "archives": {
+    "iq-stream-derived-128k-r1-final-evidence": "471ef45e03a95c306519349b93bb58d305cddd9a98dc247a261c349fd84bb70e",
+    "iq-stream-derived-128k-r1-compiledcache": "3fd6f406d4c28d34403476468d695a763afb225622b2eb1f1fc3923043322b1d",
+    "iq-stream-derived-seed-r1-evidence": "3530e444076024b5fe8c27cef5c2e2d8839297f58d41bc710388a4def4f3e6fe",
+    "iq-stream-source-checkpoint1": "1303262118ef2daaa63894f2ef662fa6044acb1c4ec92df7d8324a17471479d8"
+  },
+  "limitations": "Bounded reference workload only; local placement qualification and current public setup/restart still required. Main model and original target head unchanged. Private original calibration and execution artifacts remain archived; public seed explicitly records provenance-path projection."
+}

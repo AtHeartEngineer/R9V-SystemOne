@@ -6,21 +6,21 @@ R9V runs Qwen3.8 Flash Next on two AMD Radeon AI PRO R9700 GPUs. It combines a p
 
 Each profile binds a model package, runtime, hardware layout and expert placement. Downloads are checked against pinned revisions and file hashes. Setup records the selected configuration, and first start qualifies its workload and memory headroom before reporting ready.
 
-**Current status:** the IQ4_XS and Q4_K_XL MTP4 profiles passed setup, first start and restart on the reference machine using existing verified assets. They remain experimental. Setup now selects the [GitHub Release image bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), verifies its parts, and loads the exact original image ID. Clean download-to-run reproduction remains pending; BetterBench speed/latency evaluation is separate and pending. See [release status and evidence](docs/qwen-release-candidate.md).
+**Current status:** the public source gates (PR32 and PR33), image bundle and fresh-download checks passed for both the IQ4_XS and Q4_K_XL MTP4 profiles. Both remain experimental. The current IQ4 image6 streaming reference passed seven bounded checks at 131,072 context, including a 130,941-token prompt; clean IQ4 setup/restart remains pending. Q4 clean user-flow qualification and the latest BetterBench speed/latency evaluation remain pending. Setup selects the [GitHub Release image bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), verifies its parts, and loads the exact original image ID. See [release status and evidence](docs/qwen-release-candidate.md).
 
 ## Profiles and features
 
 | Alias | Model package | Runtime | Status |
 |---|---|---|---|
-| `qwen38-mtp4` | IQ4_XS | MTP4, dual R9700, 128K context | Reference setup/start/restart passed |
-| `qwen38-q4-xl` | Q4_K_XL | MTP4, dual R9700, 128K context | Reference setup/start/restart passed |
+| `qwen38-mtp4` | IQ4_XS | MTP4, dual R9700, 128K context | Image6 streaming reference passed; clean setup/restart pending |
+| `qwen38-q4-xl` | Q4_K_XL | MTP4, dual R9700, 128K context | Clean user-flow qualification pending |
 
 Use the explicit MTP4 aliases for the current workflow.
 
 - **Per-card headroom:** choose the free VRAM to retain on each card with `--headroom 3,3` or an asymmetric budget such as `--headroom 5,3`.
-- **Measured expert maps:** separate complete catalogs for IQ4 and Q4 rank all 512 experts across 48 layers per rank, using training and separate held-out routing captures. The planner retains frequently used experts in VRAM within the memory budget.
+- **Measured expert maps:** separate complete catalogs for IQ4 and Q4 rank all 512 experts across 48 layers per rank, using training and separate held-out routing captures. Existing hot prefixes are preserved, while cold-to-hot arrays use measured counts, with deterministic ties for zero-count experts. The planner retains frequently used experts in VRAM within the memory budget.
 - **Q4_K_XL support:** a dedicated package, packed expert costs, ranked placement and streaming loader. Q4 uses its upstream model bytes and original Q8_0 target head; IQ4 retains its original Q6_K target head.
-- **Resumable setup and qualified restart:** reuse matching model assets, save configuration, qualify a newly planned placement, and reuse its verified receipt on an unchanged restart.
+- **Resumable setup and restart receipts:** reuse matching model assets, save configuration and reuse its verified receipt on an unchanged restart after the workflow has qualified.
 - **Doctor:** inspect model/runtime/placement compatibility, GPU ordering, memory pressure, PCIe information, cache identity and available worker evidence.
 - **Support bundles:** collect configuration summaries, source identities, worker records, memory and GPU diagnostics, logs and capture tails into a bounded local archive with file hashes.
 
@@ -36,7 +36,7 @@ The reference system uses:
 - An asymmetric PCIe layout: rank 0 on Gen5 x16 and rank 1 across Gen4 x4. GPU ordering matters to placement and performance.
 - Git, Python 3.10+, Docker and the Hugging Face CLI described in the [installation guide](docs/installation.md).
 
-The IQ4 package occupies approximately **90.36 GiB**. The four Q4 target shards alone occupy **103.69 GiB**, with auxiliary assets additional. The derived PLE file occupies **26.82 GiB**. Leave further room for runtime images, compilation caches and diagnostics. Reuse verified assets instead of duplicating model files.
+The public image bundle plus its containerd image-store footprint measured roughly **50 GiB**. The IQ4 package occupies approximately **90.36 GiB**. The four Q4 target shards alone occupy **103.69 GiB**, with auxiliary assets additional. The derived PLE file occupies **26.82 GiB**. Leave further room for compilation caches and diagnostics. Reuse verified assets instead of duplicating model files.
 
 ## Setup and start
 
@@ -49,11 +49,17 @@ cd R9V
 ./r9v doctor qwen38-mtp4 -- --host-only
 ```
 
-The profile distribution entries select the matching GitHub Release image bundle and exact image IDs. Docker 29 must use the containerd image store so `docker load` preserves those IDs. These are the reference identities:
+The profile distribution entries select the matching GitHub Release image bundle and exact image IDs. Docker 29 must use the containerd image store so `docker load` preserves those IDs. See Docker's [containerd image store guide](https://docs.docker.com/engine/storage/containerd/) and [daemon configuration reference](https://docs.docker.com/engine/daemon/). Verify the store before setup:
+
+```bash
+docker info -f '{{ .DriverStatus }}'
+```
+
+The output should identify `io.containerd.snapshotter.v1`. If it does not, follow the configuration steps in the [installation guide](docs/installation.md). For a non-root daemon, see Docker's [rootless mode guide](https://docs.docker.com/engine/security/rootless/) and confirm the selected context/socket with `docker info`; the same containerd image-store check applies. These are the reference identities:
 
 | Profile | Tested local image ID |
 |---|---|
-| `qwen38-mtp4` | `sha256:987468f3f9991dfad8b07f51a18bbd5e5c01dc164d9f82c4143e77bfd14ca80d` |
+| `qwen38-mtp4` | `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3` |
 | `qwen38-q4-xl` | `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3` |
 
 Install the download CLI in an isolated environment if it is not already available:
@@ -101,20 +107,15 @@ The following fixed-prompt reference samples used MTP4 on the dual-R9700 system:
 
 | Profile / placement | Static experts, ranks 0/1 | Generation tokens/s |
 |---|---:|---:|
-| IQ4 reference | 72 / 455 | **93.825** |
+| IQ4 image6 streaming reference | 71 / 450 | **93.026774** |
 | Q4 measured ranked placement | 97 / 349 | **53.431** |
 | Q4 initial bootstrap placement | 64 / 320 | **25.285** |
 
-These samples are not measurements of mixed traffic or generation at a full context. They also differ slightly from the placements selected by the final user setup flow:
+These are fixed-prompt reference samples with MTP4; they do not measure mixed traffic or generation at full context. Actual user placements depend on the requested headroom and must qualify locally.
 
-| User setup profile | Static experts, ranks 0/1 | Dynamic cache slots, ranks 0/1 | Minimum free VRAM, ranks 0/1 |
-|---|---:|---:|---:|
-| IQ4, requested 3 / 3 GiB | 71 / 457 | 160 / 0 | 3.82 / 3.67 GiB |
-| Q4, requested 3 / 3 GiB | 97 / 348 | 80 / 0 | 3.79 / 3.74 GiB |
+The IQ4 image6 streaming reference retained **131,072 context tokens** and passed seven bounded workload checks, including an actual **130,941-token prompt**, text, tools, three image shapes and idle resume. Its median was **93.026774 TG tok/s**, with measured free VRAM of 4,072,144,896 and 4,075,905,024 bytes (about 3.79 GiB per card); the run had a clean 90-second aftermath and GPU reclaim. These checks used existing verified assets and do not establish clean download-to-run reproduction, answer quality or a 100 tok/s qualification. Clean IQ4 setup/restart, Q4 clean user-flow qualification and the latest BetterBench evaluation remain pending.
 
-Both user setups retained **131,072 context tokens** and passed seven workload checks, including an actual **130,941-token prompt**, text, tools, three image shapes and idle resume. Stop/restart reused the unchanged verified receipt and completed a short request. These checks establish bounded runtime behavior, not answer quality or a 100 tok/s qualification.
-
-The [evidence index](docs/qualification/results/qwen38-mtp4-userstart-20260912.json) records the preserved qualification archives. Historical prefill and comparator results remain in the [earlier Qwen qualification](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md); they should not be substituted for measurements of the new placements.
+The [current IQ4 reference evidence](docs/qualification/results/iq4-image6-streaming-reference-20260912.json) records the measured result and independently verified archive commitments. Historical prefill and comparator results remain in the [earlier Qwen qualification](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md); they should not be substituted for measurements of the new placements.
 
 ## Diagnostics and reporting a problem
 
@@ -161,7 +162,7 @@ python -m pytest -q tests
 ./scripts/ci-static.sh
 ```
 
-CPU CI checks tooling and source contracts. GPU parity, graph replay, full-model qualification and throughput measurements require the matching hardware. Clean-host reproduction and BetterBench speed/latency evaluation remain pending release work.
+CPU CI checks tooling and source contracts. GPU parity, graph replay, full-model qualification and throughput measurements require the matching hardware. Clean IQ4 setup/restart, Q4 clean user-flow qualification and the latest BetterBench speed/latency evaluation remain pending release work.
 
 Read [CONVENTIONS.md](CONVENTIONS.md) before changing code. Dependency gitlinks are release inputs: use the committed revisions rather than replacing them with moving branch heads.
 

@@ -3,7 +3,7 @@
   "id": "qwen38-flash-next/ud-iq4-xs/dual-r9700-mtp4-128k",
   "name": "Qwen3.8 Flash Next UD-IQ4_XS \u2014 dual R9700, MTP4, 128K",
   "status": "experimental",
-  "summary": "Reference full128K placement and3GiB headroom passed; portable setup integration and public image distribution remain experimental.",
+  "summary": "Image6 streaming reference passed full128K workload and 3GiB headroom per card; every user placement requires local qualification.",
   "aliases": [
     "qwen38-mtp4"
   ],
@@ -69,14 +69,14 @@
     "max_context": 131072
   },
   "qualification": {
-    "status": "reference-workload-passed",
+    "status": "streaming-reference-workload-passed",
     "integration_notes": "docs/qwen-release-candidate.md",
     "local_qualification_required": true,
     "public_image": "published-verified-bundle"
   },
   "distribution": {
     "image_bundle": "release/image-bundle-20260912.json",
-    "image_id": "sha256:987468f3f9991dfad8b07f51a18bbd5e5c01dc164d9f82c4143e77bfd14ca80d",
+    "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
     "transport": "github-release-docker-save"
   }
 }

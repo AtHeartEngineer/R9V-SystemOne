@@ -9,19 +9,23 @@ check:
 ./r9v doctor qwen38-mtp4 -- --host-only
 ```
 
-For a running server, inspect the runtime with `./r9v doctor PROFILE --
---runtime`. A failed check includes the observed value and corrective action.
+For a running server, inspect the runtime with `./r9v doctor PROFILE -- --runtime`.
+A failed check includes the observed value and corrective action. Keep the same
+`--state-dir` for setup, start, doctor and support so evidence refers to one
+profile state.
 
 | Check or symptom | Action |
 |---|---|
 | Package download or hash failure | Check disk and `hf` access, then repair or re-fetch the exact profile package. Never launch after a failed hash. |
 | GPU count, architecture, or BDF mismatch | Run `amd-smi list`; rerun setup with `--gpu-bdfs BDF0,BDF1` in the intended rank order. |
+| Image ID is not preserved after `docker load` | Check `docker info -f '{{ .DriverStatus }}'`; it should identify `io.containerd.snapshotter.v1`. Docker 29 upgraded installations may still use the legacy store. Follow the official [containerd image-store guide](https://docs.docker.com/engine/storage/containerd/) and [daemon configuration reference](https://docs.docker.com/engine/daemon/). |
+| Rootless Docker is in use | Follow Docker's [rootless mode guide](https://docs.docker.com/engine/security/rootless/), confirm the selected context/socket with `docker info`, and verify the containerd image-store check above. |
 | Normal-zone pressure warning | Free host memory or reduce CPU-offloaded residency. Swap does not satisfy pinned-RAM requirements. |
 | Requested headroom shortfall | Preserve every per-rank shortfall. Change the target deliberately or use the release seed to plan it; the resulting placement still needs local workload qualification. |
 | Startup or JIT timeout | Increase `--timeout`, inspect `docker logs --tail 200 r9v-qwen38-flash-next`, and check image, model, PLE, and cache space. |
 | Existing container blocks startup | Inspect the exact named container, save diagnostics, then deliberately stop/remove that container before retrying. |
 | Runtime worker or transport failure | Keep the container running long enough to collect startup evidence; run `./r9v doctor PROFILE -- --runtime` and inspect worker identity and HIP-visible BDFs. |
-| Support request | Run `./r9v support PROFILE --state-dir DIR`; treat the bundle as private and do not publish prompts, completions, raw token IDs, or logs. |
+| Support request | Run `./r9v doctor PROFILE --state-dir DIR` first, then `./r9v support PROFILE --state-dir DIR`; treat the bundle as private and do not publish prompts, completions, raw token IDs, or logs. |
 | PLE size or residency failure | Verify the payload is exactly 28,800,138,240 bytes, on the intended SSD, and re-run setup with `--ple-path` if reusing it. |
 
 A host-only pass proves prerequisites only. Health proves readiness only. The

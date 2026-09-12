@@ -12,15 +12,15 @@
     224
   ],
   "hot_counts": [
-    72,
-    455
+    71,
+    450
   ],
   "cache_slots": 160,
   "cache_ranks": [
     0
   ],
-  "qualification": "Reference placement passed full128K tools/vision/context and3GiB per-card headroom. Local seed-derived placements require their own first-start workload check.",
-  "image_id": "sha256:987468f3f9991dfad8b07f51a18bbd5e5c01dc164d9f82c4143e77bfd14ca80d",
+  "qualification": "Image6 streaming reference passed all seven full128K workload checks and 3GiB per-card headroom. Public catalog only relocates provenance paths; local setup/start/restart qualification remains required.",
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
   "catalog": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/mtp4-complete-expert-catalog.json",
-  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/qualified-128k-r3/memory-seed.json"
+  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image6-streaming-r1/qualified-128k-r1/memory-seed.json"
 }
