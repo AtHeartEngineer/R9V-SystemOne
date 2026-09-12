@@ -1,0 +1,9 @@
+{
+  "schema": "r9v.placement.v1",
+  "id": "qwen38-q4-k-xl-dual-r9700-bootstrap",
+  "model_package": "qwen38-flash-next-ud-q4-k-xl-mtp-blockfp8-mmproj-q8",
+  "hardware": "dual-r9700-32gb-asymmetric",
+  "artifact_path": "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/bootstrap-manifest.json",
+  "artifact_sha256": "e12b26a82b9ef546c5ed7d218fc8b7fa8d082a939d41ee5ce0f0482fc8be7112",
+  "scope": "Unranked routing bootstrap only; does not certify fit or headroom"
+}

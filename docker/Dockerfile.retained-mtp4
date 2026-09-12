@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: Apache-2.0
+# Retained MTP4 overlay. This is deliberately separate from Dockerfile.runtime
+# until the exact image has passed release qualification.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+ARG BASE_IMAGE
+
+ARG GFX_ARCH=gfx1201
+ARG R9V_REVISION=unknown
+ARG R9V_BASE_IMAGE_ID=unknown
+ENV VLLM_TARGET_DEVICE=rocm \
+    PYTORCH_ROCM_ARCH=${GFX_ARCH} \
+    HIP_ARCHITECTURES=${GFX_ARCH} \
+    AMDGPU_TARGETS=${GFX_ARCH} \
+    GPU_ARCHS=${GFX_ARCH} \
+    R9V_RETAINED_MTP4=1 \
+    MAX_JOBS=1
+
+USER root
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4 /opt/r9v/retained-mtp4
+RUN python3 /opt/r9v/retained-mtp4/recipes/build_overlay.py \
+      --source /opt/r9v/retained-mtp4/kernels \
+      --build /opt/r9v/build/retained-mtp4 \
+      --output /opt/r9v/kernels/retained-mtp4 \
+ && rm -rf /opt/r9v/build
+
+ENV QWEN38_DENSE_MMVQ_HIP_SO=/opt/r9v/kernels/retained-mtp4/qwen38_dense_mmvq_hip.so \
+    QWEN38_TIERED_IQ_MOE_HIP_SO=/opt/r9v/kernels/retained-mtp4/qwen38_tiered_iq_moe_hip.so \
+    R9V_HC_MMQ4_SO=/opt/r9v/kernels/retained-mtp4/r9v_hc_mmq4.so \
+    R9V_HC_MIX_MMQ4_SO=/opt/r9v/kernels/retained-mtp4/r9v_hc_mixmmq4.so \
+    R9V_HC_MIX_MMQ45_SO=/opt/r9v/kernels/retained-mtp4/r9v_hc_mixmmq45.so \
+    R9V_CACHE80_SO=/opt/r9v/kernels/retained-mtp4/r9v_cache80.so \
+    R9V_CACHE192_SO=/opt/r9v/kernels/retained-mtp4/r9v_cache192.so \
+    R9V_Q8_MMVQ5_SO=/opt/r9v/kernels/retained-mtp4/r9v_q8_mmvq5.so \
+    R9V_DRAFT_W2_RANK_SO=/opt/r9v/kernels/retained-mtp4/r9v_draft_w2_rank.so \
+    R9V_DRAFT_INDEXED_SO=/opt/r9v/kernels/retained-mtp4/r9v_draft_indexed_q6.so \
+    PYTHONPATH=/opt/r9v/retained-mtp4/python
+
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm /opt/r9v/lib/python3.12/site-packages/vllm
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin /opt/r9v/lib/python3.12/site-packages/vllm_gguf_plugin
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/r9v_draft_indexed.py /opt/r9v/retained-mtp4/python/r9v_draft_indexed.py
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/r9v_draft_w2_rank.py /opt/r9v/retained-mtp4/python/r9v_draft_w2_rank.py
+
+LABEL org.opencontainers.image.source="https://github.com/Dyluhn/R9V" \
+      org.opencontainers.image.revision="${R9V_REVISION}" \
+      org.opencontainers.image.base.name="${BASE_IMAGE}" \
+      org.opencontainers.image.base.digest="${R9V_BASE_IMAGE_ID}" \
+      org.opencontainers.image.title="R9V retained MTP4 overlay" \
+      org.opencontainers.image.description="Experimental retained MTP4 source overlay; qualification required"
+
+ENTRYPOINT ["vllm", "serve"]

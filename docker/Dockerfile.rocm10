@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: Apache-2.0
+# Experimental coherent ROCm 10 stack; promotion requires release_gate.py.
+FROM docker.io/rocm/dev-ubuntu-24.04:10.0.0-full@sha256:a90cf047f615abe70fbef83c64def0a2d549ef37a39c8ea545430aba4981b374
+ARG R9V_VLLM_VERSION
+ARG MAX_JOBS=6
+ENV DEBIAN_FRONTEND=noninteractive UV_NO_CACHE=1 PIP_NO_CACHE_DIR=1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.12-venv python3.12-dev build-essential git curl libnuma-dev libelf-dev \
+    libdrm-dev pkg-config ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN python3.12 -m venv /opt/r9v && /opt/r9v/bin/python -m pip install uv
+ENV PATH=/opt/r9v/bin:/opt/rocm/bin:$PATH VIRTUAL_ENV=/opt/r9v \
+    ROCM_PATH=/opt/rocm HIP_PATH=/opt/rocm HIP_PLATFORM=amd \
+    VLLM_TARGET_DEVICE=rocm PYTORCH_ROCM_ARCH=gfx1201 HIP_ARCHITECTURES=gfx1201 \
+    AMDGPU_TARGETS=gfx1201 GPU_ARCHS=gfx1201 MAX_JOBS=${MAX_JOBS} \
+    CMAKE_BUILD_PARALLEL_LEVEL=${MAX_JOBS} HSA_NO_SCRATCH_RECLAIM=1 \
+    SAFETENSORS_FAST_GPU=1 TOKENIZERS_PARALLELISM=false PYTHONDONTWRITEBYTECODE=1
+COPY runtimes/qwen38-flash-next-gfx1201-v1/rocm10/requirements.txt /tmp/framework.txt
+COPY runtimes/qwen38-flash-next-gfx1201-v1/rocm10/application.txt /tmp/runtime.txt
+RUN uv pip install --python /opt/r9v/bin/python --index-strategy unsafe-best-match -r /tmp/runtime.txt
+RUN git clone --no-checkout https://github.com/ROCm/aiter.git /src/aiter \
+    && git -C /src/aiter checkout 31350226161346314b3d8882c8085bd31dce6a34 \
+    && git -C /src/aiter submodule update --init --recursive --depth 1 \
+    && PREBUILD_KERNELS=0 SETUPTOOLS_SCM_PRETEND_VERSION=0.1.19 \
+       uv pip install --python /opt/r9v/bin/python --no-build-isolation --no-deps /src/aiter \
+    && rm -rf /src/aiter
+COPY vendor/vllm /src/vllm
+RUN cd /src/vllm && /opt/r9v/bin/python use_existing_torch.py \
+    && SETUPTOOLS_SCM_PRETEND_VERSION=${R9V_VLLM_VERSION} VLLM_VERSION_OVERRIDE=${R9V_VLLM_VERSION} \
+       uv pip install --python /opt/r9v/bin/python --no-build-isolation \
+       --constraint /tmp/runtime.txt /src/vllm \
+    && rm -rf /src/vllm
+COPY vendor/vllm-gguf-plugin /src/plugin
+RUN uv pip install --python /opt/r9v/bin/python --no-build-isolation --constraint /tmp/runtime.txt /src/plugin
+COPY kernels/r9v-gfx1201 /src/kernels
+RUN VLLM_GGUF_PLUGIN_CSRC=/src/plugin/vllm_gguf_plugin/csrc \
+      QWEN38_DENSE_MMVQ_BUILD_DIR=/tmp/build-dense \
+      /opt/r9v/bin/python /src/kernels/dense_mmvq_hip/build_extension.py \
+    && VLLM_GGUF_PLUGIN_CSRC=/src/plugin/vllm_gguf_plugin/csrc \
+      /opt/r9v/bin/python /src/kernels/tiered_iq_moe_hip/build_extension.py \
+      --build-directory /tmp/build-tiered --variants auto,u2,u5,u10,reuse3,reuse3v2 \
+    && QWEN38_GDN_BUILD_DIR=/tmp/build-gdn \
+      /opt/r9v/bin/python /src/kernels/fused_gdn_mtp_hip/build_extension.py \
+    && mkdir -p /opt/r9v/kernels \
+    && cp /tmp/build-dense/*.so /tmp/build-tiered/*.so /tmp/build-gdn/*.so /opt/r9v/kernels/ \
+    && rm -rf /tmp/build-dense /tmp/build-tiered /tmp/build-gdn /src/plugin /src/kernels
+# Keep the SDK's AMD SMI bindings beside their matching library. Installing the
+# base-image bindings loads a second AMD SMI library after torch and reports zero
+# devices, even though HIP can execute kernels.
+RUN uv pip install --python /opt/r9v/bin/python pytest \
+    && printf '%s\n' '/opt/r9v/lib/python3.12/site-packages/_rocm_sdk_core/share/amd_smi' > /opt/r9v/lib/python3.12/site-packages/r9v_amdsmi.pth \
+    && printf '%s\n' /opt/r9v/lib/python3.12/site-packages/_rocm_sdk_core/lib \
+       /opt/r9v/lib/python3.12/site-packages/_rocm_sdk_core/lib/host-math/lib \
+       /opt/r9v/lib/python3.12/site-packages/_rocm_sdk_libraries/lib > /etc/ld.so.conf.d/00-r9v-sdk.conf \
+    && ldconfig \
+    && timeout 15 /opt/r9v/bin/python -c 'import torch; torch.multiprocessing.set_sharing_strategy("file_system"); assert torch.zeros(8).share_memory_().is_shared()' \
+    && uv pip check --python /opt/r9v/bin/python \
+    && /opt/r9v/bin/python -c "import torch, importlib.metadata as m; assert m.version('rocm') == '10.0.0'; assert torch.__version__ == '2.11.0+rocm10.0.0'; assert torch.version.hip == '7.15.26333', torch.version.hip"
+ENV QWEN38_DENSE_MMVQ_HIP_SO=/opt/r9v/kernels/qwen38_dense_mmvq_hip.so \
+    QWEN38_TIERED_IQ_MOE_HIP_SO=/opt/r9v/kernels/qwen38_tiered_iq_moe_hip.so \
+    QWEN38_FUSED_GDN_MTP_HIP_SO=/opt/r9v/kernels/qwen38_fused_gdn_mtp_hip.so
+ARG R9V_REVISION=unknown
+LABEL org.opencontainers.image.source="https://github.com/Dyluhn/R9V" \
+      org.opencontainers.image.revision="${R9V_REVISION}" \
+      org.opencontainers.image.description="Experimental Qwen ROCm 10 candidate; qualification required"
+ENTRYPOINT ["vllm", "serve"]

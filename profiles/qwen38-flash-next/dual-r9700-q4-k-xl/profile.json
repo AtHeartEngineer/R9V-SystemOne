@@ -1,0 +1,82 @@
+{
+  "schema": "r9v.profile.v1",
+  "id": "qwen38-flash-next/ud-q4-k-xl/dual-r9700-128k",
+  "name": "Qwen3.8 Flash Next UD-Q4_K_XL \u2014 dual R9700, MTP4, 128K",
+  "status": "experimental",
+  "summary": "Reference full128K placement and3GiB headroom passed; portable setup integration and public image distribution remain experimental.",
+  "aliases": [
+    "qwen38-q4-xl"
+  ],
+  "model_package": "qwen38-flash-next-ud-q4-k-xl-mtp-blockfp8-mmproj-q8",
+  "runtime": "qwen38-flash-next-gfx1201-mtp4-v2",
+  "hardware": "dual-r9700-32gb-asymmetric",
+  "placement": "qwen38-q4-k-xl-dual-r9700-image6-ranked-headroom3",
+  "legacy_env": "profiles/qwen38-flash-next/dual-r9700-q4-k-xl/profile.env",
+  "descriptors": {
+    "model_package": "packages/models/qwen38-flash-next/ud-q4-k-xl--mtp-blockfp8--mmproj-q8/package.json",
+    "runtime": "runtimes/qwen38-flash-next-gfx1201-mtp4-v2/runtime.json",
+    "hardware": "hardware/dual-r9700/hardware.json",
+    "placement": "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/image6-routing-r4/headroom3.json"
+  },
+  "commands": {
+    "plan": [
+      "scripts/profile-diagnostics.sh",
+      "plan"
+    ],
+    "doctor": [
+      "scripts/profile-doctor.sh"
+    ],
+    "fetch": [
+      "tools/fetch_package.py",
+      "packages/models/qwen38-flash-next/ud-q4-k-xl--mtp-blockfp8--mmproj-q8/package.json"
+    ],
+    "build": [
+      "scripts/build-retained-image.sh"
+    ],
+    "run": [
+      "scripts/launch.sh"
+    ],
+    "verify": [
+      "tools/verify_package.py",
+      "packages/models/qwen38-flash-next/ud-q4-k-xl--mtp-blockfp8--mmproj-q8/package.json"
+    ],
+    "support": [
+      "scripts/profile-diagnostics.sh",
+      "support"
+    ],
+    "soak": [
+      "scripts/profile-diagnostics.sh",
+      "soak"
+    ],
+    "placement": [
+      "scripts/profile-diagnostics.sh",
+      "placement"
+    ],
+    "setup": [
+      "tools/setup_profile.py",
+      "setup"
+    ],
+    "start": [
+      "tools/setup_profile.py",
+      "start"
+    ]
+  },
+  "features": {
+    "openai_api": true,
+    "vision": true,
+    "tools": true,
+    "mtp_depth": 4,
+    "max_context": 131072
+  },
+  "qualification": {
+    "status": "reference-workload-passed",
+    "integration_notes": "docs/qwen-release-candidate.md",
+    "local_qualification_required": true,
+    "public_image": "published-verified-bundle"
+  },
+  "distribution": {
+    "image_bundle": "release/image-bundle-20260912.json",
+    "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+    "transport": "github-release-docker-save"
+  }
+}

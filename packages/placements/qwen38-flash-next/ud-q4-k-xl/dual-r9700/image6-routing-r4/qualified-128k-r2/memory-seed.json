@@ -1,0 +1,154 @@
+{
+  "schema": "r9v.public-memory-seed.v2",
+  "calibration": {
+    "schema": "r9v.memory-calibration.v1",
+    "contract": {
+      "settings": {
+        "R9V_MAX_MODEL_LEN": "131072",
+        "R9V_PROFILER_ACTIVE_ITERATIONS": "12",
+        "R9V_DRAFT_W2_RANK_ROWS": "0",
+        "R9V_CACHE192": "0",
+        "R9V_PROFILER_WAIT_ITERATIONS": "0",
+        "R9V_PLE_RESIDENCY_MODE": "ssd",
+        "R9V_Q6K_HEAD_ROWS5": "0",
+        "R9V_CACHE80": "1",
+        "R9V_PROFILER_MAX_ITERATIONS": "12",
+        "R9V_MAX_NUM_SEQS": "1",
+        "R9V_DENSE_ROWS2": "0",
+        "R9V_CACHE_FILL_BATCH": "1",
+        "R9V_R4D_GDN": "0",
+        "R9V_R4D_AR_QUANT": "0",
+        "R9V_HC_ROWS45": "0",
+        "R9V_TIERED_EXPERT_CACHE_POLICY": "lru",
+        "R9V_PLE_MMAP_TRIM_ROWS": "131072",
+        "R9V_CPU_OFFLOAD_GB": "112.5",
+        "R9V_R4D_AR": "0",
+        "R9V_ENABLE_RDNA4_QSA_STRIDED": "1",
+        "R9V_ENABLE_AUTO_TOOL_CHOICE": "1",
+        "R9V_TARGET_SHARD3_REL": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+        "R9V_ENABLE_DENSE_Q8_ATTN_M3": "1",
+        "R9V_MTP_SPEC_TOKENS": "4",
+        "R9V_TENSOR_PARALLEL_SIZE": "2",
+        "R9V_DENSE_Q8_ATTN_M3_VARIANT": "exact4-w8",
+        "R9V_MODEL_PACKAGE": "qwen38-flash-next-ud-q4-k-xl-mtp-blockfp8-mmproj-q8",
+        "R9V_REQUIRE_PLE_NONROTATIONAL": "1",
+        "R9V_RUNTIME_DESCRIPTOR": "acd09d5230b4c27451d98790dd1c64b47b00ed6ec071d5444ccdad3540de96bd",
+        "R9V_SHARED_SAFE_PADDING": "1",
+        "R9V_PLE_PINNED_RESERVE_BYTES": "17179869184",
+        "R9V_DENSE_ROWS45": "1",
+        "R9V_HC_SAFE_PADDING": "1",
+        "R9V_TARGET_REL": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf",
+        "R9V_CPU_OFFLOAD_GB_BY_DEVICE": "146.25,78.75",
+        "R9V_HC_MIX_MMQ45": "1",
+        "R9V_ENABLE_FUSED_HC_UP_MIX": "1",
+        "R9V_MTP_QUANTIZATION": "fp8",
+        "R9V_NATIVE_CUSTOM_AR": "1",
+        "R9V_EXPERT_TP_SPLIT": "416,224",
+        "R9V_IMAGE": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+        "R9V_ENABLE_DENSE_HC_DOWN_BF16_M3": "1",
+        "R9V_R4D": "0",
+        "R9V_ATTENTION_OUTPUT4": "1",
+        "R9V_TIERED_EXPERT_CACHE_ASYNC": "0",
+        "R9V_KV_CACHE_MEMORY_BYTES": "2562215936",
+        "R9V_TIERED_PREFILL_GROUP_SIZE": "16",
+        "R9V_HC_MIX_MMQ4": "1",
+        "R9V_PLE_RSS_LOG_ROWS": "131072",
+        "R9V_MAX_NUM_BATCHED_TOKENS": "1024",
+        "R9V_HC_MMQ4": "1",
+        "R9V_TIERED_EXPERT_CACHE_SLOTS": "80",
+        "R9V_PLE_WORKER_TIMING": "0",
+        "R9V_TIERED_IQ_MOE_VARIANT": "reuse3v2",
+        "R9V_PLE_EXPECTED_BYTES": "28800138240",
+        "R9V_TARGET_SHARD4_REL": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+        "R9V_Q8_MMVQ5_SHAPES": "[\"2560,3072\",\"640,2560\",\"2560,320\"]",
+        "R9V_TOOL_CALL_PARSER": "qwen3_coder",
+        "R9V_ENABLE_FUSED_GDN_MTP": "1",
+        "R9V_MTP_DRAFT_TP_SIZE": "2",
+        "R9V_REASONING_PARSER": "qwen3",
+        "R9V_PLE_MMAP_READAHEAD": "1",
+        "R9V_RETAINED_MTP4": "1",
+        "R9V_PROFILER_WARMUP_ITERATIONS": "1",
+        "R9V_TARGET_SHARD2_REL": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+        "R9V_NATIVE_ALIGN_IPC": "1",
+        "R9V_MTP_LOCAL_ARGMAX": "1",
+        "R9V_TIERED_EXPERT_CACHE_RANKS": "0",
+        "R9V_ENABLE_FUSED_MOE_SHARED_EPILOGUE": "1",
+        "R9V_PLE_EXPECTED_SHA256": "dd55c28902f38cd88134b2a569c51282c5ffce30080487e1a645740115c56cc3",
+        "R9V_MODEL_PACKAGE_SHA256": "c70df7b74f4d71af9d361a92f82d4fa76c39b3ba8ccc0e90e35ae0dcd4c3a2c2",
+        "R9V_STAGE_DIAGNOSTICS": "1",
+        "R9V_ENABLE_PREFIX_CACHING": "0",
+        "R9V_STREAM_EXPERT_COMPACTION": "1"
+      },
+      "source_sha256": "35f4c33636f3c5fd4c1858773e2b8e3c7f46e979a8ac59a797da0c41f17d2986",
+      "devices": [
+        {
+          "bdf": "0000:03:00.0",
+          "total_bytes": 34208743424
+        },
+        {
+          "bdf": "0000:13:00.0",
+          "total_bytes": 34208743424
+        }
+      ],
+      "driver": {
+        "kernel": "7.1.5-ogc5.1.fc44.x86_64",
+        "version": null,
+        "srcversion": null
+      }
+    },
+    "ranks": [
+      {
+        "non_expert_peak_bytes": 11882114048,
+        "external_allowance_bytes": 1214894080,
+        "transient_margin_bytes": 536870912
+      },
+      {
+        "non_expert_peak_bytes": 11756483584,
+        "external_allowance_bytes": 341577728,
+        "transient_margin_bytes": 536870912
+      }
+    ],
+    "reference_cold_bytes": 49159086080,
+    "startup_required_available_bytes": 81279123456,
+    "host_reserve_bytes": 4294967296,
+    "workload_passed": true,
+    "limitations": "Local bounded workload envelope; polling plus 512 MiB transient margin. External allowance includes 256 MiB variability. Revalidate every derived placement."
+  },
+  "placement_qualification": {
+    "passed": true
+  },
+  "provenance": {
+    "private_seed_sha256": "9db0f4369b8f47931e8e77ba2551264d16d9ecf2422c91917a64f0e385a69750",
+    "private_payload_index_sha256": "64a3b92deda415f07fe634e79386b8b172d1b5166c096f39a147ef0abeab26dd",
+    "original_calibration_sha256": "3202304e3d87da5c6176d68f467baafe83897d3549b37b866d69f36377a1f7a3",
+    "scope": "Publisher-attested reference workload; public numeric samples independently reproduce memory arithmetic. Raw private qualification remains archived."
+  },
+  "limitations": "Reference estimate only. Exact image/model/runtime identity must match. Every local placement requires full workload qualification.",
+  "public_evidence": {
+    "catalog": {
+      "path": "catalog.json",
+      "bytes": 1670292,
+      "sha256": "35f4c33636f3c5fd4c1858773e2b8e3c7f46e979a8ac59a797da0c41f17d2986"
+    },
+    "manifest": {
+      "path": "manifest.json",
+      "bytes": 322945,
+      "sha256": "569f1128bb3c80b555a54688d41f8c6c3af05260978204bc0d230fcd3e1a4769"
+    },
+    "runtime": {
+      "path": "runtime.json",
+      "bytes": 1377,
+      "sha256": "acd09d5230b4c27451d98790dd1c64b47b00ed6ec071d5444ccdad3540de96bd"
+    },
+    "measurements": {
+      "path": "measurements.json",
+      "bytes": 119466,
+      "sha256": "923639bdda117d14217fab6c90352a3d8a32bfebe7cea0b29d8ba25d510d8d19"
+    },
+    "workload": {
+      "path": "workload.json",
+      "bytes": 909,
+      "sha256": "5b2c9244511a24c46eb700b2c4b8b991d86fea4f3e2b678bb279330d73ae95e0"
+    }
+  }
+}

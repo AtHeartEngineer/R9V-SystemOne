@@ -45,3 +45,18 @@ ENV QWEN38_DENSE_MMVQ_HIP_SO=/opt/r9v/kernels/qwen38_dense_mmvq_hip.so \
     QWEN38_FUSED_GDN_MTP_HIP_SO=/opt/r9v/kernels/qwen38_fused_gdn_mtp_hip.so
 
 ENTRYPOINT ["vllm", "serve"]
+
+# These profile changes are Python-only and use the base image's compiled ABI.
+# Copy after kernel builds so diagnostic/metadata fixes do not rebuild kernels.
+COPY vendor/vllm/vllm/v1/attention/backends/short_conv_attn.py /opt/r9v/lib/python3.12/site-packages/vllm/v1/attention/backends/short_conv_attn.py
+COPY vendor/vllm/vllm/v1/ple_offload /opt/r9v/lib/python3.12/site-packages/vllm/v1/ple_offload
+COPY vendor/vllm/vllm/v1/worker/gpu_worker.py vendor/vllm/vllm/v1/worker/r9v_diagnostics.py /opt/r9v/lib/python3.12/site-packages/vllm/v1/worker/
+COPY vendor/vllm/vllm/v1/worker/utils.py /opt/r9v/lib/python3.12/site-packages/vllm/v1/worker/utils.py
+COPY vendor/vllm/vllm/platforms/rocm.py /opt/r9v/lib/python3.12/site-packages/vllm/platforms/rocm.py
+COPY vendor/vllm/vllm/compilation/backends.py /opt/r9v/lib/python3.12/site-packages/vllm/compilation/backends.py
+COPY vendor/vllm/vllm/v1/core/sched/scheduler.py /opt/r9v/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py
+
+# Keep release metadata after compilation so changing the root commit reuses kernels.
+ARG R9V_REVISION=unknown
+LABEL org.opencontainers.image.source="https://github.com/Dyluhn/R9V" \
+      org.opencontainers.image.revision="${R9V_REVISION}"

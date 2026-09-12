@@ -12,6 +12,11 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+try:
+    from tools.package_sources import artifact_source
+except ModuleNotFoundError:
+    from package_sources import artifact_source
+
 
 def _load(path: Path) -> dict[str, Any]:
     try:
@@ -59,6 +64,7 @@ def main() -> int:
         for item in package.get("artifacts", [])
         if item.get("required", True) or args.include_optional
     ]
+    sources = [artifact_source(package, item) for item in artifacts]
     total = sum(int(item["bytes"]) for item in artifacts)
     print(
         f"Fetching {len(artifacts)} files ({total / 2**30:.2f} GiB) to "
@@ -68,13 +74,13 @@ def main() -> int:
     if not hf:
         raise SystemExit("the Hugging Face `hf` CLI is required")
     model_dir.mkdir(parents=True, exist_ok=True)
-    for artifact in artifacts:
+    for artifact, (repository, revision, relative) in zip(artifacts, sources):
         subprocess.run(
             [
                 hf,
                 "download",
                 repository,
-                artifact["path"],
+                relative,
                 "--revision",
                 revision,
                 "--local-dir",

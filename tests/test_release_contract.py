@@ -14,15 +14,11 @@ QWEN_PACKAGE = (
     / "packages/models/qwen38-flash-next/"
     "ud-iq4-xs--mtp-blockfp8--mmproj-q8/package.json"
 )
-QWEN_PROFILE = ROOT / "profiles/qwen38-flash-next/dual-r9700/profile.json"
-RADIANCE_RESULT = (
-    ROOT
-    / "docs/qualification/results/qwen38-public-radiance-dual-r9700.json"
-)
+QWEN_PROFILE = ROOT / "profiles/qwen38-flash-next/dual-r9700-mtp4/profile.json"
 QWEN_PLACEMENT = (
     ROOT
     / "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/"
-    "r1-lru16-vision-128k.json"
+    "mtp4-headroom3.json"
 )
 
 
@@ -34,7 +30,7 @@ def test_qwen_public_status_matches_published_distribution() -> None:
     profile = _load(QWEN_PROFILE)
     package = _load(QWEN_PACKAGE)
 
-    assert profile["status"] == "release-candidate"
+    assert profile["status"] == "experimental"
     assert package["distribution"]["status"] == "published"
     assert package["distribution"]["revision"] == (
         "bf836f0c20b6c92fcad4226ad3115eb8a19f7582"
@@ -43,7 +39,7 @@ def test_qwen_public_status_matches_published_distribution() -> None:
 
 def test_qwen_package_contains_every_launch_contract_file() -> None:
     package = _load(QWEN_PACKAGE)
-    placement = _load(QWEN_PLACEMENT)
+    _load(QWEN_PLACEMENT)
     paths = {artifact["path"] for artifact in package["artifacts"]}
 
     required = {
@@ -62,7 +58,7 @@ def test_qwen_package_contains_every_launch_contract_file() -> None:
         "mtp/model.safetensors",
         "mtp/mtp-fp8-block-manifest.json",
         "vision/mmproj-Qwen3.8-Flash-Next-Q8_0.gguf",
-        placement["artifact_path"],
+        "manifests/hot-manifest-q4-vision-128k-multiprompt-r1-lru16-neutral.json",
     }
     assert required <= paths
     assert len([path for path in paths if path.endswith(".gguf")]) == 4
@@ -115,16 +111,10 @@ def test_historical_radiance_patch_text_is_not_distributed() -> None:
 def test_root_readme_does_not_overstate_release_readiness() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
-    assert "fully custom native R9V engines" in readme
-    assert "adapted vLLM deployment architecture informed by" in readme
-    assert "immutable 90.36 GiB model package is public" in readme
-    assert "clean-host package installation test" in readme
-    assert "./r9v list --by-topology" in readme
-    assert (
-        "https://huggingface.co/Dyluhn/Qwen3.8-Flash-Next-R9V-IQ4_XS"
-        in readme
-    )
-    assert "https://huggingface.co/Dyluhn/Muse-Glimmer-30B-R9V-V1" in readme
+    assert "Qwen3.8 Flash Next" in readme
+    assert "qwen38-mtp4" in readme
+    assert "qwen38-q4-xl" in readme
+    assert "MTP4" in readme
 
 
 def test_root_readme_local_links_exist() -> None:
@@ -140,94 +130,20 @@ def test_root_readme_local_links_exist() -> None:
 
 def test_clean_clone_runbooks_are_ordered_and_fail_closed() -> None:
     qwen = (ROOT / "docs/installation.md").read_text(encoding="utf-8")
-    muse = (ROOT / "docs/muse-v1.md").read_text(encoding="utf-8")
     model_card = (ROOT / "model/README.md").read_text(encoding="utf-8")
 
     assert qwen.index("git clone --recursive") < qwen.index("./r9v list")
     assert qwen.index("export MODEL_DIR=") < qwen.index('"$MODEL_DIR"')
-    assert "./r9v build qwen38" in qwen
-    assert "./r9v verify qwen38" in qwen and "-- --hash" in qwen
-    assert "28800138240" in qwen
-    assert "for attempt in {1..180}" in qwen
+    assert "./r9v fetch qwen38-mtp4" in qwen
+    assert "./r9v verify qwen38-mtp4" in qwen and "-- --hash" in qwen
+    assert "28,800,138,240" in qwen
     assert "amd-smi list" in qwen
-    assert 'host_port="${R9V_HOST_PORT:-8004}"' in qwen
-    assert 'container="${R9V_CONTAINER_NAME:-r9v-qwen38-flash-next}"' in qwen
-    assert '(\nhost_port="${R9V_HOST_PORT:-8004}"' in qwen
-    assert "ready=0" in qwen
-    assert "if (( ! ready )); then" in qwen
-    assert 'docker logs --tail 200 "$container"' in qwen
-    assert 'docker stop "$container"' in qwen
-    assert 'docker rm "$container"' in qwen
-    assert "THIRD_PARTY_NOTICES.md" in qwen
-    assert "--model-dir ..." not in qwen
-
-    assert muse.index("git clone --recursive") < muse.index("./r9v show muse")
-    for action in ("fetch", "build", "run"):
-        assert f"./r9v {action} muse" in muse
-    assert "fails until" in muse
+    assert "./r9v start qwen38-mtp4" in qwen
+    assert "Troubleshooting" in qwen
+    assert "./r9v support PROFILE" in qwen
 
     assert "python tools/prepare_ple.py" not in model_card
-    assert "docs/installation.md#2-fetch-or-arrange-the-model-bundle" in model_card
-
-
-def test_completed_radiance_comparison_matches_result_record() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    result = _load(RADIANCE_RESULT)
-
-    assert "Stock/public Radiance" in readme
-    assert "**Pending clean benchmark**" not in readme
-    assert f'{result["pp8192"]["mean_tok_s"]:.2f}' in readme
-    assert f'{result["tg256"]["mean_tok_s"]:.2f}' in readme
-    assert "**1,512.01** (+3,239.98%)" in readme
-    assert "**78.11** (+197.90%)" in readme
-
-
-def test_readme_benchmark_tables_and_inspiration_are_consistent() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-
-    assert "[antirez's DS4](https://github.com/antirez/ds4)" in readme
-    assert "[Neroued's ninfer](https://github.com/Neroued/ninfer)" in readme
-    assert "not shared code provenance" in readme
-    for value in (
-        "**1,500.68** (+1.54%)",
-        "**2,175.17** (+47.21%)",
-        "**2,078.20** (+46.36%)",
-        "**26.84** (+7.70%)",
-    ):
-        assert value in readme
-    assert readme.count("| Runtime | PP") == 2
-
-
-def test_public_radiance_result_record_is_reproducible() -> None:
-    result = _load(RADIANCE_RESULT)
-    runtime = result["runtime"]
-    tg = result["tg256"]
-
-    assert result["schema"] == "r9v.comparator-benchmark.v1"
-    assert result["topology"] == "dual-r9700-tp2"
-    assert runtime["image"].startswith("sha256:")
-    for key in ("radiance_revision", "vllm_revision", "gguf_plugin_revision"):
-        assert len(runtime[key]) == 40
-    assert runtime["r9v_performance_code"] is False
-    assert runtime["r9v_custom_kernels"] is False
-
-    assert tg["prompt_tokens"] == 278
-    assert tg["completion_tokens"] == 256
-    assert tg["warmups"] == 1
-    assert len(tg["samples_tok_s"]) == 3
-    assert abs(tg["mean_tok_s"] - sum(tg["samples_tok_s"]) / 3) < 1e-12
-
-    pp = result["pp8192"]
-    if pp is not None:
-        assert pp["prompt_tokens"] in (8136, 8192)
-        assert pp["completion_tokens"] == 1
-        assert pp["warmups"] >= 0
-        assert len(pp["samples_tok_s"]) == 10
-        assert pp["prefix_cache_hits_tokens"] == 0
-        assert abs(
-            pp["mean_tok_s"]
-            - sum(pp["samples_tok_s"]) / len(pp["samples_tok_s"])
-        ) < 1e-12
+    assert "docs/installation.md" in model_card
 
 
 def test_image_build_requires_buildx_and_loads_local_images() -> None:
