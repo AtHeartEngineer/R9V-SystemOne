@@ -18,7 +18,7 @@ from vllm.model_executor.layers.fused_moe import RoutedExperts
 from vllm.model_executor.models.utils import extract_layer_index
 from vllm.utils.torch_utils import get_accelerator_view_from_cpu_tensor
 
-from .params import allocate_uva_host_empty
+from .params import allocate_tiered_cold_host_empty, allocate_uva_host_empty
 from .tiered_compaction import (
     MASTER_ATTR,
     compact_expert_master,
@@ -312,7 +312,11 @@ def _compact_expert_parameter(
         hot_ids,
         num_experts,
         device,
-        cold_empty=allocate_uva_host_empty,
+        cold_empty=(
+            allocate_tiered_cold_host_empty
+            if _stream_compaction_enabled()
+            else allocate_uva_host_empty
+        ),
     )
     del cpu_master
 
