@@ -57,6 +57,27 @@ def test_modified_envelope_fails_even_when_files_are_intact(bundle, field):
         verify_bundle(seed, base)
 
 
+def test_public_seed_reaches_planner_but_still_requires_local_qualification(bundle):
+    from tools.plan_experts import plan
+
+    seed, base = bundle
+    verify_bundle(seed, base)
+    contract = copy.deepcopy(seed['calibration']['contract'])
+    estimate = localize(seed, contract, [0, 0])
+    records = seed['public_evidence']
+    source = json.loads((base / records['catalog']['path']).read_text())
+    runtime = json.loads((base / records['runtime']['path']).read_text())
+    _, result = plan(source, estimate, contract, [3 * 2**30] * 2,
+                     512 * 2**30, allow_reference=True, runtime=runtime)
+    assert estimate['evidence'] == list(records.values())
+    assert estimate['workload_passed'] is False
+    assert result['reference_estimate'] is True
+    assert result['qualification'] == 'requires admission and workload validation after loading'
+    with pytest.raises(ValueError, match='passing workload evidence'):
+        plan(source, estimate, contract, [3 * 2**30] * 2,
+             512 * 2**30, allow_reference=False, runtime=runtime)
+
+
 def test_rehashed_incomplete_context_is_not_qualification(bundle):
     seed, base = bundle
     rewrite(seed, base, "workload", lambda value: value.update(prompt_tokens=1000))

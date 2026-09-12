@@ -398,6 +398,36 @@ def test_doctor_rejects_unconfigured_required_model_payloads(monkeypatch):
     assert all(check.status == "FAIL" for check in reporter.checks)
 
 
+def test_ple_storage_normalizes_btrfs_subvolume_source(tmp_path, monkeypatch):
+    from tools import profile_doctor as doctor
+
+    ple = tmp_path / "per_layer_token_embd.iq4_nl.bin"
+    ple.write_bytes(b"ple")
+    monkeypatch.setenv("R9V_PLE_PATH", str(ple))
+    monkeypatch.setenv("R9V_PLE_EXPECTED_BYTES", "3")
+    calls = []
+
+    def discover(command, **kwargs):
+        calls.append(command)
+        if command[:2] == ["findmnt", "-J"]:
+            return subprocess.CompletedProcess(
+                command, 0,
+                '{"filesystems":[{"source":"/dev/nvme0n1p3[/var]",'
+                '"fstype":"btrfs","target":"/var"}]}', "")
+        assert command[-1] == "/dev/nvme0n1p3"
+        return subprocess.CompletedProcess(
+            command, 0,
+            '{"blockdevices":[{"path":"/dev/nvme0n1","type":"disk",'
+            '"rota":false,"tran":"nvme"}]}', "")
+
+    monkeypatch.setattr(doctor, "_run", discover)
+    reporter = Reporter()
+    doctor._check_ple_storage(reporter)
+    assert reporter.checks[-1].status == "PASS"
+    assert "/dev/nvme0n1p3[/var]" in reporter.checks[-1].message
+    assert calls[1][-1] == "/dev/nvme0n1p3"
+
+
 def test_runtime_does_not_apply_prelaunch_available_ram_gate(monkeypatch, tmp_path):
     from tools import profile_doctor as doctor
 

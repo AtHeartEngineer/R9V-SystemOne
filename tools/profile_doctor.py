@@ -1005,7 +1005,10 @@ def _check_ple_storage(reporter: Reporter, hash_ple: bool = False) -> None:
             "qualify this storage manually.",
         )
         return
-    block = _run(["lsblk", "-s", "-J", "-o", "NAME,PATH,TYPE,ROTA,TRAN", source])
+    block_source = source.split("[", 1)[0] if source.startswith("/dev/") else source
+    block = _run(
+        ["lsblk", "-s", "-J", "-o", "NAME,PATH,TYPE,ROTA,TRAN", block_source]
+    )
     if block.returncode != 0:
         reporter.warn(
             "ple-storage",
