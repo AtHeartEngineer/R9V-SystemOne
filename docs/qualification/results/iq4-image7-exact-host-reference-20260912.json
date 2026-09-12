@@ -1,0 +1,64 @@
+{
+  "schema": "r9v.reference-qualification.v1",
+  "status": "experimental-reference-workload-passed",
+  "scope": "Fixed-prompt MTP4 reference followed by full128K workload; not BetterBench, answer-quality evaluation, or ordinary public setup/start/restart qualification",
+  "implementation_commit": "123f1ad03c51e2b630d3294292e80a567087ec81",
+  "image_id": "sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c",
+  "mtp_depth": 4,
+  "static_experts": [
+    71,
+    450
+  ],
+  "cache_slots_by_rank": [
+    160,
+    0
+  ],
+  "context_limit": 131072,
+  "context_prompt_tokens": 130941,
+  "requested_headroom_gib": [
+    3,
+    3
+  ],
+  "workload": {
+    "passed": true,
+    "context_limit": 131072,
+    "checks": [
+      "text",
+      "tool",
+      "vision",
+      "vision-wide",
+      "vision-tall",
+      "context",
+      "idle_resume"
+    ],
+    "semantic_observations": [],
+    "runtime_failures": [],
+    "minimum_physical_free_bytes": [
+      4253020160,
+      4090036224
+    ],
+    "headroom_passed": true
+  },
+  "tg_median": 89.4519603468814,
+  "tg_samples": [
+    90.21726197529378,
+    89.4519603468814,
+    89.22937040577948
+  ],
+  "minimum_normal_zone_free_bytes": 450269184,
+  "normal_zone_minimum_bytes": 68050944,
+  "aftermath_seconds": 90.00034618377686,
+  "container_exit_code": 0,
+  "oom_killed": false,
+  "kernel_failure_matches": [],
+  "original_wrapper_passed": false,
+  "reviewed_no_per_card_vram_shortfall": true,
+  "review_reason": "Equality-only cleanup predicate rejected194199552 additional free bytes on rank0; rank1 unchanged.89 valid aftermath samples showed no per-card shortfall. Original record preserved.",
+  "archives": {
+    "full_evidence": "6de09f3662f08c810beb86c4e398eeb66afb002f2c931e3775968ed87c91499f",
+    "complete_compiled_cache": "9142b018fa3b604c9476644469e4d4bbcfd7a903fce9f897685bed5d0dd883a7",
+    "private_and_public_seed": "204ee6b77b6c706983e95baaf4b4adebdf4c081198b5ab9548d5bc5681c1e896"
+  },
+  "public_seed_sha256": "ab4b685ba0ad3cfdda53a25a324e6a170daa6ccc124970ca1e14b97ed9cf0a1a",
+  "original_model_and_target_head_unchanged": true
+}

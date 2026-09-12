@@ -75,7 +75,7 @@
     "public_image": "published-verified-bundle"
   },
   "distribution": {
-    "image_bundle": "release/image-bundle-20260912.json",
+    "image_bundle": "release/image-bundle-exact-host-20260912.json",
     "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
     "transport": "github-release-docker-save"
   }

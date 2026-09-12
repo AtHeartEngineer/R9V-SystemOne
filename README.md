@@ -6,14 +6,14 @@ R9V runs Qwen3.8 Flash Next on two AMD Radeon AI PRO R9700 GPUs. It combines a p
 
 Each profile binds a model package, runtime, hardware layout and expert placement. Downloads are checked against pinned revisions and file hashes. Setup records the selected configuration, and first start qualifies its workload and memory headroom before reporting ready.
 
-**Current status:** the public source gates (PR32 and PR33), image bundle and fresh-download checks passed for both the IQ4_XS and Q4_K_XL MTP4 profiles. Both remain experimental. The current IQ4 image6 streaming reference passed seven bounded checks at 131,072 context, including a 130,941-token prompt; clean IQ4 setup/restart remains pending. Q4 clean user-flow qualification and the latest BetterBench speed/latency evaluation remain pending. Setup selects the [GitHub Release image bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), verifies its parts, and loads the exact original image ID. See [release status and evidence](docs/qwen-release-candidate.md).
+**Current status:** the public source gates (PR32 and PR33) passed for both the IQ4_XS and Q4_K_XL MTP4 profiles. Both remain experimental. The current IQ4 image7 streaming reference passed seven bounded checks at 131,072 context, including a 130,941-token prompt; a second startup passed, while ordinary public setup/start/restart remains pending. Q4's image6 ranked reference is recorded, while its ordinary user flow remains pending. The latest BetterBench plan (GGZ14 v0.6.0, `d00ad5e`) has not been executed. Anonymous public downloads and a resumed Docker import passed; no model ran during the image check. Setup selects the [GitHub Release image bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images), verifies its parts, and loads the exact original image ID. See [release status and evidence](docs/qwen-release-candidate.md).
 
 ## Profiles and features
 
 | Alias | Model package | Runtime | Status |
 |---|---|---|---|
-| `qwen38-mtp4` | IQ4_XS | MTP4, dual R9700, 128K context | Image6 streaming reference passed; clean setup/restart pending |
-| `qwen38-q4-xl` | Q4_K_XL | MTP4, dual R9700, 128K context | Clean user-flow qualification pending |
+| `qwen38-mtp4` | IQ4_XS | MTP4, dual R9700, 128K context | Image7 streaming reference passed; public setup/start/restart pending |
+| `qwen38-q4-xl` | Q4_K_XL | MTP4, dual R9700, 128K context | Image6 ranked reference; public user flow pending |
 
 Use the explicit MTP4 aliases for the current workflow.
 
@@ -36,7 +36,7 @@ The reference system uses:
 - An asymmetric PCIe layout: rank 0 on Gen5 x16 and rank 1 across Gen4 x4. GPU ordering matters to placement and performance.
 - Git, Python 3.10+, Docker and the Hugging Face CLI described in the [installation guide](docs/installation.md).
 
-The public image bundle plus its containerd image-store footprint measured roughly **50 GiB**. The IQ4 package occupies approximately **90.36 GiB**. The four Q4 target shards alone occupy **103.69 GiB**, with auxiliary assets additional. The derived PLE file occupies **26.82 GiB**. Leave further room for compilation caches and diagnostics. Reuse verified assets instead of duplicating model files.
+The public image bundle plus its containerd image-store footprint measured roughly **50 GiB**; reserve at least **70 GiB** for image and cache import space. The IQ4 package occupies approximately **90.36 GiB**. The four Q4 target shards alone occupy **103.69 GiB**, with auxiliary assets additional. The derived PLE file occupies **26.82 GiB**. Leave further room for compilation caches and diagnostics. Reuse verified assets instead of duplicating model files.
 
 ## Setup and start
 
@@ -59,7 +59,7 @@ The output should identify `io.containerd.snapshotter.v1`. If it does not, follo
 
 | Profile | Tested local image ID |
 |---|---|
-| `qwen38-mtp4` | `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3` |
+| `qwen38-mtp4` | `sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c` |
 | `qwen38-q4-xl` | `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3` |
 
 Install the download CLI in an isolated environment if it is not already available:
@@ -107,15 +107,15 @@ The following fixed-prompt reference samples used MTP4 on the dual-R9700 system:
 
 | Profile / placement | Static experts, ranks 0/1 | Generation tokens/s |
 |---|---:|---:|
-| IQ4 image6 streaming reference | 71 / 450 | **93.026774** |
+| IQ4 image7 streaming reference | 71 / 450 | **89.45196** |
 | Q4 measured ranked placement | 97 / 349 | **53.431** |
 | Q4 initial bootstrap placement | 64 / 320 | **25.285** |
 
 These are fixed-prompt reference samples with MTP4; they do not measure mixed traffic or generation at full context. Actual user placements depend on the requested headroom and must qualify locally.
 
-The IQ4 image6 streaming reference retained **131,072 context tokens** and passed seven bounded workload checks, including an actual **130,941-token prompt**, text, tools, three image shapes and idle resume. Its median was **93.026774 TG tok/s**, with measured free VRAM of 4,072,144,896 and 4,075,905,024 bytes (about 3.79 GiB per card); the run had a clean 90-second aftermath and GPU reclaim. These checks used existing verified assets and do not establish clean download-to-run reproduction, answer quality or a 100 tok/s qualification. Clean IQ4 setup/restart, Q4 clean user-flow qualification and the latest BetterBench evaluation remain pending.
+The IQ4 image7 streaming reference retained **131,072 context tokens** and passed seven bounded workload checks, including an actual **130,941-token prompt**, text, tools, three image shapes and idle resume. Its median was **89.45196 TG tok/s**, with measured free VRAM of 4,253,020,160 and 4,090,036,224 bytes and a minimum Normal-zone free value of 450,269,184 bytes. The run had a clean 90-second aftermath and GPU reclaim. The supervisor incorrectly reported failure because its cleanup check required exact VRAM equality: rank 0 had 185.203 MiB more free and rank 1 was unchanged. Independent review confirmed no per-card shortfall throughout the aftermath. These checks used existing verified assets and do not establish ordinary public setup/start/restart, answer quality or a 100 tok/s qualification. Q4's ordinary public user flow and the latest BetterBench plan remain pending.
 
-The [current IQ4 reference evidence](docs/qualification/results/iq4-image6-streaming-reference-20260912.json) records the measured result and independently verified archive commitments. Historical prefill and comparator results remain in the [earlier Qwen qualification](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md); they should not be substituted for measurements of the new placements.
+The [current IQ4 reference evidence](docs/qualification/results/iq4-image7-exact-host-reference-20260912.json) records the measured result and independently verified archive commitments. Historical prefill and comparator results remain in the [earlier Qwen qualification](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md); they should not be substituted for measurements of the new placements.
 
 ## Diagnostics and reporting a problem
 
@@ -162,7 +162,7 @@ python -m pytest -q tests
 ./scripts/ci-static.sh
 ```
 
-CPU CI checks tooling and source contracts. GPU parity, graph replay, full-model qualification and throughput measurements require the matching hardware. Clean IQ4 setup/restart, Q4 clean user-flow qualification and the latest BetterBench speed/latency evaluation remain pending release work.
+CPU CI checks tooling and source contracts. GPU parity, graph replay, full-model qualification and throughput measurements require the matching hardware. IQ4 ordinary public setup/start/restart, Q4 ordinary public user flow and the latest BetterBench speed/latency plan remain pending release work.
 
 Read [CONVENTIONS.md](CONVENTIONS.md) before changing code. Dependency gitlinks are release inputs: use the committed revisions rather than replacing them with moving branch heads.
 

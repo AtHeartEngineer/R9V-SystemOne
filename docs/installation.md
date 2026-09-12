@@ -5,7 +5,7 @@ This guide covers the two newest dual-R9700 MTP4 profiles: `qwen38-mtp4`
 Both require two 32 GiB `gfx1201` Radeon AI PRO R9700 GPUs, ROCm device access,
 Docker, Python 3.10+, Git, `curl`, and storage for the model, 28,800,138,240-byte
 PLE payload, image layers, and runtime cache. Device order is semantic.
-Reserve roughly **50 GiB** for the public image bundle and its containerd image-store footprint, in addition to the model, PLE payload and runtime cache.
+Reserve at least **70 GiB** for image and cache import space; the public image bundle plus its containerd image-store footprint measured roughly **50 GiB**. This is in addition to the model, PLE payload and runtime cache.
 
 ## Check the host
 
@@ -60,7 +60,7 @@ export MODEL_DIR=/fast-storage/qwen38-r9v
 ```
 
 Use `qwen38-q4-xl` in both commands for Q4. Setup selects the profile's
-[`release/image-bundle-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), downloads and SHA-256 verifies its parts,
+[`release/image-bundle-exact-host-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images), downloads and SHA-256 verifies its parts,
 and loads the exact original image ID. Docker 29 must use the containerd image
 store so the loaded image keeps its exact ID; check `docker info` as described
 above before setup:

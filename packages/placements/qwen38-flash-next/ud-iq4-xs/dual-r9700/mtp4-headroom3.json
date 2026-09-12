@@ -5,7 +5,7 @@
   "hardware": "dual-r9700-32gb-asymmetric",
   "status": "experimental",
   "manifest": {
-    "path": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/mtp4-headroom3-manifest.json"
+    "path": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/manifest.json"
   },
   "expert_partition": [
     416,
@@ -19,8 +19,8 @@
   "cache_ranks": [
     0
   ],
-  "qualification": "Image6 streaming reference passed all seven full128K workload checks and 3GiB per-card headroom. Public catalog only relocates provenance paths; local setup/start/restart qualification remains required.",
-  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
-  "catalog": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/mtp4-complete-expert-catalog.json",
-  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image6-streaming-r1/qualified-128k-r1/memory-seed.json"
+  "qualification": "Image7 exact-sized cold-host reference passed all seven full 128K workload checks and 3 GiB per-card headroom. Public projection preserves measured placement and original evidence commitments; ordinary public setup/start/restart qualification remains pending.",
+  "image_id": "sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c",
+  "catalog": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/catalog.json",
+  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/memory-seed.json"
 }
