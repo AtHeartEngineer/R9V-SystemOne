@@ -1,0 +1,30 @@
+# Troubleshooting Qwen3.8 Flash Next
+
+Use the profile alias that matches the installed artifacts: `qwen38-mtp4` for
+UD-IQ4_XS MTP4 or `qwen38-q4-xl` for UD-Q4_K_XL MTP4. Start with a read-only
+check:
+
+```bash
+./r9v show qwen38-mtp4
+./r9v doctor qwen38-mtp4 -- --host-only
+```
+
+For a running server, inspect the runtime with `./r9v doctor PROFILE --
+--runtime`. A failed check includes the observed value and corrective action.
+
+| Check or symptom | Action |
+|---|---|
+| Package download or hash failure | Check disk and `hf` access, then repair or re-fetch the exact profile package. Never launch after a failed hash. |
+| GPU count, architecture, or BDF mismatch | Run `amd-smi list`; rerun setup with `--gpu-bdfs BDF0,BDF1` in the intended rank order. |
+| Normal-zone pressure warning | Free host memory or reduce CPU-offloaded residency. Swap does not satisfy pinned-RAM requirements. |
+| Requested headroom shortfall | Preserve every per-rank shortfall. Change the target deliberately or use the release seed to plan it; the resulting placement still needs local workload qualification. |
+| Startup or JIT timeout | Increase `--timeout`, inspect `docker logs --tail 200 r9v-qwen38-flash-next`, and check image, model, PLE, and cache space. |
+| Existing container blocks startup | Inspect the exact named container, save diagnostics, then deliberately stop/remove that container before retrying. |
+| Runtime worker or transport failure | Keep the container running long enough to collect startup evidence; run `./r9v doctor PROFILE -- --runtime` and inspect worker identity and HIP-visible BDFs. |
+| Support request | Run `./r9v support PROFILE --state-dir DIR`; treat the bundle as private and do not publish prompts, completions, raw token IDs, or logs. |
+| PLE size or residency failure | Verify the payload is exactly 28,800,138,240 bytes, on the intended SSD, and re-run setup with `--ple-path` if reusing it. |
+
+A host-only pass proves prerequisites only. Health proves readiness only. The
+bounded workload qualification is required for each new placement and headroom
+target. See [installation](installation.md) for the complete setup flow and
+[LLM setup guide](../LLM_SETUP_GUIDE.md) for agent-operated installs.

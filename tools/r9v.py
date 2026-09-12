@@ -13,6 +13,11 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+try:
+    from tools.profile_state import default_state_dir, validate_state_profile
+except ModuleNotFoundError:
+    from profile_state import default_state_dir, validate_state_profile
+
 PROFILE_SCHEMA = "r9v.profile.v1"
 VALID_STATUSES = {"qualified", "release-candidate", "experimental", "retired"}
 DESCRIPTOR_SCHEMAS = {
@@ -222,6 +227,11 @@ def verify_profile_graph(profile: Profile) -> list[str]:
         if selected.get("hardware") != profile.data["hardware"]:
             raise ProfileError(f"{profile.path}: placement hardware mismatch")
     _validate_commands(profile)
+    for name in ("fetch", "verify"):
+        command = profile.data.get("commands", {}).get(name, [])
+        if command and command[0] in ("tools/fetch_package.py", "tools/verify_package.py"):
+            if len(command) < 2 or _path_from_repo(command[1]) != _path_from_repo(profile.data["descriptors"]["model_package"]):
+                raise ProfileError(f"{profile.path}: {name} command selects a different model package")
     return checked
 
 
@@ -248,8 +258,39 @@ def run_profile_command(
     command = profile.data.get("commands", {}).get(action)
     if not command:
         raise ProfileError(f"profile {profile.id!r} does not provide {action!r}")
-    resolved = [str(_path_from_repo(command[0])), *command[1:], *remainder]
     env = command_environment(profile, model_dir)
+    if action in {'doctor', 'soak', 'plan', 'support'} and profile.id.startswith('qwen38-flash-next/'):
+        state_dir = default_state_dir(profile.id, env)
+        forwarded = []
+        index = 0
+        while index < len(remainder):
+            value = remainder[index]
+            if value == '--state-dir':
+                index += 1
+                if index == len(remainder):
+                    raise ProfileError('--state-dir needs a directory')
+                state_dir = Path(remainder[index]).expanduser()
+            elif value.startswith('--state-dir='):
+                state_dir = Path(value.split('=', 1)[1]).expanduser()
+            else:
+                forwarded.append(value)
+            index += 1
+        remainder = forwarded
+        env['R9V_STATE_DIR'] = str(state_dir.resolve())
+        state_path = state_dir / 'setup.json'
+        if action != 'support' and state_path.exists() and not env.get('R9V_CONFIG_FILE'):
+            try:
+                state = json.loads(state_path.read_text())
+                config = state.get('config', {}) if isinstance(state, dict) else None
+                if not isinstance(config, dict) or any(not isinstance(k, str) or not isinstance(v, str)
+                                                       or not k.startswith('R9V_') for k, v in config.items()):
+                    raise ValueError('invalid configuration mapping')
+                validate_state_profile(state, profile.id)
+                env = {**config, **env}
+            except (OSError, ValueError, TypeError) as error:
+                raise ProfileError(f'Cannot read saved setup {state_path}: {error}. '
+                                   'Use support to collect retained crash evidence.') from error
+    resolved = [str(_path_from_repo(command[0])), *command[1:], *remainder]
     if dry_run:
         print(
             json.dumps(
@@ -301,13 +342,39 @@ def build_parser() -> argparse.ArgumentParser:
     verify_parser.add_argument("profile", nargs="?")
 
     for action, help_text in (
+        ("setup", "prepare a resumable installation"),
+        ("start", "launch and wait for readiness"),
         ("doctor", "check profile prerequisites"),
+        ("support", "save local crash evidence"),
+        ("placement", "derive a smaller experimental expert placement"),
+        ("plan", "choose expert residency for calibrated per-card headroom"),
+        ("soak", "exercise a running profile with bounded requests"),
         ("fetch", "download and verify profile artifacts"),
         ("build", "build the selected runtime"),
         ("run", "launch the selected profile"),
         ("verify", "verify installed artifacts or run the profile smoke test"),
     ):
-        action_parser = subparsers.add_parser(action, help=help_text)
+        epilog = None
+        if action == "setup":
+            epilog = ("Profile options forwarded to setup_profile.py:\n"
+                      "  --headroom GiB,GiB       requested free VRAM per card\n"
+                      "  --reuse-from DIR        reuse verified same-filesystem assets\n"
+                      "  --calibration FILE      local memory calibration for placement\n"
+                      "  --expert-catalog FILE   measured cold-to-hot expert map\n"
+                      "  --state-dir DIR         isolated resumable state directory\n"
+                      "  --image IMAGE [--local-image]  select a pinned/prebuilt runtime")
+        elif action == "support":
+            epilog = ("Support options forwarded to support_bundle.py:\n"
+                      "  --state-dir DIR         select the profile's setup state\n"
+                      "  --container NAME --port PORT\n"
+                      "  --output DIR            private evidence directory\n"
+                      "  --archive FILE          optional local bounded tar.gz\n\n"
+                      "Example: ./r9v support qwen38 --state-dir ~/.local/state/r9v/qwen38 \
+--archive /tmp/r9v-support.tar.gz")
+        action_parser = subparsers.add_parser(
+            action, help=help_text, epilog=epilog,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
         action_parser.add_argument("profile")
         action_parser.add_argument("--model-dir")
         action_parser.add_argument("--dry-run", action="store_true")

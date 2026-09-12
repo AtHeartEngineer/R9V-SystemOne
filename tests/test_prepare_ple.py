@@ -46,3 +46,26 @@ def test_validate_samples_uses_tensor_subrange(tmp_path: Path) -> None:
 
 def test_parse_shape() -> None:
     assert prepare_ple.parse_shape("160,320001536") == (160, 320001536)
+
+
+def test_prepare_reuses_payload_without_destroying_hash_provenance(tmp_path, monkeypatch):
+    import hashlib
+    import json
+
+    payload = bytes(index % 251 for index in range(64 * 1024))
+    source = tmp_path / 'source.gguf'
+    source.write_bytes(b'header' + payload)
+    output = tmp_path / 'ple.bin'
+    span = prepare_ple.TensorSpan(str(source), 'per_layer_token_embd.weight', 6,
+                                 len(payload), 'IQ4_NL', (160, 728))
+    monkeypatch.setattr(prepare_ple, 'locate_tensor', lambda *args: span)
+    monkeypatch.setattr(sys, 'argv', ['prepare_ple.py', str(source), '--output', str(output),
+        '--expected-bytes', str(len(payload)), '--expected-shape', '160,728'])
+    assert prepare_ple.main() == 0
+    manifest = output.with_name(output.name + '.manifest.json')
+    original = manifest.read_bytes()
+    assert json.loads(original)['payload_sha256'] == hashlib.sha256(payload).hexdigest()
+    before = output.stat().st_mtime_ns
+    assert prepare_ple.main() == 0
+    assert output.stat().st_mtime_ns == before
+    assert manifest.read_bytes() == original

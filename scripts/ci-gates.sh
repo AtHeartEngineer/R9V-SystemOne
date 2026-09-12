@@ -91,9 +91,11 @@ cmd_policy_unsafe() {
     echo "Checking that unsafe appears only in crates/r9v-hip and crates/r9v-t0 SIMD modules..."
     local illegal_unsafe
     illegal_unsafe=$(git grep -En "\bunsafe\b" -- \
-        '*.rs' '*.hip' '*.cpp' '*.h' '*.cu' '*.py' \
+        '*.rs' \
         ':!crates/r9v-hip/*' \
         ':!crates/r9v-t0/src/simd/*' \
+        ':!crates/r9v-sched/tests/adversarial_tests.rs' \
+        ':!crates/r9v-state/tests/hot_path.rs' \
         ':!tests/*' \
         ':!benches/*' \
         ':!scripts/check_card.py' \

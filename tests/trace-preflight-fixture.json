@@ -1,0 +1,68 @@
+{
+  "boot_id": "22b4e7e4-b615-492b-81e8-a25e31461ebb",
+  "kernel": "7.1.5-ogc5.1.fc44.x86_64",
+  "wall_time": 1788985870.762401,
+  "monotonic_ns": 70002844466478,
+  "service": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "MainPID": "1927846",
+    "Result": "success",
+    "ExecMainStartTimestampMonotonic": "69756237841"
+  },
+  "recorder_start_ns": 69756237841000,
+  "hashes": {
+    "/var/home/dylan/projects/inference/r9v/diagnostics/timeout-probe-7.1.5-ogc5/trace-timeout.py": "af1d080f1f379cd8c665193f2b2fdfa90ab846c2f3e22da411e83a16143889fa",
+    "/usr/local/libexec/r9v-timeout-trace.py": "af1d080f1f379cd8c665193f2b2fdfa90ab846c2f3e22da411e83a16143889fa",
+    "/etc/systemd/system/r9v-timeout-trace.service": "f48037afab33b3f94c148b647c870a8f8c7773b077be58b9aeeefeee2d1b6a4f",
+    "/sys/kernel/btf/vmlinux": "8269e5b4a6f181c771e1f9ae0e8604f1de254df032e06a32ab47ab833e606f3a",
+    "/sys/kernel/btf/amdgpu": "d1e6c9c5376d7d10888aecd75c0aea5754e932441c642095fb397c03c5b95908"
+  },
+  "installed_uid": 0,
+  "installed_mode": 493,
+  "unit_uid": 0,
+  "unit_mode": 420,
+  "symlinks": false,
+  "recorder_cmdline": [
+    "/usr/bin/python3",
+    "/usr/local/libexec/r9v-timeout-trace.py",
+    "--run"
+  ],
+  "pressure": {
+    "meminfo": {
+      "MemFree_bytes": 9243426816,
+      "MemAvailable_bytes": 97750196224,
+      "Unevictable_bytes": 41562112,
+      "Mlocked_bytes": 41562112,
+      "SwapTotal_bytes": 17179865088,
+      "SwapFree_bytes": 15488114688
+    },
+    "normal_zones": [
+      {
+        "node": 0,
+        "zone": "Normal",
+        "free_bytes": 8576065536,
+        "min_bytes": 68050944,
+        "low_bytes": 1696722944,
+        "high_bytes": 3325394944
+      }
+    ]
+  },
+  "kfd_users": "",
+  "kfd_status": 1,
+  "running_containers": [
+    "disco-agent-server-1",
+    "disco-app-server-1",
+    "disco-frontend-1",
+    "r2exp50759-web-1"
+  ],
+  "sender": "192.168.1.231",
+  "source_revision": "cd86466625a821703dbe73bf3a3a6dfc37b8ee32",
+  "source_hashes": {
+    "scripts/launch.sh": "6bc285125eb6928908e6d57351efb4edf0f604fbf2f9a8641878ca4f4f51396f",
+    "vendor/vllm/vllm/v1/worker/gpu_worker.py": "1acd5f14c5eacf688a5ce6187e3f3dfa45e0bb30019ded3744681d663df9ea49",
+    "vendor/vllm/vllm/v1/worker/r9v_diagnostics.py": "6fa98cd190fbbcc9a63141739e9186ca3ed0a814335124f1284d14595de414c0"
+  },
+  "image": "sha256:550fe8d298ea1c2455613068f2a6b9a234f1ca24fb686731b478b1ebba982a7d",
+  "manifest": "cc468b5159fc31c31c9a207e4b321601de997a37859ddfe4011b4e9438e6c540"
+}

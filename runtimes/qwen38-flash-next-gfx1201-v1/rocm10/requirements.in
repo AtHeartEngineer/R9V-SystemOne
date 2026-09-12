@@ -1,0 +1,8 @@
+--extra-index-url https://stable.repo.amd.com/rocm/whl-next/
+torch[device-gfx1201]==2.11.0+rocm10.0.0
+torchvision[device-gfx1201]==0.26.0+rocm10.0.0
+rocm[libraries,devel,device-gfx1201]==10.0.0
+# The vLLM ROCm build/runtime requirements are stricter than pyproject: <80.
+setuptools==79.0.1
+# Jointly resolved with application.in (Numba / scientific dependencies).
+numpy==2.3.5

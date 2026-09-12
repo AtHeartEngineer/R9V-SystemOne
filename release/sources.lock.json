@@ -11,15 +11,15 @@
     "vllm": {
       "repository": "https://github.com/Dyluhn/vllm",
       "development_base": "ae0a0511f9c6457f3beb4db0a1eeb11f4c28be75",
-      "release_branch": "r9v/qwen38-flash-next",
-      "release_revision": "4b20917386dcdfb619ee62ff24c45efeae176fdf",
+      "release_branch": "r9v-release-20260912",
+      "release_revision": "9ec060c402ed15fbeb1dbd2714615261b63dda12",
       "license": "Apache-2.0"
     },
     "vllm_gguf_plugin": {
       "repository": "https://github.com/Dyluhn/vllm-gguf-plugin",
       "development_base": "fd0f0e8195c813a185a41a6866512ba56a5b84c9",
-      "release_branch": "r9v/qwen38-flash-next",
-      "release_revision": "09b1199015c6b45de5c13dc4b36857ce27d9b0cd",
+      "release_branch": "r9v-release-20260912",
+      "release_revision": "d378a252e44fb6320642e2ef367173d2a0e98059",
       "license": "Apache-2.0"
     },
     "r9v_gfx1201_kernels": {

@@ -263,7 +263,9 @@ def main() -> int:
         return 0
 
     payload_sha256 = copy_span(span, args.output)
-    write_manifest(args.output, span, payload_sha256)
+    # A reuse check must not replace the original full-hash provenance with a sentinel.
+    if payload_sha256 != "existing-sample-validated":
+        write_manifest(args.output, span, payload_sha256)
     print(f"Prepared PLE payload: {args.output}")
     print(f"payload_sha256={payload_sha256}")
     return 0

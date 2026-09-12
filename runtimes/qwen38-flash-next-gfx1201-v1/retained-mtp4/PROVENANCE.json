@@ -1,0 +1,292 @@
+{
+  "schema": "r9v.retained-mtp4-provenance.v1",
+  "source_experiment": "r9v-frontier-iterate-20260911",
+  "base_image_digest": "sha256:977c0de0ee05c415a8f8fca7d38e78e5a9c8fbb083b1dad8e0a87f927ea370a0",
+  "selection_file": "FINAL-SELECTION.json",
+  "target_head": "Original IQ4_XS package target head: Q6_K. Legacy experiment bf16 label describes draft selection.",
+  "main_model_unchanged": true,
+  "target_head_unchanged": true,
+  "qualification": {
+    "fresh_control_tg": 99.43098025563744,
+    "rejected_candidate_tg": 78.67410999024031,
+    "tg100_qualified": false
+  },
+  "files": [
+    {
+      "path": "kernels/cache192_prepare.cu",
+      "origin": "cache192-prepare/cache192_prepare.cu",
+      "sha256": "55b723756a9caceea4df1b9ebaa5b8907cb560b3ab3169db82973ddcb8b8bc73",
+      "curated_sha256": "55b723756a9caceea4df1b9ebaa5b8907cb560b3ab3169db82973ddcb8b8bc73",
+      "bytes": 12905
+    },
+    {
+      "path": "kernels/cache80_prepare.cu",
+      "origin": "cache80-prepare/cache80_prepare.cu",
+      "sha256": "526ac05004bc5cbec8756ac734a2df1f66139e89fddf97d7c50694815752e99e",
+      "curated_sha256": "526ac05004bc5cbec8756ac734a2df1f66139e89fddf97d7c50694815752e99e",
+      "bytes": 12908
+    },
+    {
+      "path": "kernels/dense_mmvq_hip.cu",
+      "origin": "dense-rows2/dense_mmvq_hip.cu",
+      "sha256": "303d38eb216151ea4caa243575d8b3a8f536bdc000d4a6e1bc8d71a214191ab2",
+      "curated_sha256": "303d38eb216151ea4caa243575d8b3a8f536bdc000d4a6e1bc8d71a214191ab2",
+      "bytes": 97221
+    },
+    {
+      "path": "kernels/draft_indexed_q6.cu",
+      "origin": "draft-indexed-q6/draft_indexed_q6.cu",
+      "sha256": "82b72e77e347492d15d9b516da686055e524d66ad0c7ba7b9553732fbb853886",
+      "curated_sha256": "82b72e77e347492d15d9b516da686055e524d66ad0c7ba7b9553732fbb853886",
+      "bytes": 5802
+    },
+    {
+      "path": "kernels/draft_w2_rank.cu",
+      "origin": "draft-w2-rank/draft_w2_rank.cu",
+      "sha256": "7f5e084536eb4c1910191cf52cad8f78de2fd8165d31f2fe51c45d40c917f6a7",
+      "curated_sha256": "7f5e084536eb4c1910191cf52cad8f78de2fd8165d31f2fe51c45d40c917f6a7",
+      "bytes": 3402
+    },
+    {
+      "path": "kernels/hc_mixmmq4.cu",
+      "origin": "dense-hc-mixmmq4/hc_mixmmq4.cu",
+      "sha256": "7518c860a846fa32f4d691e19ff9ed4c0272af6ef1efccba05a59c617debefe6",
+      "curated_sha256": "7518c860a846fa32f4d691e19ff9ed4c0272af6ef1efccba05a59c617debefe6",
+      "bytes": 4408
+    },
+    {
+      "path": "kernels/hc_mixmmq45.cu",
+      "origin": "dense-hc-mixmmq45/hc_mixmmq45.cu",
+      "sha256": "886148efbd9fddf35bd4392b9ad77dacaa41d27d15e0aadfbc1cf234ea6acc85",
+      "curated_sha256": "886148efbd9fddf35bd4392b9ad77dacaa41d27d15e0aadfbc1cf234ea6acc85",
+      "bytes": 4860
+    },
+    {
+      "path": "kernels/hc_mmq4.cu",
+      "origin": "dense-hc-mmq4/hc_mmq4.cu",
+      "sha256": "06259b64cbfbe7e626a3655398ba28bf746c3dd6899dcf902b68743ec7e911aa",
+      "curated_sha256": "06259b64cbfbe7e626a3655398ba28bf746c3dd6899dcf902b68743ec7e911aa",
+      "bytes": 3218
+    },
+    {
+      "path": "kernels/q8_mmvq5.cu",
+      "origin": "dense-q8-mmvq5/q8_mmvq5.cu",
+      "sha256": "ddb726162fc36c2f7455f191fe3f407b8795622a2ab6f79e852c4b3efad85710",
+      "curated_sha256": "ddb726162fc36c2f7455f191fe3f407b8795622a2ab6f79e852c4b3efad85710",
+      "bytes": 6564
+    },
+    {
+      "path": "kernels/tiered_iq_moe_hip.cu",
+      "origin": "kernel-cacheparallel/tiered_iq_moe_hip.cu",
+      "sha256": "545b552d4d5960a1f73b53a99c61489f8066d275895b514676894896c4e208d1",
+      "curated_sha256": "844f29ea53c70d5db31a7db847b948e027a42869321e3f93390ba75141982b42",
+      "bytes": 128927
+    },
+    {
+      "path": "python/vllm/distributed/device_communicators/custom_all_reduce.py",
+      "origin": "native-ar/custom_all_reduce-staged.py",
+      "sha256": "04db228b83db2fc3e4264d12224b6c575401f1d7bc1b7f65ae023105089108b9",
+      "curated_sha256": "04db228b83db2fc3e4264d12224b6c575401f1d7bc1b7f65ae023105089108b9",
+      "bytes": 22597
+    },
+    {
+      "path": "python/vllm/models/qwen4_exp/amd/mtp.py",
+      "origin": "mtp-w2indexed.py",
+      "sha256": "4ccc4c7caa58774bd0ead3b4923f89405b49b6260f7e100776f3615730f4de23",
+      "curated_sha256": "4ccc4c7caa58774bd0ead3b4923f89405b49b6260f7e100776f3615730f4de23",
+      "bytes": 25053
+    },
+    {
+      "path": "python/vllm/platforms/rocm.py",
+      "origin": "native-ar/rocm.py",
+      "sha256": "7fe97a692a4118f444f42fb2873aaffcef1decf2cb0a4fd733724a7954ea2824",
+      "curated_sha256": "7fe97a692a4118f444f42fb2873aaffcef1decf2cb0a4fd733724a7954ea2824",
+      "bytes": 42378
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/__init__.py",
+      "origin": "quantization-round19/__init__.py",
+      "sha256": "b6755dbcdb6ec7aba9434271dc162d0d7c31e813d6b9e434699f21164ac18d1b",
+      "curated_sha256": "b6755dbcdb6ec7aba9434271dc162d0d7c31e813d6b9e434699f21164ac18d1b",
+      "bytes": 1555
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/config.py",
+      "origin": "quantization-round19/config.py",
+      "sha256": "18553e34317ffdab94b193439db428aec1af0d000444998c18eafb9397714370",
+      "curated_sha256": "18553e34317ffdab94b193439db428aec1af0d000444998c18eafb9397714370",
+      "bytes": 4213
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/diffusion_config.py",
+      "origin": "quantization-round19/diffusion_config.py",
+      "sha256": "8859a890e3d9f6f9905fae5e8dc1913c5337559883707db484fefdca456a0531",
+      "curated_sha256": "8859a890e3d9f6f9905fae5e8dc1913c5337559883707db484fefdca456a0531",
+      "bytes": 3784
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/expert_partition.py",
+      "origin": "quantization-round19/expert_partition.py",
+      "sha256": "3052f5f052d362989d72d751f082b42b3ffdacb62c83d92bd4ec9f1136d0994d",
+      "curated_sha256": "3052f5f052d362989d72d751f082b42b3ffdacb62c83d92bd4ec9f1136d0994d",
+      "bytes": 1895
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/fused_moe.py",
+      "origin": "quantization-round19/fused_moe.py",
+      "sha256": "933af3e2d0c6a34ac9a01ef7c2b204176c8ac8cf5861f6b4a26d6ddece998900",
+      "curated_sha256": "933af3e2d0c6a34ac9a01ef7c2b204176c8ac8cf5861f6b4a26d6ddece998900",
+      "bytes": 42210
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/layout.py",
+      "origin": "quantization-round19/layout.py",
+      "sha256": "6ffb4c25b6e862a3953ff8d00fba3c9a59febbafd791cb15ae0c44f0404ef799",
+      "curated_sha256": "6ffb4c25b6e862a3953ff8d00fba3c9a59febbafd791cb15ae0c44f0404ef799",
+      "bytes": 5211
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/linear.py",
+      "origin": "quantization-round19/linear.py",
+      "sha256": "0f293838d7ad83e946b264929d0bc6cd7ec00473cab648e18279c846115e442a",
+      "curated_sha256": "0f293838d7ad83e946b264929d0bc6cd7ec00473cab648e18279c846115e442a",
+      "bytes": 39042
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/params.py",
+      "origin": "quantization-round19/params.py",
+      "sha256": "7f0fa53e2e7649e4f2a91b165e7d30d001be56393026b310fd9240e6875114b5",
+      "curated_sha256": "7f0fa53e2e7649e4f2a91b165e7d30d001be56393026b310fd9240e6875114b5",
+      "bytes": 50023
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/route_profile.py",
+      "origin": "quantization-round19/route_profile.py",
+      "sha256": "387dc5d686f018eddf0d04fad5cdce872cea57a191549398989c1f962265fd0d",
+      "curated_sha256": "387dc5d686f018eddf0d04fad5cdce872cea57a191549398989c1f962265fd0d",
+      "bytes": 7646
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/tiered_compaction.py",
+      "origin": "quantization-round19/tiered_compaction.py",
+      "sha256": "2e3cf51128955c49363f7f2ce751beeeb2ddaa4536d4f7158bef0bfebf9bf4ed",
+      "curated_sha256": "2e3cf51128955c49363f7f2ce751beeeb2ddaa4536d4f7158bef0bfebf9bf4ed",
+      "bytes": 6092
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/tiered_experts.py",
+      "origin": "quantization-round19/tiered_experts.py",
+      "sha256": "c531001875bdbdd55a4fceff5ab08aaf9b1e89dbc033e69a847aa5ec5bc34e77",
+      "curated_sha256": "c531001875bdbdd55a4fceff5ab08aaf9b1e89dbc033e69a847aa5ec5bc34e77",
+      "bytes": 15219
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/utils.py",
+      "origin": "quantization-round19/utils.py",
+      "sha256": "9ffd3ca8f69d5fe0f5121576d4dfa1264c3d93bf277a8044a54e6c4471fbe9e5",
+      "curated_sha256": "9ffd3ca8f69d5fe0f5121576d4dfa1264c3d93bf277a8044a54e6c4471fbe9e5",
+      "bytes": 2187
+    },
+    {
+      "path": "python/vllm_gguf_plugin/quantization/vocal_embeds.py",
+      "origin": "quantization-round19/vocal_embeds.py",
+      "sha256": "8ca98e247ca93779d24389fbbefe6089f1f19db7cf3b541862685e58c262b2e2",
+      "curated_sha256": "8ca98e247ca93779d24389fbbefe6089f1f19db7cf3b541862685e58c262b2e2",
+      "bytes": 8166
+    },
+    {
+      "path": "recipes/build-cache192.py",
+      "origin": "cache192-prepare/build_extension.py",
+      "sha256": "47101ba6ce96d5310a958b7273ce7d09abb5f24d7cee14405d4aee5d262ca626",
+      "curated_sha256": "47101ba6ce96d5310a958b7273ce7d09abb5f24d7cee14405d4aee5d262ca626",
+      "bytes": 370
+    },
+    {
+      "path": "recipes/build-cache80.py",
+      "origin": "cache80-prepare/build_extension.py",
+      "sha256": "a82f2a5faa994af5ca5da387206cbb9a34156d73d97ee9c26688b174a678f6b3",
+      "curated_sha256": "a82f2a5faa994af5ca5da387206cbb9a34156d73d97ee9c26688b174a678f6b3",
+      "bytes": 368
+    },
+    {
+      "path": "recipes/build-dense.py",
+      "origin": "dense-rows2/build_extension.py",
+      "sha256": "8eda1f30db427b0529a52a29c0cd4d4f6ffce70cffba686f70e6e871a8edcb27",
+      "curated_sha256": "8eda1f30db427b0529a52a29c0cd4d4f6ffce70cffba686f70e6e871a8edcb27",
+      "bytes": 1483
+    },
+    {
+      "path": "recipes/build-draft-indexed-q6.py",
+      "origin": "draft-indexed-q6/build_extension.py",
+      "sha256": "5ab17107747409eebdebad262fabcfc71c5b246d465b1906d8717fb46ee9f812",
+      "curated_sha256": "5ab17107747409eebdebad262fabcfc71c5b246d465b1906d8717fb46ee9f812",
+      "bytes": 1484
+    },
+    {
+      "path": "recipes/build-draft-w2.py",
+      "origin": "draft-w2-rank/build_extension.py",
+      "sha256": "03c01d57437f86c66ba7484b1c454a70e11f381e0e02d6aa10222d20acf5c5bb",
+      "curated_sha256": "03c01d57437f86c66ba7484b1c454a70e11f381e0e02d6aa10222d20acf5c5bb",
+      "bytes": 1332
+    },
+    {
+      "path": "recipes/build-hc-mixmmq4.py",
+      "origin": "dense-hc-mixmmq4/build_extension.py",
+      "sha256": "a1ca8676ddf9c4e8d9da06667973fe2d193a15162e60317dfcd47836b38b639c",
+      "curated_sha256": "a1ca8676ddf9c4e8d9da06667973fe2d193a15162e60317dfcd47836b38b639c",
+      "bytes": 551
+    },
+    {
+      "path": "recipes/build-hc-mixmmq45.py",
+      "origin": "dense-hc-mixmmq45/build_extension.py",
+      "sha256": "fde734830537eb3131ea8e126b90720275eeb690cdcf0e531f1ce26f75009e62",
+      "curated_sha256": "fde734830537eb3131ea8e126b90720275eeb690cdcf0e531f1ce26f75009e62",
+      "bytes": 553
+    },
+    {
+      "path": "recipes/build-hc-mmq4.py",
+      "origin": "dense-hc-mmq4/build_extension.py",
+      "sha256": "a377ca4f2cc72849fd0dfe7563352a71b12e224f8a29e2ace6a1a07601871d08",
+      "curated_sha256": "a377ca4f2cc72849fd0dfe7563352a71b12e224f8a29e2ace6a1a07601871d08",
+      "bytes": 545
+    },
+    {
+      "path": "recipes/build-q8-mmvq5.py",
+      "origin": "dense-q8-mmvq5/build_extension.py",
+      "sha256": "fc0e7b11075354f1f9f0c0381faddddaff3fc1a5a5ca09bef63831a7cad3aa88",
+      "curated_sha256": "fc0e7b11075354f1f9f0c0381faddddaff3fc1a5a5ca09bef63831a7cad3aa88",
+      "bytes": 547
+    },
+    {
+      "path": "recipes/build-tiered.py",
+      "origin": "kernel-cacheparallel/build_extension.py",
+      "sha256": "2f41b5264bb19c223bd4cdc89937f2b82a0e614fe3a041d72d7bc049de0ebd6b",
+      "curated_sha256": "2f41b5264bb19c223bd4cdc89937f2b82a0e614fe3a041d72d7bc049de0ebd6b",
+      "bytes": 2715
+    },
+    {
+      "path": "recipes/build_overlay.py",
+      "origin": "new deterministic orchestrator; exact selected flags recorded in source",
+      "sha256": null,
+      "curated_sha256": "b6506255b335dfbae8c1737cfdc34cfb8bfefa7d7ace8be55b9ea4f65881e1d6",
+      "bytes": 3660
+    }
+  ],
+  "excluded": [
+    "model payloads",
+    "compiled shared objects",
+    ".hip generated duplicates",
+    "unselected cache128/cache-planpublish/routeplan/silu/HC tiles/Q8 loadpairs extensions"
+  ],
+  "build_invariants": {
+    "tiered_specialized_variant_mask": 33,
+    "target_head": "original Q6_K; no target requantization",
+    "base_image": "caller must pass repository@verified-digest; local image ID 977c0de0... is not a registry digest",
+    "unselected_extensions_not_built": true
+  },
+  "release_changes": [
+    "Add Q5_1, Q4_K and Q5_K expert dispatch. Q4_K/Q5_K lanes per row use QI/VDR to cover complete blocks.",
+    "Keep selected historical IQ4 paths and original model bytes unchanged.",
+    "Q4_K_XL profile retains its own original Q8_0 target head and disables Q6-specific draft ranking."
+  ]
+}

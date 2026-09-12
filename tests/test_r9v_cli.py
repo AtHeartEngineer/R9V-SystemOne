@@ -33,6 +33,20 @@ def test_help_does_not_overstate_profile_qualification() -> None:
     assert "qualified R9V model/quant profiles" not in result.stdout
 
 
+def test_setup_help_exposes_headroom_and_reuse_options() -> None:
+    result = run_cli("setup", "qwen38", "--help")
+    assert result.returncode == 0
+    for option in ("--headroom", "--reuse-from", "--calibration", "--expert-catalog", "--state-dir"):
+        assert option in result.stdout
+
+
+def test_support_help_exposes_private_bundle_and_archive_options() -> None:
+    result = run_cli("support", "qwen38", "--help")
+    assert result.returncode == 0
+    for option in ("--state-dir", "--container", "--output", "--archive"):
+        assert option in result.stdout
+
+
 def test_catalog_can_be_grouped_by_topology() -> None:
     result = run_cli("list", "--by-topology", "--json")
     assert result.returncode == 0, result.stderr
@@ -47,7 +61,9 @@ def test_catalog_can_be_grouped_by_topology() -> None:
         "muse-glimmer-30b/v1/single-r9700",
     }
     assert by_topology["dual-gpu"] == {
-        "qwen38-flash-next/ud-iq4-xs/dual-r9700-128k"
+        "qwen38-flash-next/ud-iq4-xs/dual-r9700-128k",
+        "qwen38-flash-next/ud-iq4-xs/dual-r9700-mtp4-128k",
+        "qwen38-flash-next/ud-q4-k-xl/dual-r9700-128k",
     }
 
 
@@ -91,3 +107,33 @@ def test_unknown_profile_fails_closed() -> None:
     result = run_cli("show", "not-a-real-profile")
     assert result.returncode != 0
     assert "unknown profile" in result.stderr
+
+
+def test_doctor_uses_setup_state_and_preserves_explicit_overrides(tmp_path, monkeypatch):
+    from tools import r9v
+    from types import SimpleNamespace
+    (tmp_path / 'setup.json').write_text(json.dumps({'config': {
+        'R9V_MODEL_DIR': '/saved-model', 'R9V_IMAGE': 'saved-image', 'R9V_HOST_PORT': '8123'}}))
+    monkeypatch.delenv('R9V_CONFIG_FILE', raising=False)
+    monkeypatch.delenv('R9V_MODEL_DIR', raising=False)
+    monkeypatch.delenv('R9V_IMAGE', raising=False)
+    monkeypatch.setenv('R9V_HOST_PORT', '8124')
+    observed = []
+    monkeypatch.setattr(r9v.subprocess, 'run', lambda command, **kwargs:
+                        observed.append((command, kwargs['env'])) or SimpleNamespace(returncode=0))
+    profile = r9v.resolve_profile('qwen38', r9v.discover_profiles())
+    assert r9v.run_profile_command(profile, 'doctor', ['--state-dir', str(tmp_path), '--runtime'],
+                                   model_dir=None, dry_run=False) == 0
+    command, env = observed[0]
+    assert '--state-dir' not in command
+    assert env['R9V_MODEL_DIR'] == '/saved-model'
+    assert env['R9V_IMAGE'] == 'saved-image'
+    assert env['R9V_HOST_PORT'] == '8124'
+
+
+def test_q4_fetch_and_verify_select_its_own_package():
+    for command in ("fetch", "verify"):
+        result = run_cli(command, "qwen38-q4-xl", "--dry-run")
+        assert result.returncode == 0, result.stderr
+        assert "ud-q4-k-xl--mtp-blockfp8--mmproj-q8/package.json" in result.stdout
+        assert "ud-iq4-xs--mtp-blockfp8--mmproj-q8/package.json" not in result.stdout

@@ -1,0 +1,26 @@
+{
+  "schema": "r9v.placement.v1",
+  "id": "qwen38-q4-k-xl-dual-r9700-image6-ranked-headroom3",
+  "model_package": "qwen38-flash-next-ud-q4-k-xl-mtp-blockfp8-mmproj-q8",
+  "hardware": "dual-r9700-32gb-asymmetric",
+  "status": "experimental",
+  "manifest": {
+    "path": "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/image6-routing-r4/headroom3-manifest.json"
+  },
+  "expert_partition": [
+    416,
+    224
+  ],
+  "hot_counts": [
+    97,
+    349
+  ],
+  "cache_slots": 80,
+  "cache_ranks": [
+    0
+  ],
+  "qualification": "Reference placement passed full128K tools/vision/context and3GiB per-card headroom. Local seed-derived placements require their own first-start workload check.",
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+  "catalog": "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/image6-routing-r4/complete-ranked-catalog.json",
+  "memory_seed": "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/image6-routing-r4/qualified-128k-r2/memory-seed.json"
+}

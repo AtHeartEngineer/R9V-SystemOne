@@ -1,0 +1,75 @@
+{
+  "schema": "r9v.release-userflow.v1",
+  "status": "experimental-reference-userflow-passed",
+  "date": "2026-09-12",
+  "context_limit": 131072,
+  "prompt_tokens": 130941,
+  "mtp_depth": 4,
+  "requested_headroom_gib": [
+    3,
+    3
+  ],
+  "profiles": [
+    {
+      "alias": "qwen38-mtp4",
+      "static_experts": [
+        71,
+        457
+      ],
+      "dynamic_cache": [
+        160,
+        0
+      ],
+      "minimum_free_bytes": [
+        4103454720,
+        3945889792
+      ],
+      "image": "sha256:987468f3f9991dfad8b07f51a18bbd5e5c01dc164d9f82c4143e77bfd14ca80d"
+    },
+    {
+      "alias": "qwen38-q4-xl",
+      "static_experts": [
+        97,
+        348
+      ],
+      "dynamic_cache": [
+        80,
+        0
+      ],
+      "minimum_free_bytes": [
+        4072787968,
+        4013694976
+      ],
+      "image": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3"
+    }
+  ],
+  "checks": [
+    "text",
+    "tool",
+    "vision",
+    "vision-wide",
+    "vision-tall",
+    "context",
+    "idle_resume"
+  ],
+  "startup_and_restart_passed": true,
+  "unchanged_receipt_reused": true,
+  "all_containers_clean_stop": true,
+  "exact_gpu_reclamation": true,
+  "aftermath_seconds": [
+    90.8072016,
+    90.7842958
+  ],
+  "source_archive_sha256": "60e0953c0fb96d053e405d7c575bd54245bc1690fd3e54eee0453012b00413c2",
+  "evidence_archive_sha256": "75908e30437b4f01f5885c3a40f94b950f2d74954b91528ddb7bda10b4323355",
+  "compile_archive_sha256": {
+    "iq4": "b3baed84d570f004e523e21ce605907d919ac8ff69e12a3ca622f54285c9f74c",
+    "q4": "037a4da7300f0cff20cba39d2196833be06d32c69d21a5016d7a7a3ae860f60f"
+  },
+  "limitations": [
+    "Setup reused existing verified assets; clean download-to-run installation remains pending.",
+    "No throughput measurement in this userflow test.",
+    "No public runtime image published.",
+    "All source, log and cache archives verified independently on a second host."
+  ]
+}

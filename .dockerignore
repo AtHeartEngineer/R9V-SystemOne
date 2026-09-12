@@ -7,7 +7,6 @@
 **/build-*
 .build
 .cache
-vendor/vllm
 *.gguf
 *.safetensors
 *.bin

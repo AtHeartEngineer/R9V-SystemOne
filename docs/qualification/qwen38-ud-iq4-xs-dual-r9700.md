@@ -122,5 +122,7 @@ These measurements qualify the public source/runtime on the exact model bundle
 and reference topology, and the clean public Radiance comparison is complete.
 The 22-file public model package was remotely size- and SHA256-verified at
 revision `bf836f0c20b6c92fcad4226ad3115eb8a19f7582`. A clean-host
-`fetch → verify → build → run` check is the remaining gate before the profile
-can move from `release-candidate` to `qualified`.
+`fetch → verify → build → run` check remains pending. Intermittent user failures
+also require sustained-load and idle/wake qualification with retained evidence
+before the profile can move from `release-candidate` to `qualified`. See
+[qwen38-rocm10-stability.md](qwen38-rocm10-stability.md) for the release gates.

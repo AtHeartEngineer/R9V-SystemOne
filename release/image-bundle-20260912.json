@@ -1,0 +1,78 @@
+{
+  "schema": "r9v.image-bundle.v1",
+  "image_ids": [
+    "sha256:987468f3f9991dfad8b07f51a18bbd5e5c01dc164d9f82c4143e77bfd14ca80d",
+    "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3"
+  ],
+  "format": "docker-save-gzip-parts",
+  "parts": [
+    {
+      "name": "r9v-mtp4-images.tar.gz.part000",
+      "bytes": 1073741824,
+      "sha256": "0c12077a47208439ccc0f4127cabbd54fe0d5edcea75e949f27eb86c64c6e6d6",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part000"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part001",
+      "bytes": 1073741824,
+      "sha256": "c6a8ad9e6f27a8691f53a46e5e9ac3016efc341e14fc861642352d94eb9830b7",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part001"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part002",
+      "bytes": 1073741824,
+      "sha256": "fddc4a800e5eede3138714b3e39df083f7af1628cbe57c31e139ad09c543298f",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part002"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part003",
+      "bytes": 1073741824,
+      "sha256": "ef566fcaf194d64704e1dd017e79f41e69ce77c4ec238ff9837d471fa97b7de8",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part003"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part004",
+      "bytes": 1073741824,
+      "sha256": "e8ff811ae36c109cee9dbdd709787a8569f25979dc6f15f44fe4ea555de69ce3",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part004"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part005",
+      "bytes": 1073741824,
+      "sha256": "6cfcc3b7374f76ceefca48a9980a7c9c09f197f22289e871cc0aa4c40bf81901",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part005"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part006",
+      "bytes": 1073741824,
+      "sha256": "9c7b1754e68a236d42415911b69999f1028c5775fa20c8a6b75f65db0c15b801",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part006"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part007",
+      "bytes": 1073741824,
+      "sha256": "877a9e0dc347d74724fdc351a05e176fd7c4aa611129fa20b1ad8563e2252960",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part007"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part008",
+      "bytes": 1073741824,
+      "sha256": "27693b3099854980f725e49998f9cf40a6e794c45e1d23ee658c6f2d6c085713",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part008"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part009",
+      "bytes": 1073741824,
+      "sha256": "23180f6d048cf493bf5f4cb4eb13a13f0adb66e1f16bf7693dda58f185fc9837",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part009"
+    },
+    {
+      "name": "r9v-mtp4-images.tar.gz.part010",
+      "bytes": 619067428,
+      "sha256": "35b9f40da6e0bded1cd4e26ccb70b9627876cd1d983778792d86f84df86aaf2f",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.2.0-rc1-images/r9v-mtp4-images.tar.gz.part010"
+    }
+  ],
+  "bytes": 11356485668,
+  "sha256": "554ce62ad457b6ecec267f300237eeba81de05c9ddd1364646926977b8c40cfc"
+}
