@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Add exact-sized cold host owners to the already public image6 runtime.
 # No model, target head, kernel, or library changes.
-ARG BASE_IMAGE=sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3
+# BASE_IMAGE must be a local tag verified against image ID
+# sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3.
+# BuildKit treats a bare image ID in FROM as a registry image name.
+ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 ARG R9V_REVISION=unknown
 COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin/quantization/params.py /opt/r9v/retained-mtp4/python/vllm_gguf_plugin/quantization/params.py
