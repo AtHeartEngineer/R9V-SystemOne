@@ -5,7 +5,8 @@ ruff==0.16.5
 # pinned to the CPU build (+cpu local version, CPU wheel index) so hosted CI
 # stays on a ~200 MB wheel instead of the CUDA bundle.
 --extra-index-url https://download.pytorch.org/whl/cpu
-numpy==2.4.6
+numpy==2.2.6; python_version < '3.11'
+numpy==2.4.6; python_version >= '3.11'
 gguf==0.19.0
 xxhash==4.0.1
 torch==2.9.1+cpu
