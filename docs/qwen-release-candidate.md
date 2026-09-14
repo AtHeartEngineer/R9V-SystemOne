@@ -1,6 +1,8 @@
 # Qwen MTP4 release candidate: placement and support
 
-`qwen38-mtp4` (IQ4_XS) and `qwen38-q4-xl` (Q4_K_XL) are experimental profiles. The public source gates (PR32 and PR33) passed for both profiles. The IQ4 image7 streaming reference passed its bounded 128K baseline; a second startup passed, while ordinary public setup/start/restart remains pending. Q4's image6 ranked reference is recorded, while its ordinary user flow remains pending. The latest BetterBench plan (GGZ14 v0.6.0, `d00ad5e`) has not been executed. Anonymous public downloads and a resumed Docker import passed; no model ran during the image check. The public runtime image bundle is available from the [v0.2.0-rc2 GitHub Release](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images); setup verifies its parts and loads the exact image ID.
+`qwen38-mtp4` (IQ4_XS) and `qwen38-q4-xl` (Q4_K_XL) are experimental profiles with completed ordinary public setup, first-start and unchanged-receipt restart qualification on the dual-R9700 reference host. IQ4 uses the exact-sized image7 cold-host allocator; Q4 retains image6. Original model, target-head and PLE bytes are unchanged. The [public runtime bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images) contains both exact images; setup verifies every part before loading.
+
+The [model download links](../README.md#model-downloads) include pinned model shards and shared MTP, vision and tokenizer assets. Follow the [installation guide](installation.md) for setup on your machine.
 
 ## Reference qualification
 
@@ -11,11 +13,22 @@ The reference machine has two 32 GiB R9700 GPUs and 128 GiB host RAM. Rank 0 use
 | `qwen38-mtp4` | 71 / 450 | 160 / 0 | 3.96 / 3.81 GiB |
 | `qwen38-q4-xl` | 97 / 349 | 80 / 0 | 3.79 / 3.76 GiB |
 
-The IQ4 image7 streaming reference retained **131,072 context tokens** and passed seven bounded checks, including text, tools, three image shapes, idle resume and an actual **130,941-token prompt**. Its median was **89.45196 TG tok/s**; measured free VRAM was 4,253,020,160 and 4,090,036,224 bytes, with minimum Normal-zone free value 450,269,184 bytes, followed by a clean 90-second aftermath and GPU reclaim. The supervisor incorrectly reported failure because its cleanup check required exact VRAM equality: rank 0 had 185.203 MiB more free and rank 1 was unchanged. Independent review confirmed no per-card shortfall throughout the aftermath. This reference used existing verified assets and does not establish ordinary public setup/start/restart or answer quality. The Q4 ordinary public user flow and latest BetterBench plan remain pending.
+The IQ4 image7 streaming reference retained **131,072 context tokens** and passed seven bounded checks, including text, tools, three image shapes, idle resume and an actual **130,941-token prompt**. Its median was **89.45196 TG tok/s**; measured free VRAM was 4,253,020,160 and 4,090,036,224 bytes, with minimum Normal-zone free value 450,269,184 bytes, followed by a clean 90-second aftermath and GPU reclaim. The supervisor incorrectly reported failure because its cleanup check required exact VRAM equality: rank 0 had 185.203 MiB more free and rank 1 was unchanged. Independent review confirmed no per-card shortfall throughout the aftermath. This fixed-prompt reference is separate from the completed public user-flow qualification below and does not establish answer quality.
 
-The Q4 image6 ranked reference measured 53.431 TG tok/s with static 97/349. Older comparator samples remain historical evidence in the qualification archive and are not measurements of the current user flows, mixed traffic or decode at full context. No result here establishes TG100 or the planned BetterBench evaluation.
+The Q4 image6 ranked reference measured 53.431 TG tok/s with static 97/349. Older comparator samples remain historical evidence in the qualification archive and are not measurements of the current user flows, mixed traffic or decode at full context. No result here establishes TG100 or mixed-traffic throughput.
 
-The qualification archive identities are recorded in [the release evidence index](qualification/results/qwen38-mtp4-userstart-20260912.json). Profiles remain bound to their exact tested runtime images; a rebuilt image requires matching calibration and fresh qualification.
+The current qualification records are [IQ4 public user flow](qualification/results/iq4-public-userflow-20260912.json) and [Q4 public user flow](qualification/results/q4-public-userflow-20260912.json). Both first starts passed text, tools, three image shapes, full-context and idle-resume checks. Both unchanged restarts reused their verified receipts, and both starts stopped cleanly with GPU reclamation and at least 90 seconds of aftermath observation.
+
+| Profile | Actual static experts | Dynamic cache | First-start prompt / context limit | Requested headroom |
+|---|---:|---:|---:|---:|
+| IQ4 image7 | 76 / 451 | 160 / 0 | 130941 / 131072 | 3 / 3 GiB |
+| Q4 image6 | 99 / 348 | 80 / 0 | 130941 / 131072 | 3 / 3 GiB |
+
+The source checkout was fetched anonymously and setup state was new. Assets and images were reused from earlier public downloads with independently verified hashes; Q4 started with an empty compilation cache. The separate anonymous image-only test began from an empty image store, was interrupted by an undersized disk budget, then recovered using the same verified downloaded parts. No second fresh download is claimed.
+
+IQ4 minimum Normal-zone free memory was 974,811,136 bytes. Q4 recorded a minimum of 55,189,504 bytes for one sample, below the 68,050,944-byte guard level but without two consecutive low samples. The memory guards were unchanged; successful qualification does not imply large spare host-memory capacity.
+
+The [earlier reference evidence index](qualification/results/qwen38-mtp4-userstart-20260912.json) is historical and includes a different IQ4 image. Do not substitute its placements for these current profiles. Profiles remain bound to their exact tested runtime images; a rebuilt image requires matching calibration and fresh qualification.
 
 ## Selecting free memory on each card
 

@@ -7,6 +7,10 @@ Docker, Python 3.10+, Git, `curl`, and storage for the model, 28,800,138,240-byt
 PLE payload, image layers, and runtime cache. Device order is semantic.
 Reserve at least **70 GiB** for image and cache import space; the public image bundle plus its containerd image-store footprint measured roughly **50 GiB**. This is in addition to the model, PLE payload and runtime cache.
 
+Both profiles completed ordinary setup, first-start qualification and unchanged-receipt restart on the reference machine. See [qualification scope and reports](qwen-release-candidate.md). Each new machine or changed placement still runs its own checks.
+
+Model download pages and pinned shard directories are linked in the [README](../README.md#model-downloads). For a versioned installation, use `git clone --recursive --branch v0.2.0 https://github.com/Dyluhn/R9V.git`; the commands below follow the current main branch.
+
 ## Check the host
 
 ```bash
