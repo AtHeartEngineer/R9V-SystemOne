@@ -110,6 +110,19 @@ The default API endpoint is `http://127.0.0.1:8004/v1`. Use the address recorded
 
 ## Measured results
 
+### Current v0.2.0 prompt processing
+
+Measured on both current released profiles using the original release’s corpus, script, warmup and 8K/32K/64K procedure. Rates below are mean prompt tokens/s; every trial and exact reproduction command are linked below.
+
+| Current profile | 8K (10 runs) | 32K (3 runs) | 64K (2 runs) | Raw trials |
+|---|---:|---:|---:|---|
+| IQ4_XS | 989.3 | 982.0 | 968.2 | [JSON](docs/qualification/results/iq4-v020-pp-20260914.json) |
+| Q4_K_XL | 552.9 | 542.5 | 536.4 | [JSON](docs/qualification/results/q4-v020-pp-20260914.json) |
+
+[Method, comparison and exact commands](docs/qualification/v020-prefill-20260914.md). Prefix-cache hits were zero. These are new PP measurements; the older generation references below use different placements and are separate results.
+
+### Earlier fixed-prompt generation references
+
 The following fixed-prompt reference samples used MTP4 on the dual-R9700 system:
 
 | Profile / placement | Static experts, ranks 0/1 | Generation tokens/s |

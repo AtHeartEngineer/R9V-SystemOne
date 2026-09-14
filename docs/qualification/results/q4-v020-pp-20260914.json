@@ -1,0 +1,284 @@
+{
+  "schema": "r9v.benchmark.prompt-processing.v1",
+  "release": "v0.2.0",
+  "source_commit": "9bd62ad7d800fc6378da6997533ff5c9a23f2ddc",
+  "date": "2026-09-14",
+  "profile": "qwen38-flash-next/ud-q4-k-xl/dual-r9700-128k",
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+  "benchmark_script": "scripts/bench-pp.py",
+  "benchmark_script_sha256": "98ef76aa30c01fc2cd9e1a1a8b4713e7f767de8b8a91b3a7c36d9723ea39d951",
+  "method_reference_commit": "792fde0f6183dfb3487cca2e734958e6664a711a",
+  "metric": "prompt_tokens / time_to_first_streamed_output_token_event_seconds",
+  "sampling": {
+    "temperature": 0,
+    "seed": 7,
+    "ignore_eos": true,
+    "stream": true,
+    "include_usage": true,
+    "concurrent_requests": 1
+  },
+  "corpus": {
+    "repository": "https://github.com/Aider-AI/aider",
+    "revision": "5dc9490bb35f9729ef2c95d00a19ccd30c26339c",
+    "path": "tests/fixtures/chat-history.md",
+    "sha256": "a9a89dfd830af253103f86ff25dcba55364b22db779664d2fb36a3c2fd058710"
+  },
+  "runtime": {
+    "max_model_len": 131072,
+    "max_num_seqs": 1,
+    "mtp_tokens": 4,
+    "prefill_group_size": 16,
+    "max_num_batched_tokens": 1024,
+    "kv_cache_bytes_per_rank": 2562215936,
+    "static_experts_by_rank": [
+      99,
+      348
+    ],
+    "cache_slots_by_rank": [
+      80,
+      0
+    ],
+    "prefix_cache_enabled": false,
+    "development_overlays": false,
+    "models_heads_ple_unchanged": true
+  },
+  "warmup": {
+    "target_tokens": 1024,
+    "runs": 1,
+    "max_output_tokens": 1,
+    "included_in_summary": false,
+    "trials": [
+      {
+        "prompt_tokens": 1024,
+        "completion_tokens": 1,
+        "ttft_s": 2.2030676990398206,
+        "e2e_s": 2.203162763034925,
+        "pp_tok_s": 464.80641536630833,
+        "run": 1,
+        "offset": 0,
+        "fitted_tokens": 1024
+      }
+    ]
+  },
+  "sustained_soak": [
+    {
+      "target_tokens": 8192,
+      "runs": 10,
+      "max_output_tokens": 1,
+      "pause_seconds": 1,
+      "prefix_cache_hits_total": 0,
+      "trials": [
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.52132605301449,
+          "e2e_s": 14.521418310992885,
+          "pp_tok_s": 564.1358075765689,
+          "run": 1,
+          "offset": 0,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.515936718031298,
+          "e2e_s": 14.516025660035666,
+          "pp_tok_s": 564.3452544005736,
+          "run": 2,
+          "offset": 455472,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 15.108043084968813,
+          "e2e_s": 15.108157276001293,
+          "pp_tok_s": 542.2277361751984,
+          "run": 3,
+          "offset": 910944,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.901241749990731,
+          "e2e_s": 14.901348326005973,
+          "pp_tok_s": 549.7528419069569,
+          "run": 4,
+          "offset": 1366416,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.538973830989562,
+          "e2e_s": 14.539058274996933,
+          "pp_tok_s": 563.451045117015,
+          "run": 5,
+          "offset": 1821888,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.68843396398006,
+          "e2e_s": 14.688551642000675,
+          "pp_tok_s": 557.7177267562328,
+          "run": 6,
+          "offset": 2277361,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.921892959042452,
+          "e2e_s": 14.921985758002847,
+          "pp_tok_s": 548.992009424365,
+          "run": 7,
+          "offset": 2732833,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 14.919380126986653,
+          "e2e_s": 14.919495440030005,
+          "pp_tok_s": 549.0844747083056,
+          "run": 8,
+          "offset": 3188305,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8192,
+          "completion_tokens": 1,
+          "ttft_s": 15.086948429991025,
+          "e2e_s": 15.087025227956474,
+          "pp_tok_s": 542.9858820035003,
+          "run": 9,
+          "offset": 3643777,
+          "fitted_tokens": 8192
+        },
+        {
+          "prompt_tokens": 8136,
+          "completion_tokens": 1,
+          "ttft_s": 14.903818274964578,
+          "e2e_s": 14.903914871974848,
+          "pp_tok_s": 545.9003759906847,
+          "run": 10,
+          "offset": 4099250,
+          "fitted_tokens": 8136
+        }
+      ],
+      "summary": {
+        "runs": 10,
+        "pp_tok_s_mean": 552.8593154059402,
+        "pp_tok_s_median": 549.4186583076312,
+        "pp_tok_s_p05": 542.2277361751984,
+        "pp_tok_s_p95": 564.3452544005736,
+        "pp_tok_s_min": 542.2277361751984,
+        "pp_tok_s_max": 564.3452544005736
+      }
+    },
+    {
+      "target_tokens": 32768,
+      "runs": 3,
+      "max_output_tokens": 16,
+      "pause_seconds": 2,
+      "prefix_cache_hits_total": 0,
+      "trials": [
+        {
+          "prompt_tokens": 32768,
+          "completion_tokens": 16,
+          "ttft_s": 60.124905213015154,
+          "e2e_s": 60.47490182204638,
+          "pp_tok_s": 544.9987801877941,
+          "run": 1,
+          "offset": 0,
+          "fitted_tokens": 32768
+        },
+        {
+          "prompt_tokens": 32768,
+          "completion_tokens": 16,
+          "ttft_s": 60.185585016035475,
+          "e2e_s": 60.480892092047725,
+          "pp_tok_s": 544.4493061132412,
+          "run": 2,
+          "offset": 2000473,
+          "fitted_tokens": 32768
+        },
+        {
+          "prompt_tokens": 32768,
+          "completion_tokens": 16,
+          "ttft_s": 60.902663214015774,
+          "e2e_s": 61.312132861989085,
+          "pp_tok_s": 538.0388684293032,
+          "run": 3,
+          "offset": 4000946,
+          "fitted_tokens": 32768
+        }
+      ],
+      "summary": {
+        "runs": 3,
+        "pp_tok_s_mean": 542.4956515767794,
+        "pp_tok_s_median": 544.4493061132412,
+        "pp_tok_s_p05": 538.0388684293032,
+        "pp_tok_s_p95": 544.9987801877941,
+        "pp_tok_s_min": 538.0388684293032,
+        "pp_tok_s_max": 544.9987801877941
+      }
+    },
+    {
+      "target_tokens": 65536,
+      "runs": 2,
+      "max_output_tokens": 16,
+      "pause_seconds": 2,
+      "prefix_cache_hits_total": 0,
+      "trials": [
+        {
+          "prompt_tokens": 65536,
+          "completion_tokens": 16,
+          "ttft_s": 122.21679951297119,
+          "e2e_s": 122.80724208301399,
+          "pp_tok_s": 536.227427498987,
+          "run": 1,
+          "offset": 0,
+          "fitted_tokens": 65536
+        },
+        {
+          "prompt_tokens": 65536,
+          "completion_tokens": 16,
+          "ttft_s": 122.14129778102506,
+          "e2e_s": 122.53334641904803,
+          "pp_tok_s": 536.5588968728083,
+          "run": 2,
+          "offset": 3869874,
+          "fitted_tokens": 65536
+        }
+      ],
+      "summary": {
+        "runs": 2,
+        "pp_tok_s_mean": 536.3931621858976,
+        "pp_tok_s_median": 536.3931621858976,
+        "pp_tok_s_p05": 536.227427498987,
+        "pp_tok_s_p95": 536.5588968728083,
+        "pp_tok_s_min": 536.227427498987,
+        "pp_tok_s_max": 536.5588968728083
+      }
+    }
+  ],
+  "verification": {
+    "container_exit_code": 0,
+    "oom_killed": false,
+    "aftermath_seconds": 90.89804816246033,
+    "fresh_aftermath_samples": 89,
+    "gpu_reclamation_no_shortfall_by_bdf": true,
+    "archive_sha256": "74a7a74ff78d7503323f45e14cfa98de2b121cea6a2f372345866ca07ac15aac",
+    "every_archive_payload_verified_both_hosts": true
+  },
+  "limitations": [
+    "PP includes serving overhead and first-output latency; this is not GPU-only prefill time.",
+    "Original IQ4 reference used MTP2 and different runtime/placement; this repeats its benchmark procedure on the current MTP4 release.",
+    "Only two 64K trials; this is a small reference sample, not a tail-latency estimate.",
+    "No generation-throughput or answer-quality result is inferred from these PP measurements."
+  ]
+}
