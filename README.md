@@ -124,6 +124,20 @@ The IQ4 image7 streaming reference retained **131,072 context tokens** and passe
 
 The [current IQ4 reference evidence](docs/qualification/results/iq4-image7-exact-host-reference-20260912.json) records the measured result and independently verified archive commitments. Historical prefill and comparator results remain in the [earlier Qwen qualification](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md); they should not be substituted for measurements of the new placements.
 
+### Prompt processing / prefill (PP)
+
+The already-published **2026-08-30 IQ4 V1** grouped-prefill measurements are:
+
+| Target prompt length | Runs | Mean PP tokens/s | Median PP tokens/s |
+|---|---:|---:|---:|
+| 8K | 10 | 1,512.01 | 1,510.20 |
+| 32K | 3 | 1,401.83 | 1,365.25 |
+| 64K | 2 | 1,357.02 | 1,357.02 |
+
+PP here is prompt tokens divided by time to first streamed token, with a reported 0% prefix-cache hit rate. Nine 8K requests contained 8,192 tokens; the final slice contained 8,136. All 32K and 64K requests matched their target length. A separate clean-image 8K reproduction measured **1,442.67 mean / 1,484.00 median PP tokens/s** across three requests.
+
+These are historical IQ4 V1 results, not new measurements of the image7 MTP4 or Q4 profiles. See the [prefill methodology and runtime details](docs/qualification/qwen38-ud-iq4-xs-dual-r9700.md#grouped-prefill-v1-qualification), [every trial in JSON](docs/qualification/results/qwen38-group16-pp-v1.json), and the [measurement script](scripts/bench-pp.py).
+
 ## Verified public setup and restart
 
 Both profiles passed ordinary setup into new state directories, first-start text/tool/vision/context/idle-resume checks and restart with the same verified receipt. The first starts used an actual 130,941-token prompt at a 131,072 context limit. Model, head and PLE bytes stayed unchanged.
