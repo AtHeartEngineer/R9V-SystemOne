@@ -213,6 +213,25 @@ def allocate_uva_host_empty(shape: tuple[int, ...], dtype: torch.dtype) -> torch
     return torch.empty(shape, dtype=dtype, device="cpu", pin_memory=True)
 
 
+def allocate_tiered_cold_host_empty(
+    shape: tuple[int, ...], dtype: torch.dtype
+) -> torch.Tensor:
+    """Keep long-lived cold experts outside PyTorch's rounded pinned pool.
+
+    Each packed cold tensor has a fixed lifetime. The pinned caching allocator
+    rounds each tensor to a power of two, adding about 7 GiB for the measured
+    IQ4 71/450 placement. HIP allocates these owners at page granularity; the
+    existing owner finalizer and UVA view retain storage until its last use.
+    Default means HIP's default flags, preserving the configured host policy.
+    """
+    mode = _uva_host_coherence()
+    if bool(torch.version.hip):
+        if mode == "default":
+            return _hip_host_empty(shape, dtype, flag=0, mode="default")
+        return _explicit_hip_uva_empty(shape, dtype, mode)
+    return allocate_uva_host_empty(shape, dtype)
+
+
 @functools.cache
 def _libc_madvise():
     libc = ctypes.CDLL(None, use_errno=True)

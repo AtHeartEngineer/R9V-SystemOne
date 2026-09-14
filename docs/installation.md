@@ -5,6 +5,11 @@ This guide covers the two newest dual-R9700 MTP4 profiles: `qwen38-mtp4`
 Both require two 32 GiB `gfx1201` Radeon AI PRO R9700 GPUs, ROCm device access,
 Docker, Python 3.10+, Git, `curl`, and storage for the model, 28,800,138,240-byte
 PLE payload, image layers, and runtime cache. Device order is semantic.
+Reserve at least **70 GiB** for image and cache import space; the public image bundle plus its containerd image-store footprint measured roughly **50 GiB**. This is in addition to the model, PLE payload and runtime cache.
+
+Both profiles completed ordinary setup, first-start qualification and unchanged-receipt restart on the reference machine. See [qualification scope and reports](qwen-release-candidate.md). Each new machine or changed placement still runs its own checks.
+
+Model download pages and pinned shard directories are linked in the [README](../README.md#model-downloads). For a versioned installation, use `git clone --recursive --branch v0.2.0 https://github.com/Dyluhn/R9V.git`; the commands below follow the current main branch.
 
 ## Check the host
 
@@ -17,10 +22,28 @@ cd R9V
 ./r9v doctor qwen38-mtp4 -- --host-only
 ./r9v doctor qwen38-q4-xl -- --host-only
 docker info >/dev/null
+docker info -f '{{ .DriverStatus }}'
 ```
 
 Keep recursive submodule revisions pinned. Host-only checks do not qualify
 serving or memory headroom.
+
+Docker Engine 29 uses the containerd image store by default on fresh installs;
+upgraded daemons may still use the legacy store. The output of the second
+command should identify `io.containerd.snapshotter.v1`. If it does not, follow
+the official [containerd image-store guide](https://docs.docker.com/engine/storage/containerd/)
+and enable `"containerd-snapshotter": true` under `features` in the rootful
+daemon's `/etc/docker/daemon.json`, then restart Docker. For rootless Docker,
+use `~/.config/docker/daemon.json`, or `$XDG_CONFIG_HOME/docker/daemon.json`
+when `XDG_CONFIG_HOME` is set, and restart the rootless daemon. The [Docker daemon configuration
+reference](https://docs.docker.com/engine/daemon/) documents storage
+locations. If you use rootless Docker, follow the official
+[rootless mode guide](https://docs.docker.com/engine/security/rootless/),
+confirm the intended context/socket with `docker info`, and run the same
+containerd image-store check. Switching stores temporarily hides images and
+containers created in the other store; revert to the prior configuration to
+access them again, and preserve the existing store/workload context before
+changing it.
 
 ## Fetch and setup
 
@@ -41,9 +64,10 @@ export MODEL_DIR=/fast-storage/qwen38-r9v
 ```
 
 Use `qwen38-q4-xl` in both commands for Q4. Setup selects the profile's
-[`release/image-bundle-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), downloads and SHA-256 verifies its parts,
+[`release/image-bundle-exact-host-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images), downloads and SHA-256 verifies its parts,
 and loads the exact original image ID. Docker 29 must use the containerd image
-store so the loaded image keeps its exact ID; check `docker info` before setup:
+store so the loaded image keeps its exact ID; check `docker info` as described
+above before setup:
 
 ```bash
 ./r9v setup qwen38-mtp4 --model-dir "$MODEL_DIR" -- \
@@ -76,7 +100,9 @@ calibration is an alternative when available:
 ./r9v start qwen38-mtp4 -- --headroom 5,5
 ```
 
-Use `./r9v support PROFILE --state-dir DIR` for private diagnostics. Do not
+Use `./r9v doctor PROFILE --state-dir DIR` for configuration and runtime
+evidence, and `./r9v support PROFILE --state-dir DIR` for private diagnostics.
+Keep the state directory the same across setup, start, doctor and support. Do not
 publish prompts, completions, raw token IDs, or logs. Start refuses to replace
 an existing profile container; inspect and deliberately stop that exact
 container before retrying.

@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "checks": [
+    "context",
+    "idle_resume",
+    "text",
+    "tool",
+    "vision",
+    "vision-tall",
+    "vision-wide"
+  ],
+  "runtime_failures": [],
+  "context_limit": 131072,
+  "prompt_tokens": 130941,
+  "minimum_free_bytes": [
+    4072144896,
+    4075905024
+  ],
+  "requested_free_bytes": [
+    3221225472,
+    3221225472
+  ],
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+  "manifest_sha256": "8fc40ee831c12f31ca3b4515bd58c88ad367aed5d2b22742b43d0e92337d48b2",
+  "clean_stop": true,
+  "reclaimed": true,
+  "workers": [
+    {
+      "rank": 0,
+      "probes": {
+        "pinned_uva": true,
+        "copy": true,
+        "tp_all_reduce": true
+      },
+      "num_ooms": 0
+    },
+    {
+      "rank": 1,
+      "probes": {
+        "pinned_uva": true,
+        "copy": true,
+        "tp_all_reduce": true
+      },
+      "num_ooms": 0
+    }
+  ],
+  "executed_manifest_sha256": "ffc9519d119ecd6cfab3ffad6278389210be8dc6b14762adce49b2bf0cc1a0c5"
+}

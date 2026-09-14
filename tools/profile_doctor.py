@@ -1375,9 +1375,21 @@ def _check_manifest_budget(
             f"cold experts and pinned PLE alone need {pinned / 1024**3:.2f} GiB; only {available / 1024**3:.2f} GiB host RAM is available",
             "Free RAM or change residency. Moving more hot experts to host memory increases this requirement; swap cannot replace pinned RAM.",
         )
+    full_pageable = sum(b["full_pageable_master_bytes"] for b in budgets)
+    if os.environ.get("R9V_STREAM_EXPERT_COMPACTION", "0") == "1":
+        master_note = (
+            f"legacy full pageable expert-master total: {full_pageable / 1024**3:.2f} GiB; "
+            "streaming compaction retains masters per layer during load; "
+            "no full-load peak is measured here"
+        )
+    else:
+        master_note = (
+            f"legacy full pageable expert-master total during load: "
+            f"{full_pageable / 1024**3:.2f} GiB; no full-load peak is measured here"
+        )
     reporter.note(
         "expert-host-memory",
-        f"cold experts plus pinned PLE: {pinned / 1024**3:.2f} GiB; full pageable expert masters during load: {sum(b['full_pageable_master_bytes'] for b in budgets) / 1024**3:.2f} GiB",
+        f"cold experts plus pinned PLE: {pinned / 1024**3:.2f} GiB; {master_note}",
         note="These are components at different loading phases, not a measured peak or complete host budget. PLE is not counted twice from GGUF file size.",
     )
 

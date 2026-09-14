@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "profile": "qwen38-q4-xl",
+  "status": "public-first-start-and-restart-passed",
+  "source_commit": "b68f9c3685870cdcdc5fcc5bb9c56c5c0e630753",
+  "image_id": "sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3",
+  "context_limit": 131072,
+  "prompt_tokens": 130941,
+  "requested_free_gib_by_rank": [
+    3,
+    3
+  ],
+  "hot_experts_by_rank": [
+    99,
+    348
+  ],
+  "cache_slots_by_rank": [
+    80,
+    0
+  ],
+  "mtp_depth": 4,
+  "workload": {
+    "passed": true,
+    "context_limit": 131072,
+    "checks": [
+      "text",
+      "tool",
+      "vision",
+      "vision-wide",
+      "vision-tall",
+      "context",
+      "idle_resume"
+    ],
+    "semantic_observations": [],
+    "runtime_failures": [],
+    "minimum_physical_free_bytes": [
+      4072394752,
+      4013797376
+    ],
+    "headroom_passed": true
+  },
+  "receipt_reused": true,
+  "clean_exit_both_starts": true,
+  "aftermath_seconds": 91.05302405357361,
+  "minimum_normal_free_bytes": 55189504,
+  "max_consecutive_low_normal_samples": 1,
+  "scope": "New public setup state, previously fresh public model/PLE/image reuse, initially empty cache. No new TG or BetterBench claim.",
+  "archives": {
+    "final-evidence": "935423cbdd2efd333967cb45bd222b7241740ae4f27d763f51c4b119613a3ab2",
+    "compiledcache": "870e9d47295f894d3c60b30449d79d707b0d81959396dc8a8720c013bb606e10"
+  }
+}

@@ -77,6 +77,87 @@ def read_record(base, row):
     return raw, json.loads(raw)
 
 
+def catalog_content(catalog):
+    """Canonical measured content, excluding only provenance file locations."""
+    value = copy.deepcopy(catalog)
+    inputs = value.get("ranking", {}).get("inputs")
+    require(isinstance(inputs, list) and len(inputs) == 3, "three ranking inputs required")
+    for row in inputs:
+        require(isinstance(row, dict) and set(row) == {"path", "sha256"},
+                "unexpected ranking input fields")
+        require(isinstance(row["path"], str) and row["path"], "missing input location")
+        require(isinstance(row["sha256"], str) and re.fullmatch("[0-9a-f]{64}", row["sha256"]),
+                "invalid ranking input identity")
+        del row["path"]
+    return value
+
+
+def manifest_content(manifest):
+    value = copy.deepcopy(manifest)
+    require(isinstance(value.get("r9v_derivation"), dict), "derived manifest required for projection")
+    value["r9v_derivation"].pop("source_sha256", None)
+    return value
+
+
+def project_public_catalog(catalog_raw, manifest_raw):
+    """Relocate provenance labels; retain commitments to the executed originals.
+
+    This does not requalify an edited placement. Only three input locations and
+    the manifest's catalog link change; all measured/placement content is kept.
+    """
+    catalog, manifest = json.loads(catalog_raw), json.loads(manifest_raw)
+    if not any(marker in catalog_raw for marker in (b"/var/home/", b"/home/dylan/", b"/var/mnt/")):
+        return catalog_raw, manifest_raw, None
+    content = catalog_content(catalog)
+    require(manifest.get("r9v_derivation", {}).get("source_sha256") == sha(catalog_raw),
+            "original manifest does not bind original catalog")
+    original_manifest_content = manifest_content(manifest)
+    published = copy.deepcopy(catalog)
+    for role, row in zip(("source", "train", "holdout"), published["ranking"]["inputs"]):
+        row["path"] = "inputs/" + role + "-" + row["sha256"] + ".json"
+    require(catalog_content(published) == content, "projection changed measured catalog")
+    def encode(value):
+        return (json.dumps(value, indent=2) + "\n").encode()
+    new_catalog = encode(published)
+    public_manifest = copy.deepcopy(manifest)
+    public_manifest["r9v_derivation"]["source_sha256"] = sha(new_catalog)
+    require(manifest_content(public_manifest) == original_manifest_content,
+            "projection changed executed placement")
+    new_manifest = encode(public_manifest)
+    projection = {
+        "schema": "r9v.public-catalog-projection.v1",
+        "original_catalog_sha256": sha(catalog_raw),
+        "original_manifest_file_sha256": sha(manifest_raw),
+        "executed_manifest_sha256": digest(manifest),
+        "public_catalog_sha256": sha(new_catalog),
+        "public_manifest_sha256": digest(public_manifest),
+        "catalog_content_sha256": digest(content),
+        "manifest_content_sha256": digest(original_manifest_content),
+        "scope": "Only ranking input locations and the derived catalog link were relocated. Original execution evidence remains privately archived; local qualification is still required.",
+    }
+    return new_catalog, new_manifest, projection
+
+
+def verify_projection(projection, catalog_raw, manifest, proof):
+    require(projection.get("schema") == "r9v.public-catalog-projection.v1",
+            "unsupported public catalog projection")
+    for key in ("original_catalog_sha256", "original_manifest_file_sha256", "executed_manifest_sha256",
+                "public_catalog_sha256", "public_manifest_sha256", "catalog_content_sha256", "manifest_content_sha256"):
+        require(isinstance(projection.get(key), str) and re.fullmatch("[0-9a-f]{64}", projection[key]),
+                "missing projection identity: " + key)
+    catalog = json.loads(catalog_raw)
+    require(sha(catalog_raw) == projection["public_catalog_sha256"]
+            and digest(manifest) == projection["public_manifest_sha256"], "public projection identity differs")
+    require(digest(catalog_content(catalog)) == projection["catalog_content_sha256"]
+            and digest(manifest_content(manifest)) == projection["manifest_content_sha256"],
+            "public projection content differs")
+    for role, row in zip(("source", "train", "holdout"), catalog["ranking"]["inputs"]):
+        require(row["path"] == "inputs/" + role + "-" + row["sha256"] + ".json",
+                "unexpected public input location")
+    require(proof.get("executed_manifest_sha256") == projection["executed_manifest_sha256"],
+            "executed placement commitment differs")
+
+
 def verify_public(seed, base):
     """Recompute the exported envelope without raw logs or host-local paths."""
     require(seed.get("schema") == SCHEMA, "unsupported public reference schema")
@@ -242,6 +323,10 @@ def verify_public(seed, base):
         "reference requested headroom not met",
     )
     provenance = seed["provenance"]
+    require(("catalog_projection" in provenance) == ("executed_manifest_sha256" in proof),
+            "public projection marker missing")
+    if "catalog_projection" in provenance:
+        verify_projection(provenance["catalog_projection"], catalog_raw, manifest, proof)
     for key in (
         "private_seed_sha256",
         "private_payload_index_sha256",
@@ -409,9 +494,19 @@ def export_public(private_path, output):
     def encoded(value):
         return (json.dumps(value, indent=2) + "\n").encode()
 
+    catalog_raw, manifest_raw, projection = project_public_catalog(
+        private(pq["source_catalog"]), private(pq["manifest"])
+    )
+    if projection is not None:
+        # The verified private calibration is unchanged. This public reference
+        # names a metadata-only projection, explicitly linked to original bytes.
+        cal["contract"]["source_sha256"] = projection["public_catalog_sha256"]
+        proof["executed_manifest_sha256"] = proof["manifest_sha256"]
+        proof["manifest_sha256"] = projection["public_manifest_sha256"]
+        exported["provenance"]["catalog_projection"] = projection
     files = {
-        "catalog": private(pq["source_catalog"]),
-        "manifest": private(pq["manifest"]),
+        "catalog": catalog_raw,
+        "manifest": manifest_raw,
         "runtime": private(runtimes[runtime_sha]),
         "measurements": encoded({"samples": samples}),
         "workload": encoded(proof),

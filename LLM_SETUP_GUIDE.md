@@ -30,7 +30,7 @@ export MODEL_DIR=/fast-storage/qwen38-r9v
 ```
 
 For Q4, substitute `qwen38-q4-xl` in every command. Setup automatically reads
-[`release/image-bundle-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc1-images), verifies every SHA-256 part, and loads the
+[`release/image-bundle-exact-host-20260912.json`](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images), verifies every SHA-256 part, and loads the
 exact image ID from the GitHub Release bundle. Docker 29 must use the containerd
 image store; verify this with `docker info`. `--build` is the explicit source
 build alternative. Never mix IQ4 and Q4 placement artifacts.
@@ -53,8 +53,9 @@ accepted:
 ./r9v start qwen38-mtp4 -- --headroom 5,5
 ```
 
-Do not expose prompts, completions, raw token IDs, or private logs. Clean-host
-reproduction and BetterBench speed/latency evaluation remain pending. Use
+Do not expose prompts, completions, raw token IDs, or private logs. Ordinary
+public setup/start/restart and the planned BetterBench speed/latency evaluation
+remain pending. Use
 `./r9v support PROFILE --state-dir DIR` for private diagnostics. Preserve the
 fail-closed checks and pinned recursive submodules.
 

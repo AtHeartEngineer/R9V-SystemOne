@@ -25358,7 +25358,7 @@
     "method": "Measured IQ4_XS packed bytes per 320-channel expert scaled exactly to the retained runtime's 416/224 FFN channel partition; no quantization performed."
   },
   "r9v_derivation": {
-    "source_sha256": "0723a562073fe61bf5c5169dcee760fad6d232f66402ed5ebc8d607b5b614285",
+    "source_sha256": "67ab9ac64d5dc7914eae83e3e1dd94abc84df2e6ee5dac481ca1d4f2eabeae8e",
     "method": "preserve source priority prefixes",
     "qualification": "unqualified; routing hit rates and total VRAM headroom must be measured",
     "deltas": [
