@@ -6,7 +6,7 @@ R9V runs Qwen3.8 Flash Next on two AMD Radeon AI PRO R9700 GPUs. It combines a p
 
 Each profile binds a model package, runtime, hardware layout and expert placement. Downloads are checked against pinned revisions and file hashes. Setup records the selected configuration, and first start qualifies its workload and memory headroom before reporting ready.
 
-**Current status:** both IQ4_XS and Q4_K_XL MTP4 profiles passed ordinary public setup, first-start workload qualification and unchanged-receipt restart on the dual-R9700 reference host. Both profiles remain experimental. Each first start passed all seven checks at 131,072 context, including a 130,941-token prompt, with at least 3 GiB free VRAM per GPU. Setup selects the profile's runtime image bundle, verifies every part and loads the exact image ID. The Q4 profile uses the [v0.2.0-rc2 bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images); the IQ4 profile's WMMA-prefill image (`release/image-bundle-wmma-prefill-20260914.json`) is pending upload under the `v0.3.0-rc1-images` release tag, and its setup/start/PP proof in this branch ran against the locally built image with the same ID. See [release status and evidence](docs/qwen-release-candidate.md).
+**Current status:** both IQ4_XS and Q4_K_XL MTP4 profiles passed ordinary public setup, first-start workload qualification and unchanged-receipt restart on the dual-R9700 reference host. Both profiles remain experimental. Each first start passed all seven checks at 131,072 context, including a 130,941-token prompt, with at least 3 GiB free VRAM per GPU. Setup selects the profile's runtime image bundle, verifies every part and loads the exact image ID. The Q4 profile uses the [v0.2.0-rc2 bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images); the IQ4 profile's WMMA-prefill image (`release/image-bundle-wmma-prefill-20260915.json`) is published under the [`v0.3.0-rc1-images`](https://github.com/Dyluhn/R9V/releases/tag/v0.3.0-rc1-images) release tag. See [release status and evidence](docs/qwen-release-candidate.md).
 
 ## Profiles and features
 
@@ -66,7 +66,7 @@ The output should identify `io.containerd.snapshotter.v1`. If it does not, follo
 
 | Profile | Tested local image ID |
 |---|---|
-| `qwen38-mtp4` | `sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3` |
+| `qwen38-mtp4` | `sha256:2dac17a215fb5b0e3461e4c3e36a2981eec8ac3d6021e73183d247e819740c03` |
 | `qwen38-q4-xl` | `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3` |
 
 Install the download CLI in an isolated environment if it is not already available:
@@ -116,7 +116,7 @@ Measured with the original release’s corpus, script, warmup and 8K/32K/64K pro
 
 | Profile | 8K (10 runs) | 32K (3 runs) | 64K (2 runs) | Raw trials |
 |---|---:|---:|---:|---|
-| IQ4_XS, WMMA prefill (current `qwen38-mtp4`) | **1,669.6** | **1,617.1** | **1,601.4** | [JSON](docs/qualification/results/iq4-wmma-prefill-20260914.json) |
+| IQ4_XS, WMMA prefill (current `qwen38-mtp4`) | **1,684.6** | **1,640.6** | **1,605.1** | [JSON](docs/qualification/results/iq4-wmma-prefill-20260915.json) |
 | IQ4_XS, v0.2.0 image | 989.3 | 982.0 | 968.2 | [JSON](docs/qualification/results/iq4-v020-pp-20260914.json) |
 | Q4_K_XL | 552.9 | 542.5 | 536.4 | [JSON](docs/qualification/results/q4-v020-pp-20260914.json) |
 
