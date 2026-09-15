@@ -1,0 +1,3876 @@
+{
+  "samples": [
+    {
+      "phase": "startup",
+      "host_available_bytes": 112355061760,
+      "free_bytes": [
+        32273465344,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 112282447872,
+      "free_bytes": [
+        32239128576,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 112217001984,
+      "free_bytes": [
+        32302702592,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 112222986240,
+      "free_bytes": [
+        32309338112,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 112217886720,
+      "free_bytes": [
+        32408166400,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 112171438080,
+      "free_bytes": [
+        32423829504,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111982743552,
+      "free_bytes": [
+        32434708480,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111745875968,
+      "free_bytes": [
+        32438640640,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111407079424,
+      "free_bytes": [
+        32445063168,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111323574272,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111159222272,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110948118528,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110673678336,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110586417152,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110538141696,
+      "free_bytes": [
+        32438820864,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111803125760,
+      "free_bytes": [
+        32438820864,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111814025216,
+      "free_bytes": [
+        32445112320,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111767105536,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111413329920,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111264489472,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110922567680,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110927433728,
+      "free_bytes": [
+        32446701568,
+        34135572480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110999195648,
+      "free_bytes": [
+        32446631936,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111071809536,
+      "free_bytes": [
+        32443490304,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111105957888,
+      "free_bytes": [
+        32443490304,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111136198656,
+      "free_bytes": [
+        32445587456,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111063576576,
+      "free_bytes": [
+        32445587456,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110995574784,
+      "free_bytes": [
+        32332955648,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111149096960,
+      "free_bytes": [
+        32332955648,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111159209984,
+      "free_bytes": [
+        32335052800,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111040061440,
+      "free_bytes": [
+        32444235776,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110951878656,
+      "free_bytes": [
+        32444235776,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110949253120,
+      "free_bytes": [
+        32444235776,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110962323456,
+      "free_bytes": [
+        32445612032,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111284948992,
+      "free_bytes": [
+        32445612032,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111292416000,
+      "free_bytes": [
+        32445612032,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111864045568,
+      "free_bytes": [
+        32445612032,
+        34135502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111448252416,
+      "free_bytes": [
+        32445624320,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111351021568,
+      "free_bytes": [
+        32445624320,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111317786624,
+      "free_bytes": [
+        32445624320,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111225753600,
+      "free_bytes": [
+        32447721472,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111110815744,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111057334272,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111058739200,
+      "free_bytes": [
+        32446001152,
+        34135437312
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111592280064,
+      "free_bytes": [
+        32446001152,
+        34135437312
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111442821120,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111276998656,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111162707968,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111022051328,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 111005175808,
+      "free_bytes": [
+        32446078976,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110746927104,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110664990720,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110640058368,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110549532672,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110301581312,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110177198080,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110153957376,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 110054768640,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109765300224,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109476163584,
+      "free_bytes": [
+        32450732032,
+        34135515136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109343473664,
+      "free_bytes": [
+        32446001152,
+        34135445504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109260214272,
+      "free_bytes": [
+        32446001152,
+        34135445504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109146361856,
+      "free_bytes": [
+        32446001152,
+        34135445504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 109000155136,
+      "free_bytes": [
+        32446001152,
+        34135445504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 107811430400,
+      "free_bytes": [
+        32445927424,
+        34135371776
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 107207331840,
+      "free_bytes": [
+        32136900608,
+        33826344960
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 107100434432,
+      "free_bytes": [
+        31755456512,
+        33444900864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 107056967680,
+      "free_bytes": [
+        31755456512,
+        33444900864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 107007000576,
+      "free_bytes": [
+        31755456512,
+        33444900864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 106980679680,
+      "free_bytes": [
+        31757553664,
+        33444900864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 106770366464,
+      "free_bytes": [
+        31757553664,
+        33444900864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 106328367104,
+      "free_bytes": [
+        31757484032,
+        33444831232
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 105970761728,
+      "free_bytes": [
+        31545462784,
+        33444806656
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 105743884288,
+      "free_bytes": [
+        31545356288,
+        29964914688
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 105454747648,
+      "free_bytes": [
+        31428317184,
+        29963993088
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 105248227328,
+      "free_bytes": [
+        31428313088,
+        29023551488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 104810319872,
+      "free_bytes": [
+        31432507392,
+        29023051776
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 103803203584,
+      "free_bytes": [
+        29890461696,
+        29020860416
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 103018500096,
+      "free_bytes": [
+        27003928576,
+        29005172736
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 102813384704,
+      "free_bytes": [
+        26998124544,
+        29003575296
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 102254448640,
+      "free_bytes": [
+        26984882176,
+        29001654272
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 102438457344,
+      "free_bytes": [
+        26996293632,
+        29000482816
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 102135394304,
+      "free_bytes": [
+        26995900416,
+        29000069120
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 101805416448,
+      "free_bytes": [
+        26993803264,
+        28997971968
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100772806656,
+      "free_bytes": [
+        27025260544,
+        28997971968
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100501024768,
+      "free_bytes": [
+        26584698880,
+        28400123904
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100411043840,
+      "free_bytes": [
+        26584698880,
+        28400123904
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100252590080,
+      "free_bytes": [
+        26582601728,
+        28398026752
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100180291584,
+      "free_bytes": [
+        26507485184,
+        28041891840
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 100108349440,
+      "free_bytes": [
+        26243440640,
+        28042096640
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 99945250816,
+      "free_bytes": [
+        26241343488,
+        28039999488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 98424344576,
+      "free_bytes": [
+        26206277632,
+        28039999488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 98162348032,
+      "free_bytes": [
+        25734471680,
+        27513659392
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 98089086976,
+      "free_bytes": [
+        25734471680,
+        27513659392
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 97391812608,
+      "free_bytes": [
+        25751248896,
+        27511562240
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 97642356736,
+      "free_bytes": [
+        25690484736,
+        27155427328
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 97719779328,
+      "free_bytes": [
+        25405468672,
+        27113680896
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 97571799040,
+      "free_bytes": [
+        25404960768,
+        27111583744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96701005824,
+      "free_bytes": [
+        25404960768,
+        27111583744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96666656768,
+      "free_bytes": [
+        24935276544,
+        26692743168
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96641445888,
+      "free_bytes": [
+        24935276544,
+        26692743168
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 97234845696,
+      "free_bytes": [
+        24982462464,
+        26690646016
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96329740288,
+      "free_bytes": [
+        25014050816,
+        26690646016
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96346656768,
+      "free_bytes": [
+        24701173760,
+        26313740288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 96263835648,
+      "free_bytes": [
+        24701173760,
+        26313740288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95981404160,
+      "free_bytes": [
+        24699076608,
+        26311643136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95423930368,
+      "free_bytes": [
+        24700452864,
+        26311643136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95301722112,
+      "free_bytes": [
+        24338223104,
+        25911656448
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95898923008,
+      "free_bytes": [
+        24338223104,
+        25911656448
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95772270592,
+      "free_bytes": [
+        24324071424,
+        25909559296
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95220621312,
+      "free_bytes": [
+        24324071424,
+        25909559296
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95246417920,
+      "free_bytes": [
+        24007979008,
+        25553620992
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95200067584,
+      "free_bytes": [
+        23971344384,
+        25511677952
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 95094341632,
+      "free_bytes": [
+        23969247232,
+        25509580800
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 94760910848,
+      "free_bytes": [
+        23973900288,
+        25509580800
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93945679872,
+      "free_bytes": [
+        23973900288,
+        25509580800
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 94061453312,
+      "free_bytes": [
+        23592800256,
+        25090732032
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 94064586752,
+      "free_bytes": [
+        23592800256,
+        25090732032
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93994786816,
+      "free_bytes": [
+        23590703104,
+        25088634880
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93310390272,
+      "free_bytes": [
+        23578648576,
+        25088634880
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93269360640,
+      "free_bytes": [
+        23239491584,
+        24711729152
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93185220608,
+      "free_bytes": [
+        23239491584,
+        24711729152
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 93008769024,
+      "free_bytes": [
+        23244800000,
+        24709632000
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 92610490368,
+      "free_bytes": [
+        23244800000,
+        24709632000
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 92683595776,
+      "free_bytes": [
+        22882570240,
+        24309653504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 92453683200,
+      "free_bytes": [
+        22873522176,
+        24307556352
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 92063895552,
+      "free_bytes": [
+        22875619328,
+        24307556352
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 92014292992,
+      "free_bytes": [
+        22515490816,
+        23909679104
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 91927289856,
+      "free_bytes": [
+        22515490816,
+        23907581952
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 91626041344,
+      "free_bytes": [
+        22520799232,
+        23907581952
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 91466321920,
+      "free_bytes": [
+        22139695104,
+        23488720896
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 91255558144,
+      "free_bytes": [
+        22130192384,
+        23486623744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 90854207488,
+      "free_bytes": [
+        22130192384,
+        23486623744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 90576703488,
+      "free_bytes": [
+        21812006912,
+        23130689536
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 90301583360,
+      "free_bytes": [
+        21814104064,
+        23128592384
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 89625067520,
+      "free_bytes": [
+        21819412480,
+        23128592384
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 89507573760,
+      "free_bytes": [
+        21457186816,
+        22728617984
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 89086701568,
+      "free_bytes": [
+        21455089664,
+        22726520832
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 89014018048,
+      "free_bytes": [
+        21141553152,
+        22349611008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 88874958848,
+      "free_bytes": [
+        21099610112,
+        22328639488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 88394321920,
+      "free_bytes": [
+        21097512960,
+        22326550528
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 88345780224,
+      "free_bytes": [
+        21052813312,
+        22111981568
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 88183332864,
+      "free_bytes": [
+        20716408832,
+        21907697664
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 87995293696,
+      "free_bytes": [
+        20714311680,
+        21905600512
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 87967813632,
+      "free_bytes": [
+        20395995136,
+        21549666304
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 87763378176,
+      "free_bytes": [
+        20375154688,
+        21528694784
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 87448801280,
+      "free_bytes": [
+        20373057536,
+        21526597632
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 87285071872,
+      "free_bytes": [
+        20017647616,
+        21147594752
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 86977282048,
+      "free_bytes": [
+        19996676096,
+        21126623232
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 86280167424,
+      "free_bytes": [
+        19998773248,
+        21124526080
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 86073757696,
+      "free_bytes": [
+        19643949056,
+        20726652928
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 85884575744,
+      "free_bytes": [
+        19643949056,
+        20726652928
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 84863426560,
+      "free_bytes": [
+        19646504960,
+        20724555776
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 84743520256,
+      "free_bytes": [
+        19265404928,
+        20305707008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 84595298304,
+      "free_bytes": [
+        19265404928,
+        20305707008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 84180258816,
+      "free_bytes": [
+        19263307776,
+        20303609856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 84132679680,
+      "free_bytes": [
+        18924146688,
+        19947671552
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 83988291584,
+      "free_bytes": [
+        18924146688,
+        19947671552
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 83642712064,
+      "free_bytes": [
+        18922049536,
+        19945574400
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 83554967552,
+      "free_bytes": [
+        18559823872,
+        19545600000
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 83442470912,
+      "free_bytes": [
+        18557726720,
+        19543502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 82983460864,
+      "free_bytes": [
+        18557726720,
+        19543502848
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 82762727424,
+      "free_bytes": [
+        18183442432,
+        19145625600
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 81942073344,
+      "free_bytes": [
+        18181345280,
+        19143528448
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 82020614144,
+      "free_bytes": [
+        18135805952,
+        18928119808
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 81860804608,
+      "free_bytes": [
+        17809743872,
+        18724675584
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 81684566016,
+      "free_bytes": [
+        17807646720,
+        18722578432
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 80679821312,
+      "free_bytes": [
+        17807646720,
+        18722578432
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 80557264896,
+      "free_bytes": [
+        17489461248,
+        18345672704
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79723474944,
+      "free_bytes": [
+        17492017152,
+        18343575552
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79863635968,
+      "free_bytes": [
+        17446477824,
+        18128166912
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79869521920,
+      "free_bytes": [
+        17129787392,
+        17943597056
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79315095552,
+      "free_bytes": [
+        17127690240,
+        17941499904
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79301611520,
+      "free_bytes": [
+        17082077184,
+        17726017536
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79153233920,
+      "free_bytes": [
+        16767561728,
+        17543622656
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 79039090688,
+      "free_bytes": [
+        16765464576,
+        17541525504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 78513418240,
+      "free_bytes": [
+        16765464576,
+        17541525504
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 78436462592,
+      "free_bytes": [
+        16274776064,
+        16996311040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 78228213760,
+      "free_bytes": [
+        16274776064,
+        16996311040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 77969756160,
+      "free_bytes": [
+        16272678912,
+        16994213888
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 78006669312,
+      "free_bytes": [
+        15954493440,
+        16638279680
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 77991489536,
+      "free_bytes": [
+        15933521920,
+        16617308160
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 77399191552,
+      "free_bytes": [
+        15931424768,
+        16615211008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 77238579200,
+      "free_bytes": [
+        15611138048,
+        16257175552
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 76957663232,
+      "free_bytes": [
+        15569195008,
+        16215232512
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 76803260416,
+      "free_bytes": [
+        15567097856,
+        16213135360
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 76647489536,
+      "free_bytes": [
+        15248912384,
+        15857201152
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 76373712896,
+      "free_bytes": [
+        15206969344,
+        15815258112
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 75346755584,
+      "free_bytes": [
+        15204872192,
+        15813160960
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 75499278336,
+      "free_bytes": [
+        15159255040,
+        15597674496
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 75304984576,
+      "free_bytes": [
+        14823768064,
+        15394308096
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 74741346304,
+      "free_bytes": [
+        14821670912,
+        15392215040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 74832572416,
+      "free_bytes": [
+        14776057856,
+        15036157952
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 74588086272,
+      "free_bytes": [
+        14503485440,
+        15036280832
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 74020941824,
+      "free_bytes": [
+        14501388288,
+        15034183680
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 73528729600,
+      "free_bytes": [
+        14457217024,
+        15034052608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 73396883456,
+      "free_bytes": [
+        14139158528,
+        14634205184
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 73056960512,
+      "free_bytes": [
+        14137061376,
+        14632108032
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 73331183616,
+      "free_bytes": [
+        14092365824,
+        14417543168
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 73117876224,
+      "free_bytes": [
+        13776932864,
+        14234230784
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 72265670656,
+      "free_bytes": [
+        13774835712,
+        14232133632
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 72278401024,
+      "free_bytes": [
+        13699723264,
+        13873905664
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 72238899200,
+      "free_bytes": [
+        13393735680,
+        13813284864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71972683776,
+      "free_bytes": [
+        13391638528,
+        13811187712
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71940943872,
+      "free_bytes": [
+        13316521984,
+        13455052800
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71687634944,
+      "free_bytes": [
+        13052477440,
+        13434277888
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71219142656,
+      "free_bytes": [
+        13050380288,
+        13432180736
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70973329408,
+      "free_bytes": [
+        12688154624,
+        13032206336
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70685847552,
+      "free_bytes": [
+        12688154624,
+        13032206336
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70368247808,
+      "free_bytes": [
+        12686057472,
+        13030109184
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70174121984,
+      "free_bytes": [
+        12326236160,
+        12632539136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69991108608,
+      "free_bytes": [
+        12326236160,
+        12632539136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69728731136,
+      "free_bytes": [
+        12324139008,
+        12630441984
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69601755136,
+      "free_bytes": [
+        11929358336,
+        12212068352
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69410430976,
+      "free_bytes": [
+        11929358336,
+        12212068352
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69468258304,
+      "free_bytes": [
+        11931455488,
+        12209971200
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69263196160,
+      "free_bytes": [
+        11597946880,
+        11854376960
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68784574464,
+      "free_bytes": [
+        11595849728,
+        11852279808
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68776611840,
+      "free_bytes": [
+        11600502784,
+        11852279808
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68923441152,
+      "free_bytes": [
+        11541422080,
+        11452936192
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68716326912,
+      "free_bytes": [
+        11222237184,
+        11450421248
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68641632256,
+      "free_bytes": [
+        11226431488,
+        11450421248
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 69063471104,
+      "free_bytes": [
+        11231739904,
+        11450421248
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68827631616,
+      "free_bytes": [
+        10871939072,
+        11052871680
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68595748864,
+      "free_bytes": [
+        10841534464,
+        11052871680
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68449861632,
+      "free_bytes": [
+        10839437312,
+        11050774528
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68507287552,
+      "free_bytes": [
+        10839437312,
+        11050774528
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68922929152,
+      "free_bytes": [
+        10749177856,
+        10545278976
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68680675328,
+      "free_bytes": [
+        10337583104,
+        10505564160
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68580118528,
+      "free_bytes": [
+        10342236160,
+        10505564160
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68587520000,
+      "free_bytes": [
+        10341777408,
+        10503467008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68707323904,
+      "free_bytes": [
+        10336460800,
+        10503467008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70360485888,
+      "free_bytes": [
+        10252128256,
+        10022076416
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71172911104,
+      "free_bytes": [
+        8894361600,
+        8980979712
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71235457024,
+      "free_bytes": [
+        7580397568,
+        7651287040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71244529664,
+      "free_bytes": [
+        7585705984,
+        7651102720
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71269535744,
+      "free_bytes": [
+        7656972288,
+        7651282944
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71272525824,
+      "free_bytes": [
+        7661625344,
+        7651282944
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 71276089344,
+      "free_bytes": [
+        7661625344,
+        7651282944
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70583160832,
+      "free_bytes": [
+        7661625344,
+        7651282944
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70511304704,
+      "free_bytes": [
+        7661457408,
+        7651115008
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 70047109120,
+      "free_bytes": [
+        7923519488,
+        7875424256
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68994387968,
+      "free_bytes": [
+        7899332608,
+        7875424256
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67966439424,
+      "free_bytes": [
+        7899336704,
+        7875424256
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67889078272,
+      "free_bytes": [
+        7841923072,
+        7875424256
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68007194624,
+      "free_bytes": [
+        7847231488,
+        7875424256
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67986006016,
+      "free_bytes": [
+        7859490816,
+        7841419264
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68002099200,
+      "free_bytes": [
+        7790817280,
+        7841419264
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68236087296,
+      "free_bytes": [
+        7792787456,
+        7776473088
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68111507456,
+      "free_bytes": [
+        7784247296,
+        7760359424
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68092407808,
+      "free_bytes": [
+        7683825664,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68090511360,
+      "free_bytes": [
+        7698046976,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68081315840,
+      "free_bytes": [
+        7760764928,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68019814400,
+      "free_bytes": [
+        7760764928,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68005769216,
+      "free_bytes": [
+        7760764928,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67968151552,
+      "free_bytes": [
+        7789273088,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67952324608,
+      "free_bytes": [
+        7806640128,
+        7749083136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67944800256,
+      "free_bytes": [
+        7806615552,
+        7749058560
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67948261376,
+      "free_bytes": [
+        7806615552,
+        7749058560
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68034142208,
+      "free_bytes": [
+        7806291968,
+        7748734976
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68034805760,
+      "free_bytes": [
+        7806201856,
+        7748644864
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68027424768,
+      "free_bytes": [
+        7806062592,
+        7748505600
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68008812544,
+      "free_bytes": [
+        7805935616,
+        7748382720
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 68004671488,
+      "free_bytes": [
+        7805816832,
+        7748263936
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67999297536,
+      "free_bytes": [
+        7805579264,
+        7748030464
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67983560704,
+      "free_bytes": [
+        7805480960,
+        7747858432
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67852562432,
+      "free_bytes": [
+        7805292544,
+        7747739648
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67632689152,
+      "free_bytes": [
+        7805169664,
+        7747604480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67525771264,
+      "free_bytes": [
+        7804993536,
+        7747411968
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67419779072,
+      "free_bytes": [
+        7804907520,
+        7747321856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67223457792,
+      "free_bytes": [
+        7804788736,
+        7747174400
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66986033152,
+      "free_bytes": [
+        7804608512,
+        7746973696
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66920456192,
+      "free_bytes": [
+        7825395712,
+        7746785280
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67300839424,
+      "free_bytes": [
+        7825276928,
+        7746666496
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67280216064,
+      "free_bytes": [
+        7825182720,
+        7746572288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67348746240,
+      "free_bytes": [
+        7827279872,
+        7746572288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67330969600,
+      "free_bytes": [
+        7827279872,
+        7746572288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67324379136,
+      "free_bytes": [
+        7738576896,
+        7746572288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67256606720,
+      "free_bytes": [
+        7692443648,
+        7746572288
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 67325579264,
+      "free_bytes": [
+        7664644096,
+        7739256832
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66809126912,
+      "free_bytes": [
+        7705698304,
+        7732740096
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65981829120,
+      "free_bytes": [
+        7729500160,
+        7732641792
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66033557504,
+      "free_bytes": [
+        7760867328,
+        7732555776
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66068197376,
+      "free_bytes": [
+        7767535616,
+        7732449280
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66099470336,
+      "free_bytes": [
+        7767953408,
+        7732342784
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66130432000,
+      "free_bytes": [
+        7767838720,
+        7732232192
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66165497856,
+      "free_bytes": [
+        7783809024,
+        7732133888
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66227122176,
+      "free_bytes": [
+        7783677952,
+        7732039680
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66434265088,
+      "free_bytes": [
+        7796158464,
+        7731933184
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66455433216,
+      "free_bytes": [
+        7796097024,
+        7731871744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66455093248,
+      "free_bytes": [
+        7802331136,
+        7731814400
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66447777792,
+      "free_bytes": [
+        7802281984,
+        7731740672
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66450153472,
+      "free_bytes": [
+        7802191872,
+        7731675136
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66458451968,
+      "free_bytes": [
+        7768338432,
+        7731630080
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66457321472,
+      "free_bytes": [
+        7768281088,
+        7731519488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66455887872,
+      "free_bytes": [
+        7801724928,
+        7731412992
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66470338560,
+      "free_bytes": [
+        7801630720,
+        7731322880
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66469003264,
+      "free_bytes": [
+        7801516032,
+        7731220480
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66498457600,
+      "free_bytes": [
+        7805673472,
+        7731159040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66497519616,
+      "free_bytes": [
+        7805616128,
+        7731159040
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66291789824,
+      "free_bytes": [
+        7712722944,
+        7638265856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66291822592,
+      "free_bytes": [
+        7712722944,
+        7638265856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66146967552,
+      "free_bytes": [
+        7712722944,
+        7638265856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66160529408,
+      "free_bytes": [
+        7712722944,
+        7638265856
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66170023936,
+      "free_bytes": [
+        7712686080,
+        7638175744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66145443840,
+      "free_bytes": [
+        7714729984,
+        7638175744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66180149248,
+      "free_bytes": [
+        7714729984,
+        7638147072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 66299858944,
+      "free_bytes": [
+        7540682752,
+        7638061056
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65796812800,
+      "free_bytes": [
+        7479492608,
+        7637991424
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65795719168,
+      "free_bytes": [
+        7490555904,
+        7637913600
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65800708096,
+      "free_bytes": [
+        7592177664,
+        7637823488
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65799729152,
+      "free_bytes": [
+        7592103936,
+        7637729280
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65797967872,
+      "free_bytes": [
+        7634497536,
+        7637647360
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65798799360,
+      "free_bytes": [
+        7647105024,
+        7637569536
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65798250496,
+      "free_bytes": [
+        7650951168,
+        7637483520
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65798529024,
+      "free_bytes": [
+        7671590912,
+        7637381120
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65804488704,
+      "free_bytes": [
+        7671480320,
+        7637303296
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65853415424,
+      "free_bytes": [
+        7671394304,
+        7637217280
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65884475392,
+      "free_bytes": [
+        7634501632,
+        7600324608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65879601152,
+      "free_bytes": [
+        7626616832,
+        7600324608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65895718912,
+      "free_bytes": [
+        7662239744,
+        7600295936
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65893306368,
+      "free_bytes": [
+        7658618880,
+        7592480768
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65887367168,
+      "free_bytes": [
+        7661858816,
+        7592038400
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65885847552,
+      "free_bytes": [
+        7661584384,
+        7591763968
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65812938752,
+      "free_bytes": [
+        7661461504,
+        7591641088
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65486729216,
+      "free_bytes": [
+        7659638784,
+        7591464960
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65318395904,
+      "free_bytes": [
+        7555735552,
+        7569924096
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65242771456,
+      "free_bytes": [
+        7420071936,
+        7529713664
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65204355072,
+      "free_bytes": [
+        7399743488,
+        7526559744
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65887150080,
+      "free_bytes": [
+        7389294592,
+        7526522880
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65464152064,
+      "free_bytes": [
+        4850704384,
+        4963434496
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65456787456,
+      "free_bytes": [
+        4851679232,
+        4869910528
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65338363904,
+      "free_bytes": [
+        4752613376,
+        4757999616
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65308102656,
+      "free_bytes": [
+        4695871488,
+        4673732608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65267163136,
+      "free_bytes": [
+        4625793024,
+        4591661056
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65255383040,
+      "free_bytes": [
+        4605468672,
+        4383109120
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65267073024,
+      "free_bytes": [
+        4604833792,
+        4382474240
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65180712960,
+      "free_bytes": [
+        4571320320,
+        4350525440
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65118265344,
+      "free_bytes": [
+        4559491072,
+        4338692096
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 65039810560,
+      "free_bytes": [
+        4527276032,
+        4334809088
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 64683765760,
+      "free_bytes": [
+        4527255552,
+        4334788608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 64572792832,
+      "free_bytes": [
+        4481134592,
+        4334788608
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 64235847680,
+      "free_bytes": [
+        4474515456,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 64059949056,
+      "free_bytes": [
+        4474515456,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 64009478144,
+      "free_bytes": [
+        4547915776,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63856181248,
+      "free_bytes": [
+        4555534336,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63614816256,
+      "free_bytes": [
+        4555534336,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63511056384,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63372025856,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63261708288,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 63135780864,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62981685248,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62889586688,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62850117632,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62839504896,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62839287808,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62635749376,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "startup",
+      "host_available_bytes": 62433361920,
+      "free_bytes": [
+        4557631488,
+        4334723072
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 62386167808,
+      "free_bytes": [
+        4555534336,
+        4334723072
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 62362927104,
+      "free_bytes": [
+        4555522048,
+        4334710784
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 62341832704,
+      "free_bytes": [
+        4507107328,
+        4334583808
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 62318137344,
+      "free_bytes": [
+        4486111232,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61394001920,
+      "free_bytes": [
+        4507082752,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61372112896,
+      "free_bytes": [
+        4509179904,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61410811904,
+      "free_bytes": [
+        4511277056,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61414252544,
+      "free_bytes": [
+        4548558848,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61426438144,
+      "free_bytes": [
+        4548558848,
+        4334551040
+      ]
+    },
+    {
+      "phase": "warmup",
+      "host_available_bytes": 61440278528,
+      "free_bytes": [
+        4548558848,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61457240064,
+      "free_bytes": [
+        4553867264,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61451472896,
+      "free_bytes": [
+        4553867264,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61456601088,
+      "free_bytes": [
+        4553867264,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61473816576,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61556076544,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61558808576,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61554651136,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61554610176,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61551853568,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "measure",
+      "host_available_bytes": 61555224576,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61547466752,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61542137856,
+      "free_bytes": [
+        4558520320,
+        4334551040
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61538361344,
+      "free_bytes": [
+        4528033792,
+        4334497792
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61542408192,
+      "free_bytes": [
+        4527968256,
+        4334432256
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61405286400,
+      "free_bytes": [
+        4527955968,
+        4334419968
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61240848384,
+      "free_bytes": [
+        4553121792,
+        4334419968
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61199716352,
+      "free_bytes": [
+        4554448896,
+        4334419968
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61218213888,
+      "free_bytes": [
+        4554448896,
+        4334419968
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61175222272,
+      "free_bytes": [
+        4554448896,
+        4334419968
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61174083584,
+      "free_bytes": [
+        4546445312,
+        4334403584
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61176823808,
+      "free_bytes": [
+        4168794112,
+        3786883072
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61138526208,
+      "free_bytes": [
+        4165083136,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61127737344,
+      "free_bytes": [
+        4165083136,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61131825152,
+      "free_bytes": [
+        4171898880,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61100683264,
+      "free_bytes": [
+        4171898880,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61111271424,
+      "free_bytes": [
+        4173996032,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61081600000,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60688617472,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60631285760,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60639592448,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60643057664,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60648370176,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60651016192,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60655046656,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60664246272,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60676288512,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60691243008,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60677328896,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60684279808,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60688453632,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60692922368,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60695232512,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60714635264,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60718997504,
+      "free_bytes": [
+        4182777856,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60718546944,
+      "free_bytes": [
+        4177469440,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60714561536,
+      "free_bytes": [
+        4177469440,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60713123840,
+      "free_bytes": [
+        4133437440,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60717481984,
+      "free_bytes": [
+        4133437440,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60720336896,
+      "free_bytes": [
+        4155523072,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60722851840,
+      "free_bytes": [
+        4180688896,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60734447616,
+      "free_bytes": [
+        4180688896,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60742856704,
+      "free_bytes": [
+        4180688896,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60742074368,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60895776768,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60916690944,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60917198848,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60919619584,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60919148544,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60968943616,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60965318656,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60961640448,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60960014336,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 60959862784,
+      "free_bytes": [
+        4182786048,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61016027136,
+      "free_bytes": [
+        4184883200,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61015773184,
+      "free_bytes": [
+        4184883200,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61014097920,
+      "free_bytes": [
+        4184883200,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61012295680,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61023305728,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61018701824,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61041221632,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61041868800,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61060030464,
+      "free_bytes": [
+        4189536256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61070835712,
+      "free_bytes": [
+        4107866112,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61084504064,
+      "free_bytes": [
+        4106289152,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61083049984,
+      "free_bytes": [
+        4106289152,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61079400448,
+      "free_bytes": [
+        4162916352,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61049819136,
+      "free_bytes": [
+        3998334976,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61057507328,
+      "free_bytes": [
+        3976683520,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61100863488,
+      "free_bytes": [
+        3974066176,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61103095808,
+      "free_bytes": [
+        3990450176,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61126967296,
+      "free_bytes": [
+        3994644480,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61094350848,
+      "free_bytes": [
+        3996741632,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61107695616,
+      "free_bytes": [
+        4024004608,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61129355264,
+      "free_bytes": [
+        4021903360,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61136805888,
+      "free_bytes": [
+        4021903360,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61130145792,
+      "free_bytes": [
+        4030291968,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61134929920,
+      "free_bytes": [
+        4052312064,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61141573632,
+      "free_bytes": [
+        4060798976,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61141811200,
+      "free_bytes": [
+        4043755520,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61143482368,
+      "free_bytes": [
+        4022784000,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61143683072,
+      "free_bytes": [
+        4039561216,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61152518144,
+      "free_bytes": [
+        4114272256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61155045376,
+      "free_bytes": [
+        4114272256,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61155065856,
+      "free_bytes": [
+        4133146624,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61163036672,
+      "free_bytes": [
+        4133146624,
+        3786842112
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61162586112,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61160497152,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61159620608,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61159112704,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61158469632,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61157588992,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61156352000,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61155749888,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61156507648,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61155205120,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61155418112,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61154934784,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61166948352,
+      "free_bytes": [
+        4133105664,
+        3786801152
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 61207212032,
+      "free_bytes": [
+        4133093376,
+        3757854720
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 62213898240,
+      "free_bytes": [
+        4134584320,
+        4332572672
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 62291169280,
+      "free_bytes": [
+        4797493248,
+        4576260096
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 62678646784,
+      "free_bytes": [
+        4818563072,
+        4609830912
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 71528144896,
+      "free_bytes": [
+        4840079360,
+        4932775936
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 97571823616,
+      "free_bytes": [
+        4864057344,
+        34049597440
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 110022094848,
+      "free_bytes": [
+        32398008320,
+        34135449600
+      ]
+    },
+    {
+      "phase": "workload",
+      "host_available_bytes": 112177774592,
+      "free_bytes": [
+        32398073856,
+        34135515136
+      ]
+    }
+  ]
+}

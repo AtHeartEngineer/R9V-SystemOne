@@ -53,7 +53,7 @@ First start plans the placement, loads the model and runs the complete local wor
 
 The measured reference image IDs are:
 
-- IQ4: `sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3` (WMMA prefill overlay on image7 `sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c`; bundle upload pending)
+- IQ4: `sha256:2dac17a215fb5b0e3461e4c3e36a2981eec8ac3d6021e73183d247e819740c03` (WMMA prefill overlay on image7 `sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c`; bundle `v0.3.0-rc1-images`)
 - Q4: `sha256:2e50016cfcc9cd22f15d3f69ccf001e4877236e12ebb4ab458cc9c16caaef9e3`
 
 The image identities are carried by the release bundle and verified during setup. Building from source does not imply the resulting image has either identity.

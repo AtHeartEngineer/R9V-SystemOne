@@ -13,15 +13,15 @@
   "context_limit": 131072,
   "prompt_tokens": 130941,
   "minimum_free_bytes": [
-    3899985920,
-    3788619776
+    3974066176,
+    3786801152
   ],
   "requested_free_bytes": [
     3221225472,
     3221225472
   ],
-  "image_id": "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3",
-  "manifest_sha256": "ad2bde67e128f6d223683eb02238bedff4a04f7ac62c81fabf3218b5237cc08c",
+  "image_id": "sha256:2dac17a215fb5b0e3461e4c3e36a2981eec8ac3d6021e73183d247e819740c03",
+  "manifest_sha256": "1f2f36e76283007b495a7b35b4a7ff84debc15f858cf92282bf81c2f59de7589",
   "clean_stop": true,
   "reclaimed": true,
   "workers": [
@@ -44,5 +44,5 @@
       "num_ooms": 0
     }
   ],
-  "executed_manifest_sha256": "ddb72d1dee1b667723ef78d0e043a3b8b4c8a29f1b925b0365ab07bd1e959b8e"
+  "executed_manifest_sha256": "ac4c5f6e005e7c3f094074263f5d52894210cc230180d4331f3efbae80a8a92a"
 }

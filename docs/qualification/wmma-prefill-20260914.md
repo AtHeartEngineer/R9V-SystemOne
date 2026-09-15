@@ -23,7 +23,12 @@ The IQ4 profile now uses 4096-token chunks (`R9V_MAX_NUM_BATCHED_TOKENS=4096`) a
 `R9V_TIERED_PREFILL_GROUP_SIZE=32`. Both are part of the memory-seed contract, so the
 placement assets were re-derived for the new image with the release tools: route
 captures, expert ranking, calibration, planner placement, derived 128K qualification,
-memory seed and public export (`packages/placements/.../wmma-prefill-r1/qualified-128k-r8`).
+memory seed and public export (`packages/placements/.../wmma-prefill-r2/qualified-128k-r9`).
+
+The first candidate build of this recipe (`sha256:ccad629a…`) was lost with its Docker store on
+2026-09-15 before its bundle was uploaded. The overlay was rebuilt from the public image7 bundle
+as `sha256:2dac17a2…`, and every image-bound asset above was regenerated for it; the numbers below
+are from that rebuilt image.
 
 ## Kernel parity
 
@@ -47,29 +52,32 @@ decode is compared per step rather than by generated text.
 
 Measured on the dual Radeon AI PRO R9700 workstation through the ordinary product path:
 a fresh `./r9v setup qwen38-mtp4 --headroom 3,3` and `./r9v start`, whose first-start
-workload qualification passed on the planner's 54/428 static-expert placement (cache160/0,
-4,167 / 4,362 MiB free at ready). The procedure is the original release's sustained PP
-suite: one unmeasured 1,024-token warmup, then ten 8K / one-output requests (one-second
-pauses), three 32K and two 64K / 16-output requests (two-second pauses), serial. Rates are
-prompt tokens per second, `prompt_tokens / TTFT`; prefix-cache queries were zero.
+workload qualification passed on the planner's 46/427 static-expert placement (cache160/0,
+3,774 / 4,033 MiB free at ready; this host's desktop compositor held about 2.2 GiB of rank 0
+VRAM, so a headless host plans more static experts). The procedure is the original release's
+sustained PP suite: one unmeasured 1,024-token warmup, then ten 8K / one-output requests
+(one-second pauses), three 32K and two 64K / 16-output requests (two-second pauses), serial.
+Rates are prompt tokens per second, `prompt_tokens / TTFT`; prefix-cache queries were zero.
 
 | Runtime | 8K mean / median | 32K mean / median | 64K mean / median | All trials |
 |---|---:|---:|---:|---|
-| WMMA prefill, 4096-token chunks (this branch) | **1,669.6 / 1,670.7** | **1,617.1 / 1,626.9** | **1,601.4 / 1,601.4** | [JSON](results/iq4-wmma-prefill-20260914.json) |
+| WMMA prefill, 4096-token chunks (this release) | **1,684.6 / 1,684.7** | **1,640.6 / 1,641.2** | **1,605.1 / 1,605.1** | [JSON](results/iq4-wmma-prefill-20260915.json) |
 | v0.2.0 IQ4, 1024-token chunks | 989.3 / 984.6 | 982.0 / 984.7 | 968.2 / 968.2 | [JSON](results/iq4-v020-pp-20260914.json) |
 | Original IQ4 MTP2 reference (August) | 1,512.0 / 1,510.2 | 1,401.8 / 1,365.3 | 1,357.0 / 1,357.0 | [JSON](results/qwen38-group16-pp-v1.json) |
 
-8K trials ranged 1,637–1,726; 32K 1,592–1,632; 64K 1,599–1,604. The 8K and 32K
-results are +69% and +65% over v0.2.0 and above the August reference at every length.
+8K trials ranged 1,653–1,718; 32K 1,634–1,646; 64K 1,600–1,610. The 8K and 32K
+results are +70% and +67% over v0.2.0 and above the August reference at every length. The
+lost first build measured 1,669.6 / 1,617.1 / 1,601.4 on a 54/428 placement the day before.
 
-Generation on the same server afterwards: the 256-token reference prompt decoded at
-77.2 and 78.7 tok/s (38.6–39.3 ms per step, 3.04 accepted tokens per step); twelve
-128-token greedy generations averaged 71.3 tok/s at 43.3 ms per step and 3.08 tokens
-per step, against 70.7 tok/s, 43.9 ms and 3.10 on the released image in the same harness.
-Decode kernels and placement policy are unchanged; the reference prompt's lower single
-number is a different greedy continuation with lower MTP acceptance at 4096-token chunks,
-not a slower step. Generation is reported per step for that reason; it is not a new
-throughput qualification.
+Generation on the same server afterwards: the 256-token reference prompt decoded at 75.1 and
+76.1 tok/s (41.4–41.9 ms per step, 3.15 accepted tokens per step); twelve 128-token greedy
+generations averaged 67.2 tok/s at 46.6 ms per step and 3.13 tokens per step. On the released
+image in the same harness the twelve prompts averaged 70.7 tok/s at 43.9 ms per step and 3.10
+tokens per step. Decode kernels and placement policy are unchanged; the per-step difference
+follows the placement (46 static experts on rank 0 here against 76 on the released image's
+reference host, because 4096-token chunks reserve about 0.9 GiB more activation memory per
+card and this host's desktop holds more VRAM). Generation is reported per step for that
+reason; it is not a new throughput qualification.
 
 ## Reproduce
 
