@@ -75,8 +75,8 @@
     "public_image": "published-verified-bundle"
   },
   "distribution": {
-    "image_bundle": "release/image-bundle-wmma-prefill-20260914.json",
-    "image_id": "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3",
+    "image_bundle": "release/image-bundle-wmma-prefill-20260915.json",
+    "image_id": "sha256:2dac17a215fb5b0e3461e4c3e36a2981eec8ac3d6021e73183d247e819740c03",
     "transport": "github-release-docker-save"
   }
 }

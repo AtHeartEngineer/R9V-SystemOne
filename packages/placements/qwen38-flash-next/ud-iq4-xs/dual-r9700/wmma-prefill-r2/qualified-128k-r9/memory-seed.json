@@ -44,7 +44,7 @@
         "R9V_MTP_QUANTIZATION": "fp8",
         "R9V_NATIVE_CUSTOM_AR": "1",
         "R9V_EXPERT_TP_SPLIT": "416,224",
-        "R9V_IMAGE": "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3",
+        "R9V_IMAGE": "sha256:2dac17a215fb5b0e3461e4c3e36a2981eec8ac3d6021e73183d247e819740c03",
         "R9V_ENABLE_DENSE_HC_DOWN_BF16_M3": "1",
         "R9V_R4D": "0",
         "R9V_ATTENTION_OUTPUT4": "1",
@@ -75,7 +75,7 @@
         "R9V_PLE_EXPECTED_SHA256": "dd55c28902f38cd88134b2a569c51282c5ffce30080487e1a645740115c56cc3",
         "R9V_MODEL_PACKAGE_SHA256": "c026675f64d7f059f3470991ccf0ab1517f6f7c4d5133fe2b29be02437650e66"
       },
-      "source_sha256": "7f5c46dbc62377afb254d8b3117669bec1db20010e4a8612bdf2b9a77daaf217",
+      "source_sha256": "14ae2f5759220c63c4837668e70536f5f646c6f1859b57e98799d17ee7aa8078",
       "devices": [
         {
           "bdf": "0000:03:00.0",
@@ -94,18 +94,18 @@
     },
     "ranks": [
       {
-        "non_expert_peak_bytes": 12612929536,
-        "external_allowance_bytes": 1642831872,
+        "non_expert_peak_bytes": 12733577728,
+        "external_allowance_bytes": 2203713536,
         "transient_margin_bytes": 536870912
       },
       {
-        "non_expert_peak_bytes": 12688667136,
-        "external_allowance_bytes": 341577728,
+        "non_expert_peak_bytes": 12719403520,
+        "external_allowance_bytes": 341606400,
         "transient_margin_bytes": 536870912
       }
     ],
-    "reference_cold_bytes": 37629995520,
-    "startup_required_available_bytes": 49634938880,
+    "reference_cold_bytes": 38385617920,
+    "startup_required_available_bytes": 51723776000,
     "host_reserve_bytes": 4294967296,
     "workload_passed": true,
     "limitations": "Local bounded workload envelope; polling plus 512 MiB transient margin. External allowance includes 256 MiB variability. Revalidate every derived placement."
@@ -114,19 +114,19 @@
     "passed": true
   },
   "provenance": {
-    "private_seed_sha256": "d9a2b64aba2e0a27f0656bee2468560bc8ffe366e712883662581822b98b0533",
-    "private_payload_index_sha256": "bebbd8b18ad993b68e2f743bf740bdcdeeedf217f1b645e9226bd0cfa16fd936",
-    "original_calibration_sha256": "02862ddc0d52010ee0e67f428738e18d75f5b00daf5a9d6f6a83b7c7f8517f0b",
+    "private_seed_sha256": "3d656196ac45bbf8491c883f721b7e5909032f1cf37e3b6a057bf531337663e5",
+    "private_payload_index_sha256": "7f755cbce4bbe7a32c4c7f939ac70f15262f1cbc12bbcb39844d1cd753ea6220",
+    "original_calibration_sha256": "5e1f6cc6ea24477f52222a5d819f69fb53022b9f62c37bd1f366bf24e5da70cd",
     "scope": "Publisher-attested reference workload; public numeric samples independently reproduce memory arithmetic. Raw private qualification remains archived.",
     "catalog_projection": {
       "schema": "r9v.public-catalog-projection.v1",
-      "original_catalog_sha256": "257ae59a75c85e39118db63b89e96dba34c3f27e899632dcee68fe05006aedcd",
-      "original_manifest_file_sha256": "597849313d0443ae62e3c8b86a6788d4f1b39897deb876a9b2c787a5a8a48393",
-      "executed_manifest_sha256": "ddb72d1dee1b667723ef78d0e043a3b8b4c8a29f1b925b0365ab07bd1e959b8e",
-      "public_catalog_sha256": "7f5c46dbc62377afb254d8b3117669bec1db20010e4a8612bdf2b9a77daaf217",
-      "public_manifest_sha256": "ad2bde67e128f6d223683eb02238bedff4a04f7ac62c81fabf3218b5237cc08c",
-      "catalog_content_sha256": "601154432818802e4dc76cca87b5b9e10e821df9430ea3c820c746aa644b5d66",
-      "manifest_content_sha256": "2f75d33c8ef52f91bbb0c38889091eb91b9ab40de95c2d5d3d5119edc4ed26c9",
+      "original_catalog_sha256": "99927bfe4dc26240d4b251b78461d1f866c55de9262bc794b799baa23c81b89a",
+      "original_manifest_file_sha256": "74a1e0c462d610174c4b397b8a56856dda843ae44bdca4b6e6f18079b4d515ef",
+      "executed_manifest_sha256": "ac4c5f6e005e7c3f094074263f5d52894210cc230180d4331f3efbae80a8a92a",
+      "public_catalog_sha256": "14ae2f5759220c63c4837668e70536f5f646c6f1859b57e98799d17ee7aa8078",
+      "public_manifest_sha256": "1f2f36e76283007b495a7b35b4a7ff84debc15f858cf92282bf81c2f59de7589",
+      "catalog_content_sha256": "686117c3dd62f397c9abad48185b0851f98c617b90915b74c8df2afb710bd697",
+      "manifest_content_sha256": "908d9561ab20924cff9a2d3df392811dfee06e93eb2e5462667c55a475680580",
       "scope": "Only ranking input locations and the derived catalog link were relocated. Original execution evidence remains privately archived; local qualification is still required."
     }
   },
@@ -134,13 +134,13 @@
   "public_evidence": {
     "catalog": {
       "path": "catalog.json",
-      "bytes": 1670113,
-      "sha256": "7f5c46dbc62377afb254d8b3117669bec1db20010e4a8612bdf2b9a77daaf217"
+      "bytes": 1669963,
+      "sha256": "14ae2f5759220c63c4837668e70536f5f646c6f1859b57e98799d17ee7aa8078"
     },
     "manifest": {
       "path": "manifest.json",
-      "bytes": 352984,
-      "sha256": "077e2aea04c44903159d4cbefcdb2a860d216d7febac673eb1fa463d78a1b216"
+      "bytes": 345900,
+      "sha256": "85c119bd0f787ab2284c699d58cd99efd773e817fe2f1a203d40c21dffc284cf"
     },
     "runtime": {
       "path": "runtime.json",
@@ -149,13 +149,13 @@
     },
     "measurements": {
       "path": "measurements.json",
-      "bytes": 55114,
-      "sha256": "fdbea0558ff229d9e738684b07ee8f08bd335824023737c43b6faab80e2430a7"
+      "bytes": 73765,
+      "sha256": "c3cd00138ea58706b3df5dedd97129478d48859c8f72853d25b74a531471c260"
     },
     "workload": {
       "path": "workload.json",
       "bytes": 1007,
-      "sha256": "fbf076a25c964663763f2b1a3635629c44df9b82642543d85aa662502c18b04a"
+      "sha256": "748fc8f33323c21f16e0f395d7a8d9b8d4e3a81eb2971217de9e20b45e7fb0c5"
     }
   }
 }
