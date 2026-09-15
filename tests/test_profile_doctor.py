@@ -805,3 +805,27 @@ def test_custom_headroom_setup_phase_reports_pending_but_direct_doctor_fails(mon
     reporter = Reporter()
     doctor._check_placement_plan(reporter, runtime=True)
     assert reporter.checks[-1].status == "FAIL"
+
+
+@pytest.mark.parametrize(
+    ("group_size", "status"),
+    [("32", "PASS"), ("16", "PASS"), ("64", "FAIL")],
+)
+def test_decode_policy_accepts_wmma_prefill_group_32(monkeypatch, group_size, status) -> None:
+    monkeypatch.setenv("R9V_TIERED_IQ_MOE_VARIANT", "reuse3v2")
+    monkeypatch.setenv("R9V_TIERED_EXPERT_CACHE_SLOTS", "16")
+    monkeypatch.setenv("R9V_TIERED_EXPERT_CACHE_RANKS", "1")
+    monkeypatch.setenv("R9V_TIERED_EXPERT_CACHE_POLICY", "lru")
+    monkeypatch.setenv("R9V_MTP_SPEC_TOKENS", "2")
+    monkeypatch.setenv("R9V_PLE_RESIDENCY_MODE", "ssd")
+    monkeypatch.setenv("R9V_TIERED_PREFILL_GROUP_SIZE", group_size)
+    reporter = Reporter()
+    fake_gpu = parse_amd_smi_list("GPU: 0\n BDF: 0000:03:00.0\nGPU: 1\n BDF: 0000:13:00.0\n")
+
+    _check_profile_policy(reporter, 2, [
+        (0, fake_gpu[0], 32.0, 16, 63.0),
+        (1, fake_gpu[1], 16.0, 4, 7.88),
+    ])
+
+    decode = [check for check in reporter.checks if check.name == "decode-policy"]
+    assert [check.status for check in decode] == [status]
