@@ -3,7 +3,7 @@
   "id": "qwen38-flash-next/ud-iq4-xs/dual-r9700-mtp4-128k",
   "name": "Qwen3.8 Flash Next UD-IQ4_XS \u2014 dual R9700, MTP4, 128K",
   "status": "experimental",
-  "summary": "Image7 exact-sized cold-host reference passed the full 128K workload and 3 GiB headroom per card; every local placement requires qualification.",
+  "summary": "WMMA grouped MoE prefill at 4096-token chunks; reference passed the full 128K workload and 3 GiB headroom per card; every local placement requires qualification.",
   "aliases": [
     "qwen38-mtp4"
   ],
@@ -75,8 +75,8 @@
     "public_image": "published-verified-bundle"
   },
   "distribution": {
-    "image_bundle": "release/image-bundle-exact-host-20260912.json",
-    "image_id": "sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c",
+    "image_bundle": "release/image-bundle-wmma-prefill-20260914.json",
+    "image_id": "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3",
     "transport": "github-release-docker-save"
   }
 }

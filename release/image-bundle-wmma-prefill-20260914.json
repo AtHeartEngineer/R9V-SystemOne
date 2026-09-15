@@ -1,0 +1,77 @@
+{
+  "schema": "r9v.image-bundle.v1",
+  "image_ids": [
+    "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3"
+  ],
+  "format": "docker-save-gzip-parts",
+  "bytes": 11355432328,
+  "sha256": "db2dd229a5885b6818bb2be2575055e665ed77806762014cfbdfb03abd1f4d79",
+  "parts": [
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part000",
+      "bytes": 1073741824,
+      "sha256": "f33437e511bdeda4658fb64791942191a53315a53942463e7e0e9b83a189791b",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part000"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part001",
+      "bytes": 1073741824,
+      "sha256": "65fb50ec58e14665337e0e535cc8cb76cf30d1f0364f16399d846f2d3e55b6c2",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part001"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part002",
+      "bytes": 1073741824,
+      "sha256": "13337daac7fb499f53a4704a36ce205c16d22a926d4cd36f6ee977a4f4726f32",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part002"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part003",
+      "bytes": 1073741824,
+      "sha256": "47e6a3aee2390d2abc6f60ba13fe9340d3dbf0874ef3c3917016037ed8b36e23",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part003"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part004",
+      "bytes": 1073741824,
+      "sha256": "5998efda6a8f4f5ac619826651e33831bff3ea97384f95119bb7439720b7d34c",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part004"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part005",
+      "bytes": 1073741824,
+      "sha256": "2949efb254bf1c0517f92bdcace4573d9d4108fc2f5001e82e2803eff6c73dc0",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part005"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part006",
+      "bytes": 1073741824,
+      "sha256": "cf7d06843a3d8d6c5e05410352423001109161a0ab350ce5949cf39f39656fb4",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part006"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part007",
+      "bytes": 1073741824,
+      "sha256": "df890cb5043f7afa144b220cc4ee32daf41ea6e451aae6ed4bc9db3a632bc7ec",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part007"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part008",
+      "bytes": 1073741824,
+      "sha256": "49408076d51b43648b6f3960ab2a5048fd793d22e7c712f5e1a6aad2885e68ef",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part008"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part009",
+      "bytes": 1073741824,
+      "sha256": "6b4a573880cc6da98fec01d769915361d504c2e31a487ef4ec64bc8494ade6f3",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part009"
+    },
+    {
+      "name": "r9v-wmma-prefill-images.tar.gz.part010",
+      "bytes": 618014088,
+      "sha256": "cad1d2d02aea38e468bc9785450cf2d4c843ee3362fc7a54965ec820318116c9",
+      "url": "https://github.com/Dyluhn/R9V/releases/download/v0.3.0-rc1-images/r9v-wmma-prefill-images.tar.gz.part010"
+    }
+  ]
+}

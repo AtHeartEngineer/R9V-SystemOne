@@ -14,6 +14,7 @@ SEEDS = [
     "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image6-streaming-r1/qualified-128k-r1",
     "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/qualified-128k-r3",
     "packages/placements/qwen38-flash-next/ud-q4-k-xl/dual-r9700/image6-routing-r4/qualified-128k-r2",
+    "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/wmma-prefill-r1/qualified-128k-r8",
 ]
 
 

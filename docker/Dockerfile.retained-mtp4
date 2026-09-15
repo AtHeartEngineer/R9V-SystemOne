@@ -34,6 +34,7 @@ ENV QWEN38_DENSE_MMVQ_HIP_SO=/opt/r9v/kernels/retained-mtp4/qwen38_dense_mmvq_hi
     R9V_Q8_MMVQ5_SO=/opt/r9v/kernels/retained-mtp4/r9v_q8_mmvq5.so \
     R9V_DRAFT_W2_RANK_SO=/opt/r9v/kernels/retained-mtp4/r9v_draft_w2_rank.so \
     R9V_DRAFT_INDEXED_SO=/opt/r9v/kernels/retained-mtp4/r9v_draft_indexed_q6.so \
+    R9V_MOE_WMMA_SO=/opt/r9v/kernels/retained-mtp4/r9v_moe_wmma.so \
     PYTHONPATH=/opt/r9v/retained-mtp4/python
 
 COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm /opt/r9v/lib/python3.12/site-packages/vllm

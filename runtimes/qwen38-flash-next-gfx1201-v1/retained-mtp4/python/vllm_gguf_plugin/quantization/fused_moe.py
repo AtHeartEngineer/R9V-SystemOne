@@ -38,6 +38,11 @@ from .utils import MMQ_QUANT_TYPES, MMVQ_QUANT_TYPES, logger
 _Q8_BF16_MOE_HIP = None
 _IQ_MOE_HIP = None
 _TIERED_IQ_MOE_HIP = None
+_MOE_WMMA_HIP = None
+_MOE_WMMA_SO_ENV = "R9V_MOE_WMMA_SO"
+# Group 32 selects the gfx12 int8 WMMA prefill kernel; 4/8/16 select the
+# original bit-exact grouped GEMV kernel.
+_WMMA_PREFILL_GROUP_SIZE = 32
 _TIERED_IQ_MOE_VARIANTS = {
     "generic": 0,
     "auto": 1,
@@ -95,9 +100,31 @@ def _tiered_cache_fill_batch() -> int:
 
 def _tiered_prefill_group_size() -> int:
     value = os.environ.get(_TIERED_PREFILL_GROUP_ENV, "0")
-    if value not in {"0", "4", "8", "16"}:
-        raise RuntimeError(f"{_TIERED_PREFILL_GROUP_ENV} must be 0, 4, 8, or 16")
+    if value not in {"0", "4", "8", "16", "32"}:
+        raise RuntimeError(f"{_TIERED_PREFILL_GROUP_ENV} must be 0, 4, 8, 16, or 32")
     return int(value)
+
+
+def _moe_wmma_hip():
+    """Load the gfx12 int8 WMMA grouped prefill extension once."""
+    global _MOE_WMMA_HIP
+    if _MOE_WMMA_HIP is not None:
+        return _MOE_WMMA_HIP
+    location = os.environ.get(_MOE_WMMA_SO_ENV)
+    if not location:
+        raise RuntimeError(
+            f"{_TIERED_PREFILL_GROUP_ENV}={_WMMA_PREFILL_GROUP_SIZE} requires "
+            f"{_MOE_WMMA_SO_ENV} to name the WMMA prefill extension"
+        )
+    path = Path(location)
+    spec = importlib.util.spec_from_file_location("r9v_moe_wmma", path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load WMMA MoE prefill extension from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    _MOE_WMMA_HIP = module
+    logger.info_once("Using gfx12 int8 WMMA grouped MoE prefill kernels")
+    return module
 
 
 def _finalize_moe_output(
@@ -436,12 +463,16 @@ def _fused_moe_gguf_impl(
                 else:
                     prepare(*prepare_args)
             if grouped_prefill:
+                wmma_prefill = prefill_group_size == _WMMA_PREFILL_GROUP_SIZE
+                prefill_hip = _moe_wmma_hip() if wmma_prefill else tiered_hip
                 expected_api = (
-                    "tiered_iq_moe_cached_prefill_grouped"
+                    ("tiered_iq_moe_cached_prefill_wmma" if wmma_prefill
+                     else "tiered_iq_moe_cached_prefill_grouped")
                     if dynamic_cache
-                    else "tiered_iq_moe_prefill_grouped"
+                    else ("tiered_iq_moe_prefill_wmma" if wmma_prefill
+                          else "tiered_iq_moe_prefill_grouped")
                 )
-                if not hasattr(tiered_hip, expected_api):
+                if not hasattr(prefill_hip, expected_api):
                     raise RuntimeError(
                         "The loaded tiered HIP extension does not support "
                         f"grouped-{prefill_group_size} prefill"
@@ -449,7 +480,7 @@ def _fused_moe_gguf_impl(
                 sorted_token_ids, expert_ids, num_tokens_post_padded = (
                     moe_align_block_size(topk_ids, prefill_group_size, hot_map.numel())
                 )
-                grouped_api = getattr(tiered_hip, expected_api)
+                grouped_api = getattr(prefill_hip, expected_api)
 
                 def tiered_grouped_prefill(
                     inp, cold, hot, cached, route_k, qtype, out_rows, token_count

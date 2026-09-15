@@ -47,8 +47,9 @@ hip_visible_devices=${hip_visible_devices%,}
 [[ $R9V_TIERED_PREFILL_GROUP_SIZE == 0 ||
    $R9V_TIERED_PREFILL_GROUP_SIZE == 4 ||
    $R9V_TIERED_PREFILL_GROUP_SIZE == 8 ||
-   $R9V_TIERED_PREFILL_GROUP_SIZE == 16 ]] || {
-    printf 'R9V_TIERED_PREFILL_GROUP_SIZE must be 0, 4, 8, or 16\n' >&2
+   $R9V_TIERED_PREFILL_GROUP_SIZE == 16 ||
+   $R9V_TIERED_PREFILL_GROUP_SIZE == 32 ]] || {
+    printf 'R9V_TIERED_PREFILL_GROUP_SIZE must be 0, 4, 8, 16, or 32\n' >&2
     exit 2
 }
 

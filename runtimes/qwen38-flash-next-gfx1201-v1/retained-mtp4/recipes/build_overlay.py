@@ -27,6 +27,7 @@ MODULES = (
     ("r9v_cache192", "cache192_prepare.cu", False, None),
     ("r9v_draft_w2_rank", "draft_w2_rank.cu", True, None),
     ("r9v_draft_indexed_q6", "draft_indexed_q6.cu", True, None),
+    ("r9v_moe_wmma", "r9v_moe_wmma.cu", True, None),
 )
 
 
