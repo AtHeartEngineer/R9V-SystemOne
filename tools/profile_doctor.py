@@ -1165,8 +1165,9 @@ def _check_profile_policy(
         "4",
         "8",
         "16",
+        "32",
     }:
-        invalid.append("prefill group size must be 0,4,8,16")
+        invalid.append("prefill group size must be 0,4,8,16,32")
     async_cache = os.environ.get("R9V_TIERED_EXPERT_CACHE_ASYNC", "0")
     if async_cache not in {"0", "1"}:
         invalid.append("async cache must be 0 or 1")
