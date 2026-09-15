@@ -5,22 +5,22 @@
   "hardware": "dual-r9700-32gb-asymmetric",
   "status": "experimental",
   "manifest": {
-    "path": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/manifest.json"
+    "path": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/wmma-prefill-r1/qualified-128k-r8/manifest.json"
   },
   "expert_partition": [
     416,
     224
   ],
   "hot_counts": [
-    71,
-    450
+    56,
+    434
   ],
   "cache_slots": 160,
   "cache_ranks": [
     0
   ],
-  "qualification": "Image7 exact-sized cold-host reference passed all seven full 128K workload checks and 3 GiB per-card headroom. Public projection preserves measured placement and original evidence commitments; ordinary public setup/start/restart qualification remains pending.",
-  "image_id": "sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c",
-  "catalog": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/catalog.json",
-  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/image7-exact-host-r1/qualified-128k-r7/memory-seed.json"
+  "qualification": "WMMA prefill reference passed all seven full 128K workload checks and 3 GiB per-card headroom at 4096-token chunks. Public projection preserves measured placement and original evidence commitments; ordinary public setup/start/restart qualification remains pending.",
+  "image_id": "sha256:ccad629ac40921a861ffc79b74c865cdfda752dd6e6eaf25ec662c4771d84fd3",
+  "catalog": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/wmma-prefill-r1/qualified-128k-r8/catalog.json",
+  "memory_seed": "packages/placements/qwen38-flash-next/ud-iq4-xs/dual-r9700/wmma-prefill-r1/qualified-128k-r8/memory-seed.json"
 }
