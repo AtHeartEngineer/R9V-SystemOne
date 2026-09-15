@@ -9,9 +9,9 @@ FROM ${BASE_IMAGE}
 ARG R9V_REVISION=unknown
 ENV MAX_JOBS=4
 COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/kernels/r9v_moe_wmma.cu /opt/r9v/retained-mtp4/kernels/r9v_moe_wmma.cu
-COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/recipes/build-moe-wmma.py /opt/r9v/retained-mtp4/recipes/build-moe-wmma.py
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/recipes/moe_wmma.py /opt/r9v/retained-mtp4/recipes/moe_wmma.py
 RUN R9V_MOE_WMMA_BUILD=/opt/r9v/build/moe-wmma R9V_MOE_WMMA_SO=/opt/r9v/kernels/retained-mtp4/r9v_moe_wmma.so \
-      python3 /opt/r9v/retained-mtp4/recipes/build-moe-wmma.py \
+      python3 /opt/r9v/retained-mtp4/recipes/moe_wmma.py \
  && rm -rf /opt/r9v/build
 COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py /opt/r9v/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py
 COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py /opt/r9v/lib/python3.12/site-packages/vllm_gguf_plugin/quantization/fused_moe.py
