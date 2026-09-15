@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Add the gfx12 int8 WMMA grouped MoE prefill kernel to the public image7
+# runtime. No model, target head, placement or decode-path changes; the
+# kernel is compiled inside the image from source with the pinned toolchain.
+# BASE_IMAGE must be a local tag verified against image ID
+# sha256:46ab688af195643e61322a72b4e7b7fa0999c12299bffb2a4515f8363c59393c.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+ARG R9V_REVISION=unknown
+ENV MAX_JOBS=4
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/kernels/r9v_moe_wmma.cu /opt/r9v/retained-mtp4/kernels/r9v_moe_wmma.cu
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/recipes/build-moe-wmma.py /opt/r9v/retained-mtp4/recipes/build-moe-wmma.py
+RUN R9V_MOE_WMMA_BUILD=/opt/r9v/build/moe-wmma R9V_MOE_WMMA_SO=/opt/r9v/kernels/retained-mtp4/r9v_moe_wmma.so \
+      python3 /opt/r9v/retained-mtp4/recipes/build-moe-wmma.py \
+ && rm -rf /opt/r9v/build
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py /opt/r9v/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py
+COPY runtimes/qwen38-flash-next-gfx1201-v1/retained-mtp4/python/vllm_gguf_plugin/quantization/fused_moe.py /opt/r9v/lib/python3.12/site-packages/vllm_gguf_plugin/quantization/fused_moe.py
+ENV R9V_MOE_WMMA_SO=/opt/r9v/kernels/retained-mtp4/r9v_moe_wmma.so
+LABEL org.opencontainers.image.source="https://github.com/Dyluhn/R9V" \
+      org.opencontainers.image.revision="${R9V_REVISION}" \
+      org.opencontainers.image.description="Experimental WMMA grouped MoE prefill overlay; qualification required"
