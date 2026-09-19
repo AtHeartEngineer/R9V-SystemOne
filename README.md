@@ -8,6 +8,22 @@ Each profile binds a model package, runtime, hardware layout and expert placemen
 
 **Current status:** both IQ4_XS and Q4_K_XL MTP4 profiles passed ordinary public setup, first-start workload qualification and unchanged-receipt restart on the dual-R9700 reference host. Both profiles remain experimental. Each first start passed all seven checks at 131,072 context, including a 130,941-token prompt, with at least 3 GiB free VRAM per GPU. Setup selects the profile's runtime image bundle, verifies every part and loads the exact image ID. The Q4 profile uses the [v0.2.0-rc2 bundle](https://github.com/Dyluhn/R9V/releases/tag/v0.2.0-rc2-images); the IQ4 profile's WMMA-prefill image (`release/image-bundle-wmma-prefill-20260915.json`) is published under the [`v0.3.0-rc1-images`](https://github.com/Dyluhn/R9V/releases/tag/v0.3.0-rc1-images) release tag. See [release status and evidence](docs/qwen-release-candidate.md).
 
+## System-One proxy
+
+This fork includes the local [`systemone/`](systemone/) service that exposes
+`POST /v1/systemone`. It does not load a model or start another inference
+engine. The service sends exact candidate-token scoring requests to an existing
+R9V OpenAI-compatible endpoint, validates one-token labels at the prompt
+boundary, and renormalizes the returned raw log probabilities over the supplied
+candidates. Shared state is kept as an identical prompt prefix so R9V/vLLM can
+reuse its prefix cache across questions.
+
+The proxy remains a separate process so it can restart independently without
+reloading Qwen. It binds to `127.0.0.1` by default and waits for the configured
+R9V endpoint during startup. See the [System-One README](systemone/README.md)
+for configuration, API examples, tests, benchmark results, and service
+integration details.
+
 ## Profiles and features
 
 | Alias | Model package | Runtime | Status |
@@ -182,6 +198,7 @@ kernels/              pinned R9V kernel submodule
 vendor/               pinned vLLM and GGUF-plugin forks
 tools/                setup, planning, qualification, doctor and support
 tests/                CPU checks and explicit GPU qualification tests
+systemone/            local candidate-token scoring API and its tests
 ```
 
 The kernels are specialized for supported shapes, quantizations and `gfx1201`. A different model, GPU, topology or runtime image requires its own validation. Current reference qualification covers one active sequence at a time.
