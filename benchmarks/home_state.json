@@ -1,0 +1,287 @@
+{
+  "version": 1,
+  "state": "{\"records\":[{\"attributes\":{\"area\":\"library\",\"battery\":6,\"mode\":\"offline\",\"sequence\":0,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0000\",\"history\":[{\"minute\":0,\"value\":117},{\"minute\":5,\"value\":136},{\"minute\":10,\"value\":155},{\"minute\":15,\"value\":174}],\"state\":\"19.89\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":83,\"mode\":\"standby\",\"sequence\":1,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0001\",\"history\":[{\"minute\":0,\"value\":154},{\"minute\":5,\"value\":173},{\"minute\":10,\"value\":192},{\"minute\":15,\"value\":211}],\"state\":\"26.18\"},{\"attributes\":{\"area\":\"studio\",\"battery\":59,\"mode\":\"active\",\"sequence\":2,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0002\",\"history\":[{\"minute\":0,\"value\":191},{\"minute\":5,\"value\":210},{\"minute\":10,\"value\":229},{\"minute\":15,\"value\":248}],\"state\":\"32.47\"},{\"attributes\":{\"area\":\"lab\",\"battery\":35,\"mode\":\"idle\",\"sequence\":3,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0003\",\"history\":[{\"minute\":0,\"value\":228},{\"minute\":5,\"value\":247},{\"minute\":10,\"value\":266},{\"minute\":15,\"value\":285}],\"state\":\"38.76\"},{\"attributes\":{\"area\":\"utility\",\"battery\":11,\"mode\":\"offline\",\"sequence\":4,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0004\",\"history\":[{\"minute\":0,\"value\":265},{\"minute\":5,\"value\":284},{\"minute\":10,\"value\":303},{\"minute\":15,\"value\":322}],\"state\":\"45.05\"},{\"attributes\":{\"area\":\"library\",\"battery\":88,\"mode\":\"standby\",\"sequence\":5,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0005\",\"history\":[{\"minute\":0,\"value\":302},{\"minute\":5,\"value\":321},{\"minute\":10,\"value\":340},{\"minute\":15,\"value\":359}],\"state\":\"51.34\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":64,\"mode\":\"active\",\"sequence\":6,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0006\",\"history\":[{\"minute\":0,\"value\":339},{\"minute\":5,\"value\":358},{\"minute\":10,\"value\":377},{\"minute\":15,\"value\":396}],\"state\":\"57.63\"},{\"attributes\":{\"area\":\"studio\",\"battery\":40,\"mode\":\"idle\",\"sequence\":7,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0007\",\"history\":[{\"minute\":0,\"value\":376},{\"minute\":5,\"value\":395},{\"minute\":10,\"value\":414},{\"minute\":15,\"value\":433}],\"state\":\"63.92\"},{\"attributes\":{\"area\":\"lab\",\"battery\":16,\"mode\":\"offline\",\"sequence\":8,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0008\",\"history\":[{\"minute\":0,\"value\":413},{\"minute\":5,\"value\":432},{\"minute\":10,\"value\":451},{\"minute\":15,\"value\":470}],\"state\":\"70.21\"},{\"attributes\":{\"area\":\"utility\",\"battery\":93,\"mode\":\"standby\",\"sequence\":9,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0009\",\"history\":[{\"minute\":0,\"value\":450},{\"minute\":5,\"value\":469},{\"minute\":10,\"value\":488},{\"minute\":15,\"value\":507}],\"state\":\"76.50\"},{\"attributes\":{\"area\":\"library\",\"battery\":69,\"mode\":\"active\",\"sequence\":10,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0010\",\"history\":[{\"minute\":0,\"value\":487},{\"minute\":5,\"value\":506},{\"minute\":10,\"value\":525},{\"minute\":15,\"value\":544}],\"state\":\"82.79\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":45,\"mode\":\"idle\",\"sequence\":11,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0011\",\"history\":[{\"minute\":0,\"value\":524},{\"minute\":5,\"value\":543},{\"minute\":10,\"value\":562},{\"minute\":15,\"value\":581}],\"state\":\"89.08\"},{\"attributes\":{\"area\":\"studio\",\"battery\":21,\"mode\":\"offline\",\"sequence\":12,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0012\",\"history\":[{\"minute\":0,\"value\":561},{\"minute\":5,\"value\":580},{\"minute\":10,\"value\":599},{\"minute\":15,\"value\":618}],\"state\":\"95.37\"},{\"attributes\":{\"area\":\"lab\",\"battery\":98,\"mode\":\"standby\",\"sequence\":13,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0013\",\"history\":[{\"minute\":0,\"value\":598},{\"minute\":5,\"value\":617},{\"minute\":10,\"value\":636},{\"minute\":15,\"value\":655}],\"state\":\"1.66\"},{\"attributes\":{\"area\":\"utility\",\"battery\":74,\"mode\":\"active\",\"sequence\":14,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0014\",\"history\":[{\"minute\":0,\"value\":635},{\"minute\":5,\"value\":654},{\"minute\":10,\"value\":673},{\"minute\":15,\"value\":692}],\"state\":\"7.95\"},{\"attributes\":{\"area\":\"library\",\"battery\":50,\"mode\":\"idle\",\"sequence\":15,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0015\",\"history\":[{\"minute\":0,\"value\":672},{\"minute\":5,\"value\":691},{\"minute\":10,\"value\":710},{\"minute\":15,\"value\":729}],\"state\":\"14.24\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":26,\"mode\":\"offline\",\"sequence\":16,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0016\",\"history\":[{\"minute\":0,\"value\":709},{\"minute\":5,\"value\":728},{\"minute\":10,\"value\":747},{\"minute\":15,\"value\":766}],\"state\":\"20.53\"},{\"attributes\":{\"area\":\"studio\",\"battery\":2,\"mode\":\"standby\",\"sequence\":17,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0017\",\"history\":[{\"minute\":0,\"value\":746},{\"minute\":5,\"value\":765},{\"minute\":10,\"value\":784},{\"minute\":15,\"value\":803}],\"state\":\"26.82\"},{\"attributes\":{\"area\":\"lab\",\"battery\":79,\"mode\":\"active\",\"sequence\":18,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0018\",\"history\":[{\"minute\":0,\"value\":783},{\"minute\":5,\"value\":802},{\"minute\":10,\"value\":821},{\"minute\":15,\"value\":840}],\"state\":\"33.11\"},{\"attributes\":{\"area\":\"utility\",\"battery\":55,\"mode\":\"idle\",\"sequence\":19,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0019\",\"history\":[{\"minute\":0,\"value\":820},{\"minute\":5,\"value\":839},{\"minute\":10,\"value\":858},{\"minute\":15,\"value\":877}],\"state\":\"39.40\"},{\"attributes\":{\"area\":\"library\",\"battery\":31,\"mode\":\"offline\",\"sequence\":20,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0020\",\"history\":[{\"minute\":0,\"value\":857},{\"minute\":5,\"value\":876},{\"minute\":10,\"value\":895},{\"minute\":15,\"value\":914}],\"state\":\"45.69\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":7,\"mode\":\"standby\",\"sequence\":21,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0021\",\"history\":[{\"minute\":0,\"value\":894},{\"minute\":5,\"value\":913},{\"minute\":10,\"value\":932},{\"minute\":15,\"value\":951}],\"state\":\"51.98\"},{\"attributes\":{\"area\":\"studio\",\"battery\":84,\"mode\":\"active\",\"sequence\":22,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0022\",\"history\":[{\"minute\":0,\"value\":931},{\"minute\":5,\"value\":950},{\"minute\":10,\"value\":969},{\"minute\":15,\"value\":988}],\"state\":\"58.27\"},{\"attributes\":{\"area\":\"lab\",\"battery\":60,\"mode\":\"idle\",\"sequence\":23,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0023\",\"history\":[{\"minute\":0,\"value\":968},{\"minute\":5,\"value\":987},{\"minute\":10,\"value\":9},{\"minute\":15,\"value\":28}],\"state\":\"64.56\"},{\"attributes\":{\"area\":\"utility\",\"battery\":36,\"mode\":\"offline\",\"sequence\":24,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0024\",\"history\":[{\"minute\":0,\"value\":8},{\"minute\":5,\"value\":27},{\"minute\":10,\"value\":46},{\"minute\":15,\"value\":65}],\"state\":\"70.85\"},{\"attributes\":{\"area\":\"library\",\"battery\":12,\"mode\":\"standby\",\"sequence\":25,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0025\",\"history\":[{\"minute\":0,\"value\":45},{\"minute\":5,\"value\":64},{\"minute\":10,\"value\":83},{\"minute\":15,\"value\":102}],\"state\":\"77.14\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":89,\"mode\":\"active\",\"sequence\":26,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0026\",\"history\":[{\"minute\":0,\"value\":82},{\"minute\":5,\"value\":101},{\"minute\":10,\"value\":120},{\"minute\":15,\"value\":139}],\"state\":\"83.43\"},{\"attributes\":{\"area\":\"studio\",\"battery\":65,\"mode\":\"idle\",\"sequence\":27,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0027\",\"history\":[{\"minute\":0,\"value\":119},{\"minute\":5,\"value\":138},{\"minute\":10,\"value\":157},{\"minute\":15,\"value\":176}],\"state\":\"89.72\"},{\"attributes\":{\"area\":\"lab\",\"battery\":41,\"mode\":\"offline\",\"sequence\":28,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0028\",\"history\":[{\"minute\":0,\"value\":156},{\"minute\":5,\"value\":175},{\"minute\":10,\"value\":194},{\"minute\":15,\"value\":213}],\"state\":\"96.01\"},{\"attributes\":{\"area\":\"utility\",\"battery\":17,\"mode\":\"standby\",\"sequence\":29,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0029\",\"history\":[{\"minute\":0,\"value\":193},{\"minute\":5,\"value\":212},{\"minute\":10,\"value\":231},{\"minute\":15,\"value\":250}],\"state\":\"2.30\"},{\"attributes\":{\"area\":\"library\",\"battery\":94,\"mode\":\"active\",\"sequence\":30,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0030\",\"history\":[{\"minute\":0,\"value\":230},{\"minute\":5,\"value\":249},{\"minute\":10,\"value\":268},{\"minute\":15,\"value\":287}],\"state\":\"8.59\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":70,\"mode\":\"idle\",\"sequence\":31,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0031\",\"history\":[{\"minute\":0,\"value\":267},{\"minute\":5,\"value\":286},{\"minute\":10,\"value\":305},{\"minute\":15,\"value\":324}],\"state\":\"14.88\"},{\"attributes\":{\"area\":\"studio\",\"battery\":46,\"mode\":\"offline\",\"sequence\":32,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0032\",\"history\":[{\"minute\":0,\"value\":304},{\"minute\":5,\"value\":323},{\"minute\":10,\"value\":342},{\"minute\":15,\"value\":361}],\"state\":\"21.17\"},{\"attributes\":{\"area\":\"lab\",\"battery\":22,\"mode\":\"standby\",\"sequence\":33,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0033\",\"history\":[{\"minute\":0,\"value\":341},{\"minute\":5,\"value\":360},{\"minute\":10,\"value\":379},{\"minute\":15,\"value\":398}],\"state\":\"27.46\"},{\"attributes\":{\"area\":\"utility\",\"battery\":99,\"mode\":\"active\",\"sequence\":34,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0034\",\"history\":[{\"minute\":0,\"value\":378},{\"minute\":5,\"value\":397},{\"minute\":10,\"value\":416},{\"minute\":15,\"value\":435}],\"state\":\"33.75\"},{\"attributes\":{\"area\":\"library\",\"battery\":75,\"mode\":\"idle\",\"sequence\":35,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0035\",\"history\":[{\"minute\":0,\"value\":415},{\"minute\":5,\"value\":434},{\"minute\":10,\"value\":453},{\"minute\":15,\"value\":472}],\"state\":\"40.04\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":51,\"mode\":\"offline\",\"sequence\":36,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0036\",\"history\":[{\"minute\":0,\"value\":452},{\"minute\":5,\"value\":471},{\"minute\":10,\"value\":490},{\"minute\":15,\"value\":509}],\"state\":\"46.33\"},{\"attributes\":{\"area\":\"studio\",\"battery\":27,\"mode\":\"standby\",\"sequence\":37,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0037\",\"history\":[{\"minute\":0,\"value\":489},{\"minute\":5,\"value\":508},{\"minute\":10,\"value\":527},{\"minute\":15,\"value\":546}],\"state\":\"52.62\"},{\"attributes\":{\"area\":\"lab\",\"battery\":3,\"mode\":\"active\",\"sequence\":38,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0038\",\"history\":[{\"minute\":0,\"value\":526},{\"minute\":5,\"value\":545},{\"minute\":10,\"value\":564},{\"minute\":15,\"value\":583}],\"state\":\"58.91\"},{\"attributes\":{\"area\":\"utility\",\"battery\":80,\"mode\":\"idle\",\"sequence\":39,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0039\",\"history\":[{\"minute\":0,\"value\":563},{\"minute\":5,\"value\":582},{\"minute\":10,\"value\":601},{\"minute\":15,\"value\":620}],\"state\":\"65.20\"},{\"attributes\":{\"area\":\"library\",\"battery\":56,\"mode\":\"offline\",\"sequence\":40,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0040\",\"history\":[{\"minute\":0,\"value\":600},{\"minute\":5,\"value\":619},{\"minute\":10,\"value\":638},{\"minute\":15,\"value\":657}],\"state\":\"71.49\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":32,\"mode\":\"standby\",\"sequence\":41,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0041\",\"history\":[{\"minute\":0,\"value\":637},{\"minute\":5,\"value\":656},{\"minute\":10,\"value\":675},{\"minute\":15,\"value\":694}],\"state\":\"77.78\"},{\"attributes\":{\"area\":\"studio\",\"battery\":8,\"mode\":\"active\",\"sequence\":42,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0042\",\"history\":[{\"minute\":0,\"value\":674},{\"minute\":5,\"value\":693},{\"minute\":10,\"value\":712},{\"minute\":15,\"value\":731}],\"state\":\"84.07\"},{\"attributes\":{\"area\":\"lab\",\"battery\":85,\"mode\":\"idle\",\"sequence\":43,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0043\",\"history\":[{\"minute\":0,\"value\":711},{\"minute\":5,\"value\":730},{\"minute\":10,\"value\":749},{\"minute\":15,\"value\":768}],\"state\":\"90.36\"},{\"attributes\":{\"area\":\"utility\",\"battery\":61,\"mode\":\"offline\",\"sequence\":44,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0044\",\"history\":[{\"minute\":0,\"value\":748},{\"minute\":5,\"value\":767},{\"minute\":10,\"value\":786},{\"minute\":15,\"value\":805}],\"state\":\"96.65\"},{\"attributes\":{\"area\":\"library\",\"battery\":37,\"mode\":\"standby\",\"sequence\":45,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0045\",\"history\":[{\"minute\":0,\"value\":785},{\"minute\":5,\"value\":804},{\"minute\":10,\"value\":823},{\"minute\":15,\"value\":842}],\"state\":\"2.94\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":13,\"mode\":\"active\",\"sequence\":46,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0046\",\"history\":[{\"minute\":0,\"value\":822},{\"minute\":5,\"value\":841},{\"minute\":10,\"value\":860},{\"minute\":15,\"value\":879}],\"state\":\"9.23\"},{\"attributes\":{\"area\":\"studio\",\"battery\":90,\"mode\":\"idle\",\"sequence\":47,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0047\",\"history\":[{\"minute\":0,\"value\":859},{\"minute\":5,\"value\":878},{\"minute\":10,\"value\":897},{\"minute\":15,\"value\":916}],\"state\":\"15.52\"},{\"attributes\":{\"area\":\"lab\",\"battery\":66,\"mode\":\"offline\",\"sequence\":48,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0048\",\"history\":[{\"minute\":0,\"value\":896},{\"minute\":5,\"value\":915},{\"minute\":10,\"value\":934},{\"minute\":15,\"value\":953}],\"state\":\"21.81\"},{\"attributes\":{\"area\":\"utility\",\"battery\":42,\"mode\":\"standby\",\"sequence\":49,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0049\",\"history\":[{\"minute\":0,\"value\":933},{\"minute\":5,\"value\":952},{\"minute\":10,\"value\":971},{\"minute\":15,\"value\":990}],\"state\":\"28.10\"},{\"attributes\":{\"area\":\"library\",\"battery\":18,\"mode\":\"active\",\"sequence\":50,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0050\",\"history\":[{\"minute\":0,\"value\":970},{\"minute\":5,\"value\":989},{\"minute\":10,\"value\":11},{\"minute\":15,\"value\":30}],\"state\":\"34.39\"},{\"attributes\":{\"area\":\"atrium\",\"battery\":95,\"mode\":\"idle\",\"sequence\":51,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0051\",\"history\":[{\"minute\":0,\"value\":10},{\"minute\":5,\"value\":29},{\"minute\":10,\"value\":48},{\"minute\":15,\"value\":67}],\"state\":\"40.68\"},{\"attributes\":{\"area\":\"studio\",\"battery\":71,\"mode\":\"offline\",\"sequence\":52,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0052\",\"history\":[{\"minute\":0,\"value\":47},{\"minute\":5,\"value\":66},{\"minute\":10,\"value\":85},{\"minute\":15,\"value\":104}],\"state\":\"46.97\"},{\"attributes\":{\"area\":\"lab\",\"battery\":47,\"mode\":\"standby\",\"sequence\":53,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0053\",\"history\":[{\"minute\":0,\"value\":84},{\"minute\":5,\"value\":103},{\"minute\":10,\"value\":122},{\"minute\":15,\"value\":141}],\"state\":\"53.26\"},{\"attributes\":{\"area\":\"utility\",\"battery\":23,\"mode\":\"active\",\"sequence\":54,\"unit\":\"synthetic_units\"},\"entity_id\":\"sensor.alpha_0054\",\"history\":[{\"minute\":0,\"value\":121},{\"minute\":5,\"value\":140},{\"minute\":10,\"value\":159},{\"minute\":15,\"value\":178}],\"state\":\"59.55\"}],\"schema_version\":1,\"seed\":117,\"snapshot_id\":\"alpha-snapshot\"}",
+  "state_sha256": "3c43c6b97cece95bed7f5b47a97a66cb06ba1a4d800a86b2698560d94696b774",
+  "measured_state_tokens": 4954,
+  "questions": [
+    {
+      "id": "presence-01",
+      "category": "presence",
+      "question": "Treat sensor.alpha_0002 as person.resident; active means home and any other mode means away. Is the resident home?",
+      "criteria": {
+        "home": "resident mode is active",
+        "away": "resident mode is not active"
+      },
+      "expected": "home",
+      "family": "home_presence"
+    },
+    {
+      "id": "presence-02",
+      "category": "presence",
+      "question": "Treat sensor.alpha_0003 as person.guest; active means home and any other mode means away. Is the guest home?",
+      "criteria": {
+        "home": "guest mode is active",
+        "away": "guest mode is not active"
+      },
+      "expected": "away",
+      "family": "home_presence"
+    },
+    {
+      "id": "presence-03",
+      "category": "presence",
+      "question": "Treat sensor.alpha_0006 and sensor.alpha_0007 as two people; active means home. Who is home?",
+      "criteria": {
+        "first_only": "only alpha_0006 is active",
+        "second_only": "only alpha_0007 is active",
+        "both": "both are active",
+        "nobody": "neither is active"
+      },
+      "expected": "first_only",
+      "family": "home_presence"
+    },
+    {
+      "id": "lights-01",
+      "category": "rooms_lights",
+      "question": "Treat sensor.alpha_0006 as the atrium light; active means on. What is its state?",
+      "criteria": {
+        "on": "mode is active",
+        "off": "mode is not active"
+      },
+      "expected": "on",
+      "family": "home_lights"
+    },
+    {
+      "id": "lights-02",
+      "category": "rooms_lights",
+      "question": "Treat sensor.alpha_0007 as the studio light; active means on. What is its state?",
+      "criteria": {
+        "on": "mode is active",
+        "off": "mode is not active"
+      },
+      "expected": "off",
+      "family": "home_lights"
+    },
+    {
+      "id": "lights-03",
+      "category": "rooms_lights",
+      "question": "Treat sensor.alpha_0010 as a light. In which area is this active light located?",
+      "criteria": {
+        "library": "area is library",
+        "atrium": "area is atrium",
+        "studio": "area is studio",
+        "lab": "area is lab",
+        "utility": "area is utility"
+      },
+      "expected": "library",
+      "family": "home_lights"
+    },
+    {
+      "id": "sleep-01",
+      "category": "sleep",
+      "question": "Treat sensor.alpha_0000 as the bedroom sleep sensor; offline means sleeping and other modes mean awake. What is the sleep state?",
+      "criteria": {
+        "sleeping": "mode is offline",
+        "awake": "mode is not offline"
+      },
+      "expected": "sleeping",
+      "family": "home_sleep"
+    },
+    {
+      "id": "sleep-02",
+      "category": "sleep",
+      "question": "Treat sensor.alpha_0001 as the guest sleep sensor; offline means sleeping and other modes mean awake. What is the sleep state?",
+      "criteria": {
+        "sleeping": "mode is offline",
+        "awake": "mode is not offline"
+      },
+      "expected": "awake",
+      "family": "home_sleep"
+    },
+    {
+      "id": "sleep-03",
+      "category": "sleep",
+      "question": "Treat sensor.alpha_0004 as the utility-room sleep sensor; offline means sleeping. Is sleep detected?",
+      "criteria": {
+        "detected": "mode is offline",
+        "not_detected": "mode is not offline"
+      },
+      "expected": "detected",
+      "family": "home_sleep"
+    },
+    {
+      "id": "media-01",
+      "category": "media",
+      "question": "Treat sensor.alpha_0010 as the library media player; active means playing. What is it doing?",
+      "criteria": {
+        "playing": "mode is active",
+        "not_playing": "mode is not active"
+      },
+      "expected": "playing",
+      "family": "home_media"
+    },
+    {
+      "id": "media-02",
+      "category": "media",
+      "question": "Treat sensor.alpha_0011 as the atrium media player; idle means paused. What is it doing?",
+      "criteria": {
+        "playing": "mode is active",
+        "paused": "mode is idle",
+        "off": "mode is offline",
+        "standby": "mode is standby"
+      },
+      "expected": "paused",
+      "family": "home_media"
+    },
+    {
+      "id": "media-03",
+      "category": "media",
+      "question": "Treat sensor.alpha_0014 as the utility media player; active means playing. Is media playing?",
+      "criteria": {
+        "yes": "mode is active",
+        "no": "mode is not active"
+      },
+      "expected": "yes",
+      "family": "home_media"
+    },
+    {
+      "id": "hvac-01",
+      "category": "hvac",
+      "question": "Treat sensor.alpha_0009 state as room temperature. Against a target of 70, is the system heating, cooling, or idle?",
+      "criteria": {
+        "heating": "temperature is below 69.5",
+        "cooling": "temperature is above 70.5",
+        "idle": "temperature is within 0.5 of 70"
+      },
+      "expected": "cooling",
+      "family": "home_hvac"
+    },
+    {
+      "id": "hvac-02",
+      "category": "hvac",
+      "question": "Treat sensor.alpha_0013 state as room temperature. Against a target of 5, is the system heating, cooling, or idle?",
+      "criteria": {
+        "heating": "temperature is below 4.5",
+        "cooling": "temperature is above 5.5",
+        "idle": "temperature is within 0.5 of 5"
+      },
+      "expected": "heating",
+      "family": "home_hvac"
+    },
+    {
+      "id": "hvac-03",
+      "category": "hvac",
+      "question": "Treat sensor.alpha_0015 state as room temperature. Against a target of 14, is the system heating, cooling, or idle?",
+      "criteria": {
+        "heating": "temperature is below 13.5",
+        "cooling": "temperature is above 14.5",
+        "idle": "temperature is within 0.5 of 14"
+      },
+      "expected": "idle",
+      "family": "home_hvac"
+    },
+    {
+      "id": "doors-01",
+      "category": "doors",
+      "question": "Treat sensor.alpha_0003 as the front door; idle means closed, active means open, and other modes are unknown. What is its state?",
+      "criteria": {
+        "open": "mode is active",
+        "closed": "mode is idle",
+        "unknown": "mode is neither active nor idle"
+      },
+      "expected": "closed",
+      "family": "home_doors"
+    },
+    {
+      "id": "doors-02",
+      "category": "doors",
+      "question": "Treat sensor.alpha_0002 as the back door; idle means closed and active means open. What is its state?",
+      "criteria": {
+        "open": "mode is active",
+        "closed": "mode is idle",
+        "unknown": "mode is neither active nor idle"
+      },
+      "expected": "open",
+      "family": "home_doors"
+    },
+    {
+      "id": "doors-03",
+      "category": "doors",
+      "question": "Treat sensor.alpha_0000 as the garage door; idle means closed, active means open, and offline means unknown. What is its state?",
+      "criteria": {
+        "open": "mode is active",
+        "closed": "mode is idle",
+        "unknown": "mode is offline or standby"
+      },
+      "expected": "unknown",
+      "family": "home_doors"
+    },
+    {
+      "id": "weather-01",
+      "category": "weather",
+      "question": "Treat sensor.alpha_0012 state as outdoor relative humidity. Which supplied band applies?",
+      "criteria": {
+        "dry": "below 30",
+        "comfortable": "30 through 60",
+        "humid": "above 60"
+      },
+      "expected": "humid",
+      "family": "home_weather"
+    },
+    {
+      "id": "weather-02",
+      "category": "weather",
+      "question": "Treat sensor.alpha_0013 state as millimeters of precipitation; any value above zero means rain. What is the condition?",
+      "criteria": {
+        "dry": "value is zero",
+        "rain": "value is above zero"
+      },
+      "expected": "rain",
+      "family": "home_weather"
+    },
+    {
+      "id": "weather-03",
+      "category": "weather",
+      "question": "Treat sensor.alpha_0014 state as wind speed; below 10 is calm, 10 through 25 is breezy, and above 25 is windy. Which band applies?",
+      "criteria": {
+        "calm": "below 10",
+        "breezy": "10 through 25",
+        "windy": "above 25"
+      },
+      "expected": "calm",
+      "family": "home_weather"
+    },
+    {
+      "id": "anomaly-01",
+      "category": "anomalies",
+      "question": "Treat battery below 10 percent as a low-battery anomaly. Does sensor.alpha_0017 have an anomaly?",
+      "criteria": {
+        "low_battery": "battery is below 10",
+        "normal": "battery is at least 10"
+      },
+      "expected": "low_battery",
+      "family": "home_anomaly"
+    },
+    {
+      "id": "anomaly-02",
+      "category": "anomalies",
+      "question": "Treat battery below 10 percent as a low-battery anomaly. Does sensor.alpha_0013 have an anomaly?",
+      "criteria": {
+        "low_battery": "battery is below 10",
+        "normal": "battery is at least 10"
+      },
+      "expected": "normal",
+      "family": "home_anomaly"
+    },
+    {
+      "id": "anomaly-03",
+      "category": "anomalies",
+      "question": "Treat offline mode as an availability anomaly. What is the status of sensor.alpha_0012?",
+      "criteria": {
+        "unavailable": "mode is offline",
+        "available": "mode is not offline"
+      },
+      "expected": "unavailable",
+      "family": "home_anomaly"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[project]
+name = "r9v-systemone"
+version = "0.1.0"
+description = "Local candidate-scoring service for R9V"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.118,<1",
+    "httpx>=0.28,<1",
+    "pydantic>=2.12,<3",
+    "pydantic-settings>=2.12,<3",
+    "uvicorn>=0.37,<1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4,<9",
+    "pytest-asyncio>=1.2,<2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+markers = [
+    "live: opt-in tests against the running local R9V service",
+]
