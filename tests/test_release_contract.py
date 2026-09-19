@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -204,6 +205,113 @@ def test_qwen_launch_pins_measured_rocm_dispatch_policy() -> None:
         "FP4BMM",
     ):
         assert f"--env VLLM_ROCM_USE_AITER_{subsystem}=0" in launcher
+
+
+def _run_qwen_launcher(tmp_path: Path, **overrides: str) -> list[str]:
+    model_dir = tmp_path / "model"
+    required = (
+        "target/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+        "target/Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf",
+        "target/Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf",
+        "metadata/config.json",
+        "mtp/config.json",
+        "mtp/model.safetensors",
+        "vision/mmproj-Qwen3.8-Flash-Next-Q8_0.gguf",
+        "manifests/hot-manifest-q4-vision-128k-multiprompt-r1-lru16-neutral.json",
+    )
+    for relative in required:
+        path = model_dir / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.touch()
+    ple_path = tmp_path / "per_layer_token_embd.iq4_nl.bin"
+    ple_path.touch()
+
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    docker_args = tmp_path / "docker-args"
+    fake_docker = bin_dir / "docker"
+    fake_docker.write_text(
+        "#!/bin/sh\n"
+        "if [ \"$1\" = container ]; then exit 1; fi\n"
+        "if [ \"$1\" = info ]; then printf '[]'; exit 0; fi\n"
+        "if [ \"$1\" = image ] && [ \"$2\" = inspect ]; then "
+        "printf 'sha256:test'; exit 0; fi\n"
+        "printf '%s\\n' \"$@\" >\"$R9V_TEST_DOCKER_ARGS\"\n",
+        encoding="utf-8",
+    )
+    fake_docker.chmod(0o755)
+
+    env = os.environ.copy()
+    env.update(
+        {
+            "PATH": f"{bin_dir}:{env['PATH']}",
+            "R9V_MODEL_DIR": str(model_dir),
+            "R9V_PLE_PATH": str(ple_path),
+            "R9V_CACHE_DIR": str(tmp_path / "cache"),
+            "R9V_CACHE_NAMESPACE": "test",
+            "R9V_CONTAINER_NAME": "r9v-launch-test",
+            "R9V_PREFLIGHT": "0",
+            "R9V_TEST_DOCKER_ARGS": str(docker_args),
+            **overrides,
+        }
+    )
+
+    result = subprocess.run(
+        [str(ROOT / "scripts/launch.sh")],
+        cwd=ROOT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    return docker_args.read_text(encoding="utf-8").splitlines()
+
+
+def test_qwen_launch_forwards_each_cpu_offload_parameter(tmp_path: Path) -> None:
+    args = _run_qwen_launcher(
+        tmp_path,
+        R9V_CPU_OFFLOAD_PARAMS="experts visual embed_tokens",
+    )
+    start = args.index("--cpu-offload-params")
+    assert args[start : start + 4] == [
+        "--cpu-offload-params",
+        "experts",
+        "visual",
+        "embed_tokens",
+    ]
+
+
+def test_qwen_launch_host_network_does_not_publish_a_bridge_port(
+    tmp_path: Path,
+) -> None:
+    args = _run_qwen_launcher(tmp_path, R9V_NETWORK_MODE="host")
+
+    start = args.index("--network")
+    assert args[start : start + 2] == ["--network", "host"]
+    assert "--publish" not in args
+
+
+def test_qwen_launch_builds_compilation_config_without_host_python() -> None:
+    launcher = (ROOT / "scripts/launch.sh").read_text(encoding="utf-8")
+
+    assert "compilation_config=$(python3" not in launcher
+    assert "max_capture_size=$((R9V_MTP_SPEC_TOKENS + 1))" in launcher
+
+
+def test_qwen_launch_resolves_cache_key_with_configured_host_python(
+    tmp_path: Path,
+) -> None:
+    args = _run_qwen_launcher(
+        tmp_path,
+        R9V_CACHE_NAMESPACE="",
+        R9V_HOST_PYTHON="/run/current-system/sw/bin/python3",
+    )
+
+    assert any(
+        value.startswith("VLLM_CACHE_ROOT=/cache/vllm/") for value in args
+    )
 
 
 def test_vllm_wheel_retains_r9v_provenance_notice() -> None:

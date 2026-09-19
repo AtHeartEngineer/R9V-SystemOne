@@ -43,6 +43,37 @@ hip_visible_devices=${hip_visible_devices%,}
 : "${R9V_DEV_FUSED_MOE_PY:=}"
 : "${R9V_DEV_LINEAR_PY:=}"
 : "${R9V_DEV_TIERED_IQ_MOE_SO:=}"
+: "${R9V_KV_OFFLOAD_BYTES:=0}"
+
+kv_transfer_args=()
+if [[ $R9V_KV_OFFLOAD_BYTES != 0 ]]; then
+    [[ $R9V_KV_OFFLOAD_BYTES =~ ^[0-9]+$ ]] || {
+        printf 'R9V_KV_OFFLOAD_BYTES must be a non-negative integer\n' >&2
+        exit 2
+    }
+    kv_transfer_args=(
+        --kv-transfer-config
+        "{\"kv_connector\":\"OffloadingConnector\",\"kv_role\":\"kv_both\",\"kv_connector_extra_config\":{\"cpu_bytes_to_use\":$R9V_KV_OFFLOAD_BYTES,\"blocks_per_chunk\":1,\"eviction_policy\":\"lru\",\"offload_prompt_only\":true}}"
+    )
+fi
+
+read -r -a cpu_offload_params <<<"$R9V_CPU_OFFLOAD_PARAMS"
+((${#cpu_offload_params[@]} > 0)) || {
+    printf 'R9V_CPU_OFFLOAD_PARAMS must name at least one parameter segment\n' >&2
+    exit 2
+}
+case $R9V_NETWORK_MODE in
+    bridge)
+        network_args=(--publish "$R9V_HOST_PORT:8000")
+        ;;
+    host)
+        network_args=(--network host)
+        ;;
+    *)
+        printf 'R9V_NETWORK_MODE must be bridge or host\n' >&2
+        exit 2
+        ;;
+esac
 
 [[ $R9V_TIERED_PREFILL_GROUP_SIZE == 0 ||
    $R9V_TIERED_PREFILL_GROUP_SIZE == 4 ||
@@ -217,15 +248,17 @@ manifest_rel=${R9V_MANIFEST_REL:-manifests/hot-manifest-q4-vision-128k-multiprom
     printf 'R9V_MTP_SPEC_TOKENS must be a non-negative integer\n' >&2
     exit 2
 }
-compilation_config=$(python3 - "$R9V_MTP_SPEC_TOKENS" <<'PYGRAPH'
-import json, sys
-depth = int(sys.argv[1])
-if not 0 <= depth <= 8:
-    raise SystemExit('MTP depth must be 0..8; additional graph shapes require explicit qualification')
-sizes = sorted({1, depth + 1})
-print(json.dumps({'cudagraph_mode': 'FULL_DECODE_ONLY', 'cudagraph_capture_sizes': sizes, 'max_cudagraph_capture_size': max(sizes)}))
-PYGRAPH
-)
+if (( R9V_MTP_SPEC_TOKENS > 8 )); then
+    printf 'MTP depth must be 0..8; additional graph shapes require explicit qualification\n' >&2
+    exit 2
+fi
+max_capture_size=$((R9V_MTP_SPEC_TOKENS + 1))
+if (( max_capture_size == 1 )); then
+    capture_sizes='[1]'
+else
+    capture_sizes="[1,${max_capture_size}]"
+fi
+compilation_config="{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":${capture_sizes},\"max_cudagraph_capture_size\":${max_capture_size}}"
 retained_args=()
 if [[ ${R9V_RETAINED_MTP4:-0} == 1 ]]; then
     retained_args+=(--env "QWEN38_EXPERT_TP_SPLIT=${R9V_EXPERT_TP_SPLIT:?Missing expert channel partition}")
@@ -283,7 +316,15 @@ mkdir -p "$cache_dir"
 cache_namespace=${R9V_CACHE_NAMESPACE:-}
 if [[ -z $cache_namespace ]]; then
     resolved_image=$(docker image inspect "$image" --format '{{.Id}}')
-    cache_namespace=$(python3 "$repo_root/tools/runtime_cache_key.py" "$resolved_image" "$manifest_path")
+    host_python=${R9V_HOST_PYTHON:-$(command -v python3 || true)}
+    if [[ -z $host_python && -x /run/current-system/sw/bin/python3 ]]; then
+        host_python=/run/current-system/sw/bin/python3
+    fi
+    [[ -n $host_python ]] || {
+        printf 'python3 is required to calculate the runtime cache namespace\n' >&2
+        exit 127
+    }
+    cache_namespace=$($host_python "$repo_root/tools/runtime_cache_key.py" "$resolved_image" "$manifest_path")
 fi
 [[ $cache_namespace =~ ^[a-zA-Z0-9_-]{1,64}$ ]] || {
     printf 'Invalid R9V_CACHE_NAMESPACE\n' >&2
@@ -321,7 +362,7 @@ docker run --detach \
     --ipc host \
     --security-opt seccomp=unconfined \
     --security-opt label=disable \
-    --publish "$R9V_HOST_PORT:8000" \
+    "${network_args[@]}" \
     --volume "$model_dir:/models:ro" \
     --volume "$ple_path:/ple/per_layer_token_embd.iq4_nl.bin:ro" \
     --volume "$cache_dir:/cache" \
@@ -415,8 +456,9 @@ docker run --detach \
     --tensor-parallel-size "$R9V_TENSOR_PARALLEL_SIZE" \
     --pipeline-parallel-size 1 \
     --cpu-offload-gb "$R9V_CPU_OFFLOAD_GB" \
-    --cpu-offload-params experts \
+    --cpu-offload-params "${cpu_offload_params[@]}" \
     --kv-cache-memory-bytes "$R9V_KV_CACHE_MEMORY_BYTES" \
+    "${kv_transfer_args[@]}" \
     "${speculative_args[@]}" \
     --max-model-len "$R9V_MAX_MODEL_LEN" \
     --max-num-seqs "$R9V_MAX_NUM_SEQS" \

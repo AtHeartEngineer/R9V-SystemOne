@@ -44,6 +44,13 @@ Configuration precedence is:
 Keep the template's `: "${NAME:=value}"` form. It fills an unset value but
 does not replace a value explicitly exported for one launch.
 
+### Container networking
+
+`R9V_NETWORK_MODE=bridge` publishes `R9V_HOST_PORT` through Docker and remains
+the interactive-launch default. `R9V_NETWORK_MODE=host` binds vLLM directly to
+host port 8000; use it only when a dedicated service manager, firewall, or
+socket proxy owns endpoint exposure.
+
 ## Understanding doctor status
 
 | Status | Meaning | Launch behavior |
@@ -251,6 +258,11 @@ filesystem page cache available to the PLE file.
 budgets used to admit the expert tensors. They do not allocate 112.5 GiB per
 rank. Do not lower them merely because the host has 96 GiB of RAM; doing so
 can prevent the loader from offloading all experts.
+
+`R9V_CPU_OFFLOAD_PARAMS` is a space-delimited list of parameter groups passed
+individually to vLLM. The published default is `experts`. A display-attached
+GPU can also use `experts visual` to keep the vision encoder available while
+placing its weights in host memory and preserving additional display VRAM.
 
 ## PLE/n-gram storage
 
