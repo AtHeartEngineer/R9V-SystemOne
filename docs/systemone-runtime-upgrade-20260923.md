@@ -21,4 +21,10 @@ release does not establish a fix for the known AMD compiler failure.
 
 ## Status
 
-Candidate preparation in progress. No runtime qualification claim yet.
+Profile contract passed; release/image-loader tests: 27 passed. Deployment
+profile committed to fork main. Nix service unit builds independently, but
+the full system build failed in unrelated `open-bambu-networking`.
+
+Image transfer is incomplete because of repeated release-host download stalls.
+The current production image is unchanged; no restart or qualification of the
+candidate has occurred. See `TODO-runtime-upgrade.md` for remaining gates.
